@@ -1,0 +1,51 @@
+PATH
+  remote: .
+  specs:
+    rubyraylib (5.1.pre.dev)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    ast (2.4.2)
+    json (2.7.2)
+    language_server-protocol (3.17.0.3)
+    parallel (1.24.0)
+    parser (3.3.1.0)
+      ast (~> 2.4.1)
+      racc
+    racc (1.7.3)
+    rainbow (3.1.1)
+    rake (13.2.1)
+    rake-compiler (1.2.7)
+      rake
+    regexp_parser (2.9.1)
+    rexml (3.2.6)
+    rubocop (1.63.5)
+      json (~> 2.3)
+      language_server-protocol (>= 3.17.0)
+      parallel (~> 1.10)
+      parser (>= 3.3.0.2)
+      rainbow (>= 2.2.2, < 4.0)
+      regexp_parser (>= 1.8, < 3.0)
+      rexml (>= 3.2.5, < 4.0)
+      rubocop-ast (>= 1.31.1, < 2.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (>= 2.4.0, < 3.0)
+    rubocop-ast (1.31.3)
+      parser (>= 3.3.1.0)
+    ruby-progressbar (1.13.0)
+    unicode-display_width (2.5.0)
+
+PLATFORMS
+  ruby
+  x64-mingw-ucrt
+  x86_64-linux
+
+DEPENDENCIES
+  rake (~> 13.0)
+  rake-compiler
+  rubocop (~> 1.21)
+  rubyraylib!
+
+BUNDLED WITH
+   2.5.9
