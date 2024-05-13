@@ -2,7 +2,8 @@
 #define RUBYRAYLIB_H 1
 
 #include "ruby.h"
-#include "raylib.h"
+#include "raylib_values.h"
+
 #include "vector2.h"
 #include "window.h"
 #include "texture.h"
@@ -22,4 +23,4 @@ void initializeColor();
 void initializeImage();
 void initializeKernel();
 
-#endif /* RUBYRAYLIB_H */
+#endif // RUBYRAYLIB_H

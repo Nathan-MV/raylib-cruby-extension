@@ -2,6 +2,6 @@
 #define KERNEL_H
 
 #include "ruby.h"
-#include "raylib.h"
+#include "raylib_values.h"
 
-#endif
+#endif // KERNEL_H

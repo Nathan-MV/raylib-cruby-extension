@@ -1,6 +1,5 @@
 #include "texture.h"
 
-// Ruby method to allocate memory for a new Texture
 static VALUE texture_alloc(VALUE klass) {
   Texture *texture;
   VALUE obj = Data_Make_Struct(klass, Texture, 0, -1, texture);

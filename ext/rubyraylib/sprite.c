@@ -1,6 +1,5 @@
 #include "sprite.h"
 
-// Ruby method to allocate memory for a new Texture
 static VALUE texture2d_alloc(VALUE klass) {
   Texture2D *texture;
   VALUE obj = Data_Make_Struct(klass, Texture2D, 0, -1, texture);
@@ -28,7 +27,6 @@ static VALUE rb_unload_texture(VALUE self, VALUE texture_obj) {
   return Qnil;
 }
 
-// Function to draw texture with four arguments
 static VALUE rb_draw_texture(VALUE texture_value, VALUE posX_value,
                              VALUE posY_value, VALUE tint_value) {
   Texture2D *texture = (Texture2D *)DATA_PTR(texture_value);
@@ -41,7 +39,6 @@ static VALUE rb_draw_texture(VALUE texture_value, VALUE posX_value,
   return Qnil;
 }
 
-// Function to draw texture with three arguments
 static VALUE rb_draw_texture_v(VALUE texture_value, VALUE position_value,
                                VALUE tint_value) {
   Texture2D *texture = (Texture2D *)DATA_PTR(texture_value);
@@ -53,7 +50,6 @@ static VALUE rb_draw_texture_v(VALUE texture_value, VALUE position_value,
   return Qnil;
 }
 
-// Function to draw texture with five arguments
 static VALUE rb_draw_texture_ex(VALUE texture_value, VALUE position_value,
                                 VALUE rotation_value, VALUE scale_value,
                                 VALUE tint_value) {
@@ -68,9 +64,7 @@ static VALUE rb_draw_texture_ex(VALUE texture_value, VALUE position_value,
   return Qnil;
 }
 
-// Main function to handle drawing based on the number of arguments
 static VALUE rb_draw_sprite(int argc, VALUE *argv, VALUE self) {
-  // Check the number of arguments
   switch (argc) {
   case 3:
     rb_scan_args(argc, argv, "3", &argv[0], &argv[1], &argv[2]);
@@ -86,7 +80,6 @@ static VALUE rb_draw_sprite(int argc, VALUE *argv, VALUE self) {
     rb_draw_texture_ex(argv[0], argv[1], argv[2], argv[3], argv[4]);
     break;
   default:
-    // Incorrect number of arguments
     rb_raise(rb_eArgError, "Wrong number of arguments. Expected 3, 4, or 5.");
     break;
   }

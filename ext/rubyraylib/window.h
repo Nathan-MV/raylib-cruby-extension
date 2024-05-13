@@ -2,6 +2,6 @@
 #define WINDOW_H
 
 #include "ruby.h"
-#include "raylib.h"
+#include "raylib_values.h"
 
-#endif
+#endif // WINDOW_H

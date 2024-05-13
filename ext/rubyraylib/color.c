@@ -1,13 +1,11 @@
 #include "color.h"
 
-// Ruby method to allocate memory for a new Color
 static VALUE color_alloc(VALUE klass) {
   Color *col;
   VALUE obj = Data_Make_Struct(klass, Color, 0, -1, col);
   return obj;
 }
 
-// Ruby method to create a new Color object
 static VALUE rb_color_initialize(int argc, VALUE *argv, VALUE self) {
   VALUE r, g, b, a;
   Color *color;
@@ -30,7 +28,6 @@ static VALUE rb_color_initialize(int argc, VALUE *argv, VALUE self) {
   return self;
 }
 
-// Ruby method to get the red component of a Color object
 static VALUE rb_color_get_red(VALUE self) {
   Color *color;
   Data_Get_Struct(self, Color, color);
@@ -38,7 +35,6 @@ static VALUE rb_color_get_red(VALUE self) {
   return INT2NUM(color->r);
 }
 
-// Ruby method to get the green component of a Color object
 static VALUE rb_color_get_green(VALUE self) {
   Color *color;
   Data_Get_Struct(self, Color, color);
@@ -46,7 +42,6 @@ static VALUE rb_color_get_green(VALUE self) {
   return INT2NUM(color->g);
 }
 
-// Ruby method to get the blue component of a Color object
 static VALUE rb_color_get_blue(VALUE self) {
   Color *color;
   Data_Get_Struct(self, Color, color);
@@ -62,7 +57,6 @@ static VALUE rb_color_get_alpha(VALUE self) {
   return INT2NUM(color->a);
 }
 
-// Ruby method to set the red component of a Color object
 static VALUE rb_color_set_red(VALUE self, VALUE value) {
   Color *color;
   Data_Get_Struct(self, Color, color);
@@ -72,7 +66,6 @@ static VALUE rb_color_set_red(VALUE self, VALUE value) {
   return self;
 }
 
-// Ruby method to set the green component of a Color object
 static VALUE rb_color_set_green(VALUE self, VALUE value) {
   Color *color;
   Data_Get_Struct(self, Color, color);
@@ -82,7 +75,6 @@ static VALUE rb_color_set_green(VALUE self, VALUE value) {
   return self;
 }
 
-// Ruby method to set the blue component of a Color object
 static VALUE rb_color_set_blue(VALUE self, VALUE value) {
   Color *color;
   Data_Get_Struct(self, Color, color);
@@ -92,7 +84,6 @@ static VALUE rb_color_set_blue(VALUE self, VALUE value) {
   return self;
 }
 
-// Ruby method to set the alpha component of a Color object
 static VALUE rb_color_set_alpha(VALUE self, VALUE value) {
   Color *color;
   Data_Get_Struct(self, Color, color);
@@ -102,12 +93,11 @@ static VALUE rb_color_set_alpha(VALUE self, VALUE value) {
   return self;
 }
 
-// Ruby method to convert Color to integer
 static VALUE rb_color_to_int(VALUE self) {
   Color *color;
   Data_Get_Struct(self, Color, color);
 
-  int result = ColorToInt(*color); // Call the ColorToInt function
+  int result = ColorToInt(*color);
 
   return INT2NUM(result);
 }

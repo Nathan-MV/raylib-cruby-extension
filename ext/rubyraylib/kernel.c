@@ -1,6 +1,5 @@
 #include "kernel.h"
 
-// Function to calculate Fibonacci sequence
 static int fibonacci(int n) {
   if (n <= 1)
     return n;
@@ -8,7 +7,6 @@ static int fibonacci(int n) {
   return fibonacci(n - 1) + fibonacci(n - 2);
 }
 
-// Ruby method to wrap the Fibonacci function
 static VALUE rb_fibonacci(VALUE self, VALUE num) {
   int n = NUM2INT(num);
   int result = fibonacci(n);

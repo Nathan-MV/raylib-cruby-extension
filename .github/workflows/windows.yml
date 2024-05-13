@@ -1,0 +1,46 @@
+name: Windows
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    name: Ruby ${{ matrix.ruby }}
+    strategy:
+      matrix:
+        ruby:
+          - '3.3.1'
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: 'recursive'
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+        bundler-cache: true
+
+    - name: Build Raylib
+      working-directory: ${{ github.workspace }}/third_party/raylib/src
+      run: |
+        set CFLAGS=-flto
+        set CFLAGS=-Ofast
+        set CFLAGS=-DNDEBUG
+        set CFLAGS=-fpic
+        set CFLAGS=-ftree-vectorize
+        make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED
+        cp *.dll ${{ github.workspace }}/lib/rubyraylib
+
+    - name: Run the default task
+      run: bundle exec rake compile
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: rubyraylib
+        path: ${{ github.workspace }}/lib/rubyraylib
+        retention-days: 90

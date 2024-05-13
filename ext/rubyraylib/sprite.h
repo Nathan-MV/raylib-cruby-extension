@@ -2,6 +2,6 @@
 #define SPRITE_H
 
 #include "ruby.h"
-#include "raylib.h"
+#include "raylib_values.h"
 
-#endif
+#endif // SPRITE_H

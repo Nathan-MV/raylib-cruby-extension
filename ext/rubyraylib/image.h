@@ -2,6 +2,6 @@
 #define IMAGE_H
 
 #include "ruby.h"
-#include "raylib.h"
+#include "raylib_values.h"
 
-#endif
+#endif // IMAGE_H

@@ -2,9 +2,14 @@
 
 require "mkmf"
 
-# Makes all symbols private by default to avoid unintended conflict
-# with other gems. To explicitly export symbols you can use RUBY_FUNC_EXPORTED
-# selectively, or entirely remove this flag.
+# Define raylib directory
+raylib_dir = File.expand_path(File.dirname(__FILE__) + "/../../third_party/raylib/src")
+
+# Add include and library directories
+$INCFLAGS << " -I" + raylib_dir
+$LDFLAGS << " -L" + raylib_dir
+
+# Append compiler flags
 append_cflags("-fvisibility=hidden")
 append_cflags("-Ofast")
 append_cflags("-flto")
@@ -12,8 +17,17 @@ append_cflags("-DNDEBUG")
 append_cflags("-fpic")
 append_cflags("-ftree-vectorize")
 
-# $INCFLAGS << " -I'd:/Cloud/Projects/Raylib/Ruby/raylib-cruby/third_party/raylib/src'"
-# $LDFLAGS << " -L'd:/Cloud/Projects/Raylib/Ruby/raylib-cruby/third_party/raylib/src'"
-have_library('raylib')
+# Debugging information
+puts "Include flags: #{$INCFLAGS}"
+puts "Library flags: #{$LDFLAGS}"
 
+# Configure the include and library paths for raylib
+dir_config('raylib', raylib_dir)
+
+# Check for the presence of the raylib library
+unless have_library('raylib')
+  abort "raylib library not found"
+end
+
+# Create the Makefile
 create_makefile("rubyraylib/rubyraylib")

@@ -55,9 +55,7 @@ static VALUE rb_draw_rectangle_v(VALUE position_value, VALUE size_value,
   return Qnil;
 }
 
-// Main function to handle drawing based on the number of arguments
 static VALUE rb_draw_rect(int argc, VALUE *argv, VALUE self) {
-  // Check the number of arguments
   switch (argc) {
   case 3:
     // void DrawRectangleV(Vector2 position, Vector2 size, Color color);
@@ -70,7 +68,6 @@ static VALUE rb_draw_rect(int argc, VALUE *argv, VALUE self) {
     rb_draw_rectangle(argv[0], argv[1], argv[2], argv[3], argv[4]);
     break;
   default:
-    // Incorrect number of arguments
     rb_raise(rb_eArgError, "Wrong number of arguments. Expected 3 or 5.");
     break;
   }

@@ -44,7 +44,6 @@ static VALUE rb_window_resized(VALUE self) {
 }
 
 static VALUE rb_is_window_state(VALUE self, VALUE flag) {
-  // Check if the flag is set
   unsigned int state_flag = NUM2UINT(flag);
   bool result = IsWindowState(state_flag);
 

@@ -2,14 +2,12 @@
 
 static VALUE rb_cVector2;
 
-// Ruby method to allocate memory for a new Vector2
 static VALUE rb_vec2_alloc(VALUE klass) {
   Vector2 *vec2;
   VALUE obj = Data_Make_Struct(klass, Vector2, 0, -1, vec2);
   return obj;
 }
 
-// Ruby method to create a new Vector2 object
 static VALUE rb_vec2_initialize(VALUE self, VALUE x, VALUE y) {
   Vector2 *vec2;
   Data_Get_Struct(self, Vector2, vec2);
@@ -20,7 +18,6 @@ static VALUE rb_vec2_initialize(VALUE self, VALUE x, VALUE y) {
   return self;
 }
 
-// Ruby method to get the x component of a Vector2 object
 static VALUE rb_vec2_get_x(VALUE self) {
   Vector2 *vec2;
   Data_Get_Struct(self, Vector2, vec2);
@@ -28,7 +25,6 @@ static VALUE rb_vec2_get_x(VALUE self) {
   return INT2NUM(vec2->x);
 }
 
-// Ruby method to get the y component of a Vector2 object
 static VALUE rb_vec2_get_y(VALUE self) {
   Vector2 *vec2;
   Data_Get_Struct(self, Vector2, vec2);
@@ -36,7 +32,6 @@ static VALUE rb_vec2_get_y(VALUE self) {
   return INT2NUM(vec2->y);
 }
 
-// Ruby method to set the x component of a Vector2 object
 static VALUE rb_vec2_set_x(VALUE self, VALUE value) {
   Vector2 *vec2;
   Data_Get_Struct(self, Vector2, vec2);
@@ -46,7 +41,6 @@ static VALUE rb_vec2_set_x(VALUE self, VALUE value) {
   return self;
 }
 
-// Ruby method to set the y component of a Vector2 object
 static VALUE rb_vec2_set_y(VALUE self, VALUE value) {
   Vector2 *vec2;
   Data_Get_Struct(self, Vector2, vec2);

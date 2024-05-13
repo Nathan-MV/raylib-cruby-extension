@@ -2,6 +2,6 @@
 #define VECTOR2_H
 
 #include "ruby.h"
-#include "raylib.h"
+#include "raylib_values.h"
 
-#endif
+#endif // VECTOR_H
