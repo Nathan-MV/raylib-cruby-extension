@@ -39,7 +39,7 @@ jobs:
         export CFLAGS="-flto -Ofast -DNDEBUG -fpic -ftree-vectorize"
         make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED
         cp *.so ${{ github.workspace }}/lib/rubyraylib
-        cp *.so.5 ${{ github.workspace }}/lib/rubyraylib
+        cp *.so.5.0.0 ${{ github.workspace }}/lib/rubyraylib
         cp *.so.500 ${{ github.workspace }}/lib/rubyraylib
 
     - name: Run the default task
