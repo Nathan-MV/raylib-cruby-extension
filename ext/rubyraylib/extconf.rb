@@ -17,17 +17,15 @@ append_cflags("-DNDEBUG")
 append_cflags("-fpic")
 append_cflags("-ftree-vectorize")
 
+# Link against the static library specifically
+$LDFLAGS << " -l:libraylib.a"
+
 # Debugging information
 puts "Include flags: #{$INCFLAGS}"
 puts "Library flags: #{$LDFLAGS}"
 
 # Configure the include and library paths for raylib
 dir_config('raylib', raylib_dir)
-
-# Check for the presence of the raylib library
-unless have_library('raylib')
-  abort "raylib library not found"
-end
 
 # Create the Makefile
 create_makefile("rubyraylib/rubyraylib")

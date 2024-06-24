@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         ruby:
-          - '3.3.1'
+          - '3.3.3'
 
     steps:
     - uses: actions/checkout@v4
@@ -37,10 +37,7 @@ jobs:
       working-directory: ${{ github.workspace }}/third_party/raylib/src
       run: |
         export CFLAGS="-flto -Ofast -DNDEBUG -fpic -ftree-vectorize"
-        make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED
-        cp *.so ${{ github.workspace }}/lib/rubyraylib
-        cp *.so.5.0.0 ${{ github.workspace }}/lib/rubyraylib
-        cp *.so.500 ${{ github.workspace }}/lib/rubyraylib
+        make PLATFORM=PLATFORM_DESKTOP
 
     - name: Run the default task
       run: bundle exec rake compile

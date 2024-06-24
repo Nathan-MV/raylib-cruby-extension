@@ -16,8 +16,8 @@ class Benchmark
     @max = max
     @move = move
     @size = Vec2.new(32, 32)
-    @positions = Array.new(@max) { Vec2.new(random(0 - @size.x, SCREEN_WIDTH), random(0, SCREEN_HEIGHT)) }
-    @speeds = Array.new(@max) { Vec2.new(random(-5, 5), random(-5, 5)) } if move
+    @positions = Array.new(@max) { Vec2.new(randex(0 - @size.x, SCREEN_WIDTH), randex(0, SCREEN_HEIGHT)) }
+    @speeds = Array.new(@max) { Vec2.new(randex(-5, 5), randex(-5, 5)) } if move
     @colors = Array.new(@max) { COLORS.sample }
   end
 
