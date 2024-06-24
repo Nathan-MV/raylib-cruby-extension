@@ -1,13 +1,20 @@
 #include "image.h"
 
-static VALUE image_alloc(VALUE klass) {
-  Image *img;
-  VALUE obj = Data_Make_Struct(klass, Image, 0, -1, img);
-  return obj;
+static void rb_image_free(void *ptr) {
+  Image *image = (Image *)ptr;
+  if (image) {
+    UnloadImage(*image);
+    free(image);
+  }
+}
+
+static VALUE rb_image_alloc(VALUE klass) {
+  Image *image = (Image *)malloc(sizeof(Image));
+  return Data_Wrap_Struct(klass, NULL, rb_image_free, image);
 }
 
 void initializeImage() {
   VALUE rb_cImage = rb_define_class("Image", rb_cObject);
 
-  rb_define_alloc_func(rb_cImage, image_alloc);
+  rb_define_alloc_func(rb_cImage, rb_image_alloc);
 }

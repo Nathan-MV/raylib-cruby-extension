@@ -1,9 +1,15 @@
 #include "color.h"
 
-static VALUE color_alloc(VALUE klass) {
-  Color *col;
-  VALUE obj = Data_Make_Struct(klass, Color, 0, -1, col);
-  return obj;
+static void rb_color_free(void *ptr) {
+  Color *col = (Color *)ptr;
+  if (col) {
+    free(col);
+  }
+}
+
+static VALUE rb_color_alloc(VALUE klass) {
+  Color *col = (Color *)malloc(sizeof(Color));
+  return Data_Wrap_Struct(klass, NULL, rb_color_free, col);
 }
 
 static VALUE rb_color_initialize(int argc, VALUE *argv, VALUE self) {
@@ -105,7 +111,7 @@ static VALUE rb_color_to_int(VALUE self) {
 void initializeColor() {
   VALUE rb_cColor = rb_define_class("Color", rb_cObject);
 
-  rb_define_alloc_func(rb_cColor, color_alloc);
+  rb_define_alloc_func(rb_cColor, rb_color_alloc);
   rb_define_method(rb_cColor, "initialize", rb_color_initialize, -1);
   rb_define_method(rb_cColor, "red", rb_color_get_red, 0);
   rb_define_method(rb_cColor, "green", rb_color_get_green, 0);

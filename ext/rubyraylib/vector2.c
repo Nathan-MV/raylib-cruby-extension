@@ -2,10 +2,16 @@
 
 static VALUE rb_cVector2;
 
+static void rb_vec2_free(void *ptr) {
+  Vector2 *vec2 = (Vector2 *)ptr;
+  if (vec2) {
+    free(vec2);
+  }
+}
+
 static VALUE rb_vec2_alloc(VALUE klass) {
-  Vector2 *vec2;
-  VALUE obj = Data_Make_Struct(klass, Vector2, 0, -1, vec2);
-  return obj;
+  Vector2 *vec2 = (Vector2 *)malloc(sizeof(Vector2));
+  return Data_Wrap_Struct(klass, NULL, rb_vec2_free, vec2);
 }
 
 static VALUE rb_vec2_initialize(VALUE self, VALUE x, VALUE y) {

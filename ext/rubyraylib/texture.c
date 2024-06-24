@@ -1,13 +1,20 @@
 #include "texture.h"
 
-static VALUE texture_alloc(VALUE klass) {
-  Texture *texture;
-  VALUE obj = Data_Make_Struct(klass, Texture, 0, -1, texture);
-  return obj;
+static void rb_texture_free(void *ptr) {
+  Texture *texture = (Texture *)ptr;
+  if (texture) {
+    UnloadTexture(*texture);
+    free(texture);
+  }
+}
+
+static VALUE rb_texture_alloc(VALUE klass) {
+  Texture *texture = (Texture *)malloc(sizeof(Texture));
+  return Data_Wrap_Struct(klass, NULL, rb_texture_free, texture);
 }
 
 void initializeTexture() {
   VALUE rb_cTexture = rb_define_class("Texture", rb_cObject);
 
-  rb_define_alloc_func(rb_cTexture, texture_alloc);
+  rb_define_alloc_func(rb_cTexture, rb_texture_alloc);
 }

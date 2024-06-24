@@ -1,9 +1,16 @@
 #include "sprite.h"
 
-static VALUE texture2d_alloc(VALUE klass) {
-  Texture2D *texture;
-  VALUE obj = Data_Make_Struct(klass, Texture2D, 0, -1, texture);
-  return obj;
+static void rb_texture2d_free(void *ptr) {
+  Texture2D *texture2d = (Texture2D *)ptr;
+  if (texture2d) {
+    UnloadTexture(*texture2d);
+    free(texture2d);
+  }
+}
+
+static VALUE rb_texture2d_alloc(VALUE klass) {
+  Texture2D *texture2d = (Texture2D *)malloc(sizeof(Texture2D));
+  return Data_Wrap_Struct(klass, NULL, rb_texture2d_free, texture2d);
 }
 
 static VALUE rb_load_texture(VALUE self, VALUE fileName) {
@@ -90,7 +97,7 @@ static VALUE rb_draw_sprite(int argc, VALUE *argv, VALUE self) {
 void initializeSprite() {
   VALUE rb_cSprite = rb_define_class("Sprite", rb_cObject);
 
-  rb_define_alloc_func(rb_cSprite, texture2d_alloc);
+  rb_define_alloc_func(rb_cSprite, rb_texture2d_alloc);
   rb_define_singleton_method(rb_cSprite, "load", rb_load_texture, 1);
   rb_define_singleton_method(rb_cSprite, "unload", rb_unload_texture, 1);
   rb_define_singleton_method(rb_cSprite, "draw", rb_draw_sprite, -1);
