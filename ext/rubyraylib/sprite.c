@@ -9,7 +9,7 @@ static void rb_texture2d_free(void *ptr) {
 }
 
 static VALUE rb_texture2d_alloc(VALUE klass) {
-  Texture2D *texture2d = (Texture2D *)malloc(sizeof(Texture2D));
+  Texture2D *texture2d = ALLOC(Texture2D);
   return Data_Wrap_Struct(klass, NULL, rb_texture2d_free, texture2d);
 }
 

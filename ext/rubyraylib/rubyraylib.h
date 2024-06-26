@@ -5,6 +5,8 @@
 #include "raylib_values.h"
 
 #include "vector2.h"
+#include "vector3.h"
+#include "vector4.h"
 #include "window.h"
 #include "texture.h"
 #include "sprite.h"
@@ -15,6 +17,8 @@
 
 // Function declarations for initialization
 void initializeVec2();
+void initializeVec3();
+void initializeVec4();
 void initializeWindow();
 void initializeDraw();
 void initializeTexture();

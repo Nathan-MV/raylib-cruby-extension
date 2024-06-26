@@ -9,7 +9,7 @@ static void rb_image_free(void *ptr) {
 }
 
 static VALUE rb_image_alloc(VALUE klass) {
-  Image *image = (Image *)malloc(sizeof(Image));
+  Image *image = ALLOC(Image);
   return Data_Wrap_Struct(klass, NULL, rb_image_free, image);
 }
 

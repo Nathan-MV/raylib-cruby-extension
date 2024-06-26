@@ -9,7 +9,7 @@ static void rb_texture_free(void *ptr) {
 }
 
 static VALUE rb_texture_alloc(VALUE klass) {
-  Texture *texture = (Texture *)malloc(sizeof(Texture));
+  Texture *texture = ALLOC(Texture);
   return Data_Wrap_Struct(klass, NULL, rb_texture_free, texture);
 }
 

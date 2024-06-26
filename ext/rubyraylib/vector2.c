@@ -1,16 +1,13 @@
 #include "vector2.h"
 
-static VALUE rb_cVector2;
+VALUE rb_cVector2;
 
 static void rb_vec2_free(void *ptr) {
-  Vector2 *vec2 = (Vector2 *)ptr;
-  if (vec2) {
-    free(vec2);
-  }
+  free(ptr);
 }
 
 static VALUE rb_vec2_alloc(VALUE klass) {
-  Vector2 *vec2 = (Vector2 *)malloc(sizeof(Vector2));
+  Vector2 *vec2 = ALLOC(Vector2);
   return Data_Wrap_Struct(klass, NULL, rb_vec2_free, vec2);
 }
 

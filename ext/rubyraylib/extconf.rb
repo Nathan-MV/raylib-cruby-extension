@@ -18,7 +18,7 @@ append_cflags("-fpic")
 append_cflags("-ftree-vectorize")
 
 # Link against the static library specifically
-$LDFLAGS << " -l:libraylib.a"
+$LDFLAGS << " " + File.join(raylib_dir, "libraylib.a")
 
 # Debugging information
 puts "Include flags: #{$INCFLAGS}"

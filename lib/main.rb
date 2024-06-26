@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require_relative "rubyraylib/rubyraylib"
 
-MAX_TEXTURES = 55_000
+MAX_TEXTURES = 72_000
 MAX_BATCH_ELEMENTS = 8192
 WHITE = Color.new(255, 255, 255)
 BLACK = Color.new(0, 0, 0)
