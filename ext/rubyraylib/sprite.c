@@ -1,16 +1,22 @@
 #include "sprite.h"
 
 static void rb_texture2d_free(void *ptr) {
-  Texture2D *texture2d = (Texture2D *)ptr;
-  if (texture2d) {
-    UnloadTexture(*texture2d);
-    free(texture2d);
+  Texture2D *texture = (Texture2D *)ptr;
+  if (texture) {
+    UnloadTexture(*texture);
+    free(texture);
   }
 }
 
 static VALUE rb_texture2d_alloc(VALUE klass) {
-  Texture2D *texture2d = ALLOC(Texture2D);
-  return Data_Wrap_Struct(klass, NULL, rb_texture2d_free, texture2d);
+  Texture2D *texture = ALLOC(Texture2D);
+  return Data_Wrap_Struct(klass, NULL, rb_texture2d_free, texture);
+}
+
+static Texture2D* get_texture2d_from_value(VALUE obj) {
+  Texture2D *texture;
+  Data_Get_Struct(obj, Texture2D, texture);
+  return texture;
 }
 
 static VALUE rb_load_texture(VALUE self, VALUE fileName) {
@@ -23,8 +29,7 @@ static VALUE rb_load_texture(VALUE self, VALUE fileName) {
 }
 
 static VALUE rb_unload_texture(VALUE self, VALUE texture_obj) {
-  Texture2D *texture = NULL;
-  Data_Get_Struct(texture_obj, Texture2D, texture);
+  Texture2D *texture = get_texture2d_from_value(texture_obj);
 
   if (texture) {
     UnloadTexture(*texture);

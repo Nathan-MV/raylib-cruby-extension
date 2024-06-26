@@ -5,8 +5,8 @@ MAX_TEXTURES = 72_000
 MAX_BATCH_ELEMENTS = 8192
 WHITE = Color.new(255, 255, 255)
 BLACK = Color.new(0, 0, 0)
-GREEN = Color.new(0, 228, 48, 255)
-RED = Color.new(190, 33, 55, 255)
+GREEN = Color.new(0, 228, 48)
+RED = Color.new(190, 33, 55)
 SCREEN_WIDTH = 320 * 2
 SCREEN_HEIGHT = 180 * 2
 

@@ -1,5 +1,5 @@
-#ifndef VECTOR4_H
-#define VECTOR4_H
+#ifndef VEC4_H
+#define VEC4_H
 
 #include "ruby.h"
 #include "raylib_values.h"
