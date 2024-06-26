@@ -1,4 +1,4 @@
-#include "vector3.h"
+#include "vec3.h"
 
 VALUE rb_cVector3;
 

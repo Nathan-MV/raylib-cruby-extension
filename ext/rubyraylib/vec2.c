@@ -1,4 +1,4 @@
-#include "vector2.h"
+#include "vec2.h"
 
 VALUE rb_cVector2;
 
@@ -11,9 +11,14 @@ static VALUE rb_vec2_alloc(VALUE klass) {
   return Data_Wrap_Struct(klass, NULL, rb_vec2_free, vec2);
 }
 
-static VALUE rb_vec2_initialize(VALUE self, VALUE x, VALUE y) {
+static Vector2* get_vec2_from_value(VALUE obj) {
   Vector2 *vec2;
-  Data_Get_Struct(self, Vector2, vec2);
+  Data_Get_Struct(obj, Vector2, vec2);
+  return vec2;
+}
+
+static VALUE rb_vec2_initialize(VALUE self, VALUE x, VALUE y) {
+  Vector2 *vec2 = get_vec2_from_value(self);
 
   vec2->x = NUM2INT(x);
   vec2->y = NUM2INT(y);
@@ -22,22 +27,19 @@ static VALUE rb_vec2_initialize(VALUE self, VALUE x, VALUE y) {
 }
 
 static VALUE rb_vec2_get_x(VALUE self) {
-  Vector2 *vec2;
-  Data_Get_Struct(self, Vector2, vec2);
+  Vector2 *vec2 = get_vec2_from_value(self);
 
   return INT2NUM(vec2->x);
 }
 
 static VALUE rb_vec2_get_y(VALUE self) {
-  Vector2 *vec2;
-  Data_Get_Struct(self, Vector2, vec2);
+  Vector2 *vec2 = get_vec2_from_value(self);
 
   return INT2NUM(vec2->y);
 }
 
 static VALUE rb_vec2_set_x(VALUE self, VALUE value) {
-  Vector2 *vec2;
-  Data_Get_Struct(self, Vector2, vec2);
+  Vector2 *vec2 = get_vec2_from_value(self);
 
   vec2->x = NUM2INT(value);
 
@@ -45,8 +47,7 @@ static VALUE rb_vec2_set_x(VALUE self, VALUE value) {
 }
 
 static VALUE rb_vec2_set_y(VALUE self, VALUE value) {
-  Vector2 *vec2;
-  Data_Get_Struct(self, Vector2, vec2);
+  Vector2 *vec2 = get_vec2_from_value(self);
 
   vec2->y = NUM2INT(value);
 
@@ -54,9 +55,8 @@ static VALUE rb_vec2_set_y(VALUE self, VALUE value) {
 }
 
 static VALUE rb_vec2_add_bang(VALUE self, VALUE other) {
-  Vector2 *vec1, *vec2;
-  Data_Get_Struct(self, Vector2, vec1);
-  Data_Get_Struct(other, Vector2, vec2);
+  Vector2 *vec1 = get_vec2_from_value(self);
+  Vector2 *vec2 = get_vec2_from_value(other);
 
   vec1->x += vec2->x;
   vec1->y += vec2->y;
@@ -65,8 +65,7 @@ static VALUE rb_vec2_add_bang(VALUE self, VALUE other) {
 }
 
 static VALUE rb_vec2_reverse_x(VALUE self) {
-  Vector2 *vec2;
-  Data_Get_Struct(self, Vector2, vec2);
+  Vector2 *vec2 = get_vec2_from_value(self);
 
   vec2->x *= -1;
 
@@ -74,8 +73,7 @@ static VALUE rb_vec2_reverse_x(VALUE self) {
 }
 
 static VALUE rb_vec2_reverse_y(VALUE self) {
-  Vector2 *vec2;
-  Data_Get_Struct(self, Vector2, vec2);
+  Vector2 *vec2 = get_vec2_from_value(self);
 
   vec2->y *= -1;
 
@@ -83,8 +81,7 @@ static VALUE rb_vec2_reverse_y(VALUE self) {
 }
 
 static VALUE rb_vec2_reverse(VALUE self) {
-  Vector2 *vec2;
-  Data_Get_Struct(self, Vector2, vec2);
+  Vector2 *vec2 = get_vec2_from_value(self);
 
   vec2->x *= -1;
   vec2->y *= -1;
@@ -93,16 +90,14 @@ static VALUE rb_vec2_reverse(VALUE self) {
 }
 
 static VALUE rb_vec2_outside_bounds(VALUE self, VALUE size_value) {
-  Vector2 *vec2;
-  Data_Get_Struct(self, Vector2, vec2);
+  Vector2 *vec2 = get_vec2_from_value(self);
 
   double x = vec2->x;
   double y = vec2->y;
   double size;
 
   if (rb_obj_is_kind_of(size_value, rb_cVector2)) {
-    Vector2 *size_vec2;
-    Data_Get_Struct(size_value, Vector2, size_vec2);
+    Vector2 *size_vec2 = get_vec2_from_value(size_value);
     size = (size_vec2->x + size_vec2->y) / 2;
   } else {
     size = NUM2DBL(size_value);

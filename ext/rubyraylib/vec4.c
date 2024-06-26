@@ -1,4 +1,4 @@
-#include "vector4.h"
+#include "vec4.h"
 
 VALUE rb_cVector4;
 

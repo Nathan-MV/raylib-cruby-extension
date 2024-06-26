@@ -3,7 +3,7 @@
 
 #include "ruby.h"
 #include "raylib_values.h"
-#include "vector4.h"
+#include "vec4.h"
 
 extern VALUE rb_cColor;
 

@@ -4,9 +4,9 @@
 #include "ruby.h"
 #include "raylib_values.h"
 
-#include "vector2.h"
-#include "vector3.h"
-#include "vector4.h"
+#include "vec2.h"
+#include "vec3.h"
+#include "vec4.h"
 #include "window.h"
 #include "texture.h"
 #include "sprite.h"
