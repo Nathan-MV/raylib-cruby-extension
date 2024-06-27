@@ -15,7 +15,7 @@ class Benchmark
   def initialize(max, move)
     @max = max
     @move = move
-    @texture = Texture.new('lib/icon.png')
+    @texture = Texture.new('lib/raylib_32x32.png')
     @size = Vec2.new(32, 32)
     @positions = Array.new(@max) { Vec2.new(random(0 - @size.x, SCREEN_WIDTH), random(0, SCREEN_HEIGHT)) }
     @speeds = Array.new(@max) { Vec2.new(random(-5, 5), random(-5, 5)) } if move
@@ -51,7 +51,7 @@ puts 'RUBY: YJIT Disabled' if !RubyVM::YJIT.enabled?
 puts 'RUBY: YJIT Enabled' if RubyVM::YJIT.enabled?
 Window.init(SCREEN_WIDTH, SCREEN_HEIGHT, 'Benchmark')
 bench = Benchmark.new(MAX_ELEMENTS, MOVE_ELEMENTS)
-Window.icon = "lib/icon.png"
+Window.icon = 'lib/raylib_32x32.png'
 
 until Window.should_close?
   bench.update

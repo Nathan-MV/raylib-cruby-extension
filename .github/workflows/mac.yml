@@ -1,4 +1,4 @@
-name: Linux
+name: macOS
 
 on:
   push:
@@ -6,15 +6,18 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     name: Ruby ${{ matrix.ruby }}
     strategy:
       matrix:
+        os:
+          - macos-13
+          - macos-latest
         ruby:
           - '3.3.3'
           - '3.2.4'
           - '3.1.6'
           - '3.0.7'
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v4
@@ -27,20 +30,11 @@ jobs:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
 
-    - name: Update package database
-      run: sudo apt update
-
-    - name: Install required packages
-      run: |
-        sudo apt-get update -qq
-        sudo apt-get install gcc-multilib
-        sudo apt-get install -y --no-install-recommends libglfw3 libglfw3-dev libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev libxext-dev libxfixes-dev libwayland-dev libxkbcommon-dev
-
     - name: Build Raylib
       working-directory: ${{ github.workspace }}/third_party/raylib/src
       run: |
         export CFLAGS="-flto -Ofast -DNDEBUG -fpic -ftree-vectorize"
-        make PLATFORM=PLATFORM_DESKTOP
+        make
 
     - name: Run the default task
       run: bundle exec rake compile
@@ -48,6 +42,6 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: rubyraylib-${{ runner.os }}-${{ matrix.ruby }}
+        name: rubyraylib-${{ matrix.os }}-${{ matrix.ruby }}
         path: ${{ github.workspace }}/lib/rubyraylib
         retention-days: 90
