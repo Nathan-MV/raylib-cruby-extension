@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require_relative "rubyraylib/rubyraylib"
 
-MAX_TEXTURES = 72_000
+MAX_ELEMENTS = RubyVM::YJIT.enabled? ? 110_000 : 75_000
 MAX_BATCH_ELEMENTS = 8192
 WHITE = Color.new(255, 255, 255)
 BLACK = Color.new(0, 0, 0)
@@ -11,15 +11,13 @@ SCREEN_WIDTH = 320 * 2
 SCREEN_HEIGHT = 180 * 2
 
 class Benchmark
-  COLORS = [WHITE, BLACK, GREEN, RED].freeze
-
-  def initialize(max, move)
+  def initialize(max, move = true)
     @max = max
     @move = move
+    @texture = Texture.new('lib/icon.png')
     @size = Vec2.new(32, 32)
     @positions = Array.new(@max) { Vec2.new(random(0 - @size.x, SCREEN_WIDTH), random(0, SCREEN_HEIGHT)) }
     @speeds = Array.new(@max) { Vec2.new(random(-5, 5), random(-5, 5)) } if move
-    @colors = Array.new(@max) { COLORS.sample }
   end
 
   def update
@@ -33,7 +31,7 @@ class Benchmark
 
   def draw
     @max.times do |i|
-      Draw.rect(@positions[i], @size, @colors[i])
+      @texture.draw(@positions[i], WHITE)
     end
 
     Draw.rect(0, 0, SCREEN_WIDTH, 40, BLACK)
@@ -42,12 +40,17 @@ class Benchmark
 
     Draw.fps(10, 10)
   end
+
+  def unload
+    @texture.unload
+  end
 end
 
 puts 'RUBY: YJIT Disabled' if !RubyVM::YJIT.enabled?
 puts 'RUBY: YJIT Enabled' if RubyVM::YJIT.enabled?
 Window.init(SCREEN_WIDTH, SCREEN_HEIGHT, 'Benchmark')
-bench = Benchmark.new(MAX_TEXTURES, false)
+bench = Benchmark.new(MAX_ELEMENTS, false)
+Window.icon = "lib/icon.png"
 
 until Window.should_close?
   bench.update
@@ -57,4 +60,5 @@ until Window.should_close?
   end
 end
 
+bench.unload
 Window.close

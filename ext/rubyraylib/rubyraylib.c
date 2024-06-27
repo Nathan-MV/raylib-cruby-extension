@@ -9,7 +9,6 @@ Init_rubyraylib(void)
   initializeColor();
   initializeImage();
   initializeTexture();
-  initializeSprite();
   initializeWindow();
   initializeDraw();
   initializeKernel();

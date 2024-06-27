@@ -7,4 +7,4 @@
 
 extern VALUE rb_cVector3;
 
-#endif // VECTOR_H
+#endif // VEC3_H

@@ -3,11 +3,13 @@
 static VALUE rb_init_window(VALUE self, VALUE width, VALUE height,
                             VALUE title) {
   InitWindow(NUM2INT(width), NUM2INT(height), StringValueCStr(title));
+
   return Qnil;
 }
 
 static VALUE rb_close_window(VALUE self) {
   CloseWindow();
+
   return Qnil;
 }
 
@@ -94,9 +96,13 @@ static VALUE rb_restore_window(VALUE self) {
   return Qnil;
 }
 
-static VALUE rb_set_window_image(VALUE self, VALUE image) {
-  Image img = *(Image *)DATA_PTR(image);
-  SetWindowIcon(img);
+static VALUE rb_set_window_icon(VALUE self, VALUE image) {
+  const char *file_name_str = StringValueCStr(image);
+  Image *img = ALLOC(Image);
+  *img = LoadImage(file_name_str);
+
+  Data_Wrap_Struct(rb_cObject, NULL, free, img);
+  SetWindowIcon(*img);
 
   return Qnil;
 }
@@ -124,6 +130,16 @@ void initializeWindow() {
   rb_define_module_function(rb_mWindow, "minimized?", rb_window_minimized, 0);
   rb_define_module_function(rb_mWindow, "maximized?", rb_window_maximized, 0);
   rb_define_module_function(rb_mWindow, "focused?", rb_window_focused, 0);
+  rb_define_module_function(rb_mWindow, "resized?", rb_window_resized, 0);
+  rb_define_module_function(rb_mWindow, "state?", rb_is_window_state, 1);
+  rb_define_module_function(rb_mWindow, "state=", rb_set_window_state, 1);
+  rb_define_module_function(rb_mWindow, "clear_state", rb_clear_window_state, 1);
+  rb_define_module_function(rb_mWindow, "fullscreen", rb_toggle_fullscreen, 0);
+  rb_define_module_function(rb_mWindow, "borderless_windowed", rb_toggle_borderless_windowed, 0);
+  rb_define_module_function(rb_mWindow, "maximize", rb_maximize_window, 0);
+  rb_define_module_function(rb_mWindow, "minimize", rb_minimize_window, 0);
+  rb_define_module_function(rb_mWindow, "restore", rb_restore_window, 0);
+  rb_define_module_function(rb_mWindow, "icon=", rb_set_window_icon, 1);
 
   rb_define_module_function(rb_mWindow, "screen_width", rb_get_screen_width, 0);
   rb_define_module_function(rb_mWindow, "screen_height", rb_get_screen_height,

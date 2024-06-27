@@ -17,8 +17,8 @@ static VALUE rb_fibonacci(VALUE self, VALUE num) {
 static VALUE rb_get_random_value(VALUE self, VALUE min, VALUE max) {
   int minValue = NUM2INT(min);
   int maxValue = NUM2INT(max);
-
   int randomValue = GetRandomValue(minValue, maxValue);
+
   return INT2NUM(randomValue);
 }
 

@@ -9,7 +9,6 @@
 #include "vec4.h"
 #include "window.h"
 #include "texture.h"
-#include "sprite.h"
 #include "color.h"
 #include "draw.h"
 #include "image.h"
@@ -22,7 +21,6 @@ void initializeVec4();
 void initializeWindow();
 void initializeDraw();
 void initializeTexture();
-void initializeSprite();
 void initializeColor();
 void initializeImage();
 void initializeKernel();

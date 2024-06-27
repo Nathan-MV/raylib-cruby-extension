@@ -8,20 +8,13 @@ static void rb_vec4_free(void *ptr) {
 
 static VALUE rb_vec4_alloc(VALUE klass) {
   Vector4 *vec4 = ALLOC(Vector4);
+
   return Data_Wrap_Struct(klass, NULL, rb_vec4_free, vec4);
 }
 
-static Vector4* get_vec4_from_value(VALUE obj) {
-  Vector4 *vec4;
-  Data_Get_Struct(obj, Vector4, vec4);
-  return vec4;
-}
-
 static VALUE rb_color_from_normalized(VALUE self) {
-  Vector4 *vec4 = get_vec4_from_value(self);
-
+  Vector4 *vec4 = (Vector4 *)DATA_PTR(self);
   Color result = ColorFromNormalized(*vec4);
-
   VALUE rb_result = Data_Wrap_Struct(rb_cColor, NULL, NULL, &result);
 
   return rb_result;

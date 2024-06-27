@@ -1,20 +1,55 @@
 #include "image.h"
 
+VALUE rb_cImage;
+
 static void rb_image_free(void *ptr) {
-  Image *image = (Image *)ptr;
-  if (image) {
-    UnloadImage(*image);
-    free(image);
+  Image *img = (Image *)ptr;
+  if (img) {
+    UnloadImage(*img);
+    free(img);
   }
 }
 
 static VALUE rb_image_alloc(VALUE klass) {
-  Image *image = ALLOC(Image);
-  return Data_Wrap_Struct(klass, NULL, rb_image_free, image);
+  Image *img = ALLOC(Image);
+
+  return Data_Wrap_Struct(klass, NULL, rb_image_free, img);
+}
+
+static VALUE rb_image_initialize(VALUE self, VALUE fileName) {
+  const char *file_name_str = StringValueCStr(fileName);
+
+  Image *img = ALLOC(Image);
+  *img = LoadImage(file_name_str);
+
+  return Data_Wrap_Struct(rb_cImage, NULL, rb_image_free, img);
+}
+
+static VALUE rb_load_image(VALUE self, VALUE fileName) {
+  const char *file_name_str = StringValueCStr(fileName);
+
+  Image *img = ALLOC(Image);
+  *img = LoadImage(file_name_str);
+
+  return Data_Wrap_Struct(rb_cImage, NULL, rb_image_free, img);
+}
+
+static VALUE rb_unload_image(VALUE self, VALUE image) {
+  Image *img = (Image *)DATA_PTR(image);
+
+  if (img) {
+    UnloadImage(*img);
+    free(img);
+  }
+
+  return Qnil;
 }
 
 void initializeImage() {
-  VALUE rb_cImage = rb_define_class("Image", rb_cObject);
+  rb_cImage = rb_define_class("Image", rb_cObject);
 
   rb_define_alloc_func(rb_cImage, rb_image_alloc);
+  rb_define_method(rb_cImage, "initialize", rb_image_initialize, 1);
+  rb_define_singleton_method(rb_cImage, "load", rb_load_image, 1);
+  rb_define_singleton_method(rb_cImage, "unload", rb_unload_image, 1);
 }

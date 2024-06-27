@@ -4,4 +4,4 @@
 #include "ruby.h"
 #include "raylib_values.h"
 
-#endif // VECTOR_H
+#endif // VEC2_H
