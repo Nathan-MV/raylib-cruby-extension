@@ -1,8 +1,7 @@
 #include "draw.h"
 
 // Setup canvas (framebuffer) to start drawing
-static VALUE rb_begin_drawing(VALUE self)
-{
+static VALUE rb_begin_drawing(VALUE self) {
   rb_need_block();
   BeginDrawing();
   rb_yield(Qnil);
@@ -12,8 +11,7 @@ static VALUE rb_begin_drawing(VALUE self)
 }
 
 // Set background color (framebuffer clear color)
-static VALUE rb_clear_background(VALUE self, VALUE color_value)
-{
+static VALUE rb_clear_background(VALUE self, VALUE color_value) {
   Color color = *(Color *)DATA_PTR(color_value);
 
   ClearBackground(color);
@@ -22,8 +20,7 @@ static VALUE rb_clear_background(VALUE self, VALUE color_value)
 }
 
 // Draw current FPS
-static VALUE rb_draw_fps(VALUE self, VALUE posX, VALUE posY)
-{
+static VALUE rb_draw_fps(VALUE self, VALUE posX, VALUE posY) {
   int x = NUM2INT(posX);
   int y = NUM2INT(posY);
 
@@ -34,8 +31,7 @@ static VALUE rb_draw_fps(VALUE self, VALUE posX, VALUE posY)
 
 // Draw a color-filled rectangle
 static VALUE rb_draw_rectangle(VALUE posX, VALUE posY, VALUE width,
-                               VALUE height, VALUE color_value)
-{
+                               VALUE height, VALUE color_value) {
   int x = NUM2INT(posX);
   int y = NUM2INT(posY);
   int w = NUM2INT(width);
@@ -49,8 +45,7 @@ static VALUE rb_draw_rectangle(VALUE posX, VALUE posY, VALUE width,
 
 // Draw a color-filled rectangle (Vector version)
 static VALUE rb_draw_rectangle_v(VALUE position_value, VALUE size_value,
-                                 VALUE color_value)
-{
+                                 VALUE color_value) {
   Vector2 *position = (Vector2 *)DATA_PTR(position_value);
   Vector2 *size = (Vector2 *)DATA_PTR(size_value);
   Color color = *(Color *)DATA_PTR(color_value);
@@ -60,10 +55,8 @@ static VALUE rb_draw_rectangle_v(VALUE position_value, VALUE size_value,
   return Qnil;
 }
 
-static VALUE rb_draw_rect(int argc, VALUE *argv, VALUE self)
-{
-  switch (argc)
-  {
+static VALUE rb_draw_rect(int argc, VALUE *argv, VALUE self) {
+  switch (argc) {
   case 3:
     // void DrawRectangleV(Vector2 position, Vector2 size, Color color);
     rb_scan_args(argc, argv, "3", &argv[0], &argv[1], &argv[2]);
@@ -84,8 +77,7 @@ static VALUE rb_draw_rect(int argc, VALUE *argv, VALUE self)
 
 // Draw text using font and additional parameters
 static VALUE rb_draw_text(VALUE self, VALUE text, VALUE posX, VALUE posY,
-                          VALUE fontSize, VALUE color)
-{
+                          VALUE fontSize, VALUE color) {
   const char *txt = StringValueCStr(text);
   int x = NUM2INT(posX);
   int y = NUM2INT(posY);
@@ -98,8 +90,7 @@ static VALUE rb_draw_text(VALUE self, VALUE text, VALUE posX, VALUE posY,
 }
 
 // Initializes the Draw module and defines its functions
-void initializeDraw(void)
-{
+void initializeDraw(void) {
   VALUE rb_cDraw = rb_define_module("Draw");
 
   rb_define_module_function(rb_cDraw, "begin", rb_begin_drawing, 0);

@@ -2,26 +2,20 @@
 
 VALUE rb_cVec4;
 
-static void rb_vec4_free(void *ptr)
-{
+static void rb_vec4_free(void *ptr) {
   Vector4 *vec4 = (Vector4 *)ptr;
 
-  if (vec4 != NULL)
-  {
+  if (vec4 != NULL) {
     free(vec4);
   }
 }
 
-static VALUE rb_vec4_alloc(VALUE klass)
-{
+static VALUE rb_vec4_alloc(VALUE klass) {
   Vector4 *vec4 = ALLOC(Vector4);
 
-  if (vec4 != NULL)
-  {
+  if (vec4 != NULL) {
     return Data_Wrap_Struct(klass, NULL, rb_vec4_free, vec4);
-  }
-  else
-  {
+  } else {
     rb_raise(rb_eNoMemError, "Failed to allocate memory for Vector4.");
   }
 }

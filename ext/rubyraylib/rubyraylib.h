@@ -4,15 +4,15 @@
 #include "ruby.h"
 #include "raylib_values.h"
 
-#include "vec2.h"
-#include "vec3.h"
-#include "vec4.h"
-#include "window.h"
-#include "texture.h"
 #include "color.h"
 #include "draw.h"
 #include "image.h"
 #include "kernel.h"
+#include "texture.h"
+#include "vec2.h"
+#include "vec3.h"
+#include "vec4.h"
+#include "window.h"
 
 // Function declarations for initialization
 void initializeVec2();

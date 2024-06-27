@@ -2,32 +2,25 @@
 
 VALUE rb_cVec2;
 
-static void rb_vec2_free(void *ptr)
-{
+static void rb_vec2_free(void *ptr) {
   Vector2 *vec2 = (Vector2 *)ptr;
 
-  if (vec2 != NULL)
-  {
+  if (vec2 != NULL) {
     free(vec2);
   }
 }
 
-static VALUE rb_vec2_alloc(VALUE klass)
-{
+static VALUE rb_vec2_alloc(VALUE klass) {
   Vector2 *vec2 = ALLOC(Vector2);
 
-  if (vec2 != NULL)
-  {
+  if (vec2 != NULL) {
     return Data_Wrap_Struct(klass, NULL, rb_vec2_free, vec2);
-  }
-  else
-  {
+  } else {
     rb_raise(rb_eNoMemError, "Failed to allocate memory for Vector2.");
   }
 }
 
-static VALUE rb_vec2_initialize(VALUE self, VALUE x, VALUE y)
-{
+static VALUE rb_vec2_initialize(VALUE self, VALUE x, VALUE y) {
   Vector2 *vec2 = (Vector2 *)DATA_PTR(self);
 
   vec2->x = NUM2INT(x);
@@ -36,22 +29,19 @@ static VALUE rb_vec2_initialize(VALUE self, VALUE x, VALUE y)
   return self;
 }
 
-static VALUE rb_vec2_get_x(VALUE self)
-{
+static VALUE rb_vec2_get_x(VALUE self) {
   Vector2 *vec2 = (Vector2 *)DATA_PTR(self);
 
   return INT2NUM(vec2->x);
 }
 
-static VALUE rb_vec2_get_y(VALUE self)
-{
+static VALUE rb_vec2_get_y(VALUE self) {
   Vector2 *vec2 = (Vector2 *)DATA_PTR(self);
 
   return INT2NUM(vec2->y);
 }
 
-static VALUE rb_vec2_set_x(VALUE self, VALUE value)
-{
+static VALUE rb_vec2_set_x(VALUE self, VALUE value) {
   Vector2 *vec2 = (Vector2 *)DATA_PTR(self);
 
   vec2->x = NUM2INT(value);
@@ -59,8 +49,7 @@ static VALUE rb_vec2_set_x(VALUE self, VALUE value)
   return self;
 }
 
-static VALUE rb_vec2_set_y(VALUE self, VALUE value)
-{
+static VALUE rb_vec2_set_y(VALUE self, VALUE value) {
   Vector2 *vec2 = (Vector2 *)DATA_PTR(self);
 
   vec2->y = NUM2INT(value);
@@ -68,8 +57,7 @@ static VALUE rb_vec2_set_y(VALUE self, VALUE value)
   return self;
 }
 
-static VALUE rb_vec2_add(VALUE self, VALUE other)
-{
+static VALUE rb_vec2_add(VALUE self, VALUE other) {
   Vector2 *vec1 = (Vector2 *)DATA_PTR(self);
   Vector2 *vec2 = (Vector2 *)DATA_PTR(other);
 
@@ -78,8 +66,7 @@ static VALUE rb_vec2_add(VALUE self, VALUE other)
   return self;
 }
 
-static VALUE rb_vec2_add_value(VALUE self, VALUE add)
-{
+static VALUE rb_vec2_add_value(VALUE self, VALUE add) {
   Vector2 *vec2 = (Vector2 *)DATA_PTR(self);
   float add_value = NUM2DBL(add);
 
@@ -88,8 +75,7 @@ static VALUE rb_vec2_add_value(VALUE self, VALUE add)
   return self;
 }
 
-static VALUE rb_vec2_rotate(VALUE self, VALUE angle)
-{
+static VALUE rb_vec2_rotate(VALUE self, VALUE angle) {
   Vector2 *vec2 = (Vector2 *)DATA_PTR(self);
   float angle_value = NUM2DBL(angle);
 
@@ -98,8 +84,7 @@ static VALUE rb_vec2_rotate(VALUE self, VALUE angle)
   return self;
 }
 
-static VALUE rb_vec2_reverse_x(VALUE self)
-{
+static VALUE rb_vec2_reverse_x(VALUE self) {
   Vector2 *vec2 = (Vector2 *)DATA_PTR(self);
 
   vec2->x *= -1;
@@ -107,8 +92,7 @@ static VALUE rb_vec2_reverse_x(VALUE self)
   return self;
 }
 
-static VALUE rb_vec2_reverse_y(VALUE self)
-{
+static VALUE rb_vec2_reverse_y(VALUE self) {
   Vector2 *vec2 = (Vector2 *)DATA_PTR(self);
 
   vec2->y *= -1;
@@ -116,8 +100,7 @@ static VALUE rb_vec2_reverse_y(VALUE self)
   return self;
 }
 
-static VALUE rb_vec2_reverse(VALUE self)
-{
+static VALUE rb_vec2_reverse(VALUE self) {
   Vector2 *vec2 = (Vector2 *)DATA_PTR(self);
 
   vec2->x *= -1;
@@ -126,21 +109,17 @@ static VALUE rb_vec2_reverse(VALUE self)
   return self;
 }
 
-static VALUE rb_vec2_outside_bounds(VALUE self, VALUE size_value)
-{
+static VALUE rb_vec2_outside_bounds(VALUE self, VALUE size_value) {
   Vector2 *vec2 = (Vector2 *)DATA_PTR(self);
 
   double x = vec2->x;
   double y = vec2->y;
   double size;
 
-  if (rb_obj_is_kind_of(size_value, rb_cVec2))
-  {
+  if (rb_obj_is_kind_of(size_value, rb_cVec2)) {
     Vector2 *size_vec2 = (Vector2 *)DATA_PTR(size_value);
     size = (size_vec2->x + size_vec2->y) / 2;
-  }
-  else
-  {
+  } else {
     size = NUM2DBL(size_value);
   }
 
@@ -148,16 +127,14 @@ static VALUE rb_vec2_outside_bounds(VALUE self, VALUE size_value)
   double screen_height = GetScreenHeight();
 
   if ((x + size) > screen_width || (x + size) < 0 ||
-      (y + size) > screen_height || (y + size) < 0)
-  {
+      (y + size) > screen_height || (y + size) < 0) {
     return Qtrue;
   }
 
   return Qfalse;
 }
 
-void initializeVec2()
-{
+void initializeVec2() {
   rb_cVec2 = rb_define_class("Vec2", rb_cObject);
 
   rb_define_alloc_func(rb_cVec2, rb_vec2_alloc);

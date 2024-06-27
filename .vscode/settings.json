@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "window.h": "c",
-        "raylib.h": "c"
+        "raylib.h": "c",
+        "raylib_values.h": "c"
     }
 }
