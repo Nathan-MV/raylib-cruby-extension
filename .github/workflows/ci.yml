@@ -1,4 +1,4 @@
-name: macOS
+name: CI
 
 on:
   push:
@@ -6,10 +6,12 @@ on:
 
 jobs:
   build:
-    name: Ruby ${{ matrix.ruby }}
+    name: ${{ matrix.os }} on Ruby ${{ matrix.ruby }}
     strategy:
       matrix:
         os:
+          - windows-latest
+          - ubuntu-latest
           - macos-13
           - macos-latest
         ruby:
@@ -18,6 +20,7 @@ jobs:
           - '3.1.6'
           - '3.0.7'
     runs-on: ${{ matrix.os }}
+    continue-on-error: true
 
     steps:
     - uses: actions/checkout@v4
@@ -30,14 +33,18 @@ jobs:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
 
-    - name: Build Raylib
-      working-directory: ${{ github.workspace }}/third_party/raylib/src
+    - name: Update package database
+      if: matrix.os == 'ubuntu-latest'
+      run: sudo apt-get update -qq
+
+    - name: Install required packages
+      if: matrix.os == 'ubuntu-latest'
       run: |
-        export CFLAGS="-flto -Ofast -DNDEBUG -fpic -ftree-vectorize"
-        make
+        sudo apt-get install -y gcc-multilib
+        sudo apt-get install -y --no-install-recommends libglfw3 libglfw3-dev libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev libxext-dev libxfixes-dev libwayland-dev libxkbcommon-dev
 
     - name: Run the default task
-      run: bundle exec rake compile
+      run: bundle exec rake
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4

@@ -4,4 +4,6 @@
 #include "ruby.h"
 #include "raylib_values.h"
 
+void initializeDraw();
+
 #endif // DRAW_H

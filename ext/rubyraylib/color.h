@@ -7,5 +7,6 @@
 #include "vec4.h"
 
 extern VALUE rb_cColor;
+void initializeColor();
 
 #endif // COLOR_H

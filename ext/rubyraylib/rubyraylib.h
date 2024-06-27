@@ -14,15 +14,4 @@
 #include "vec4.h"
 #include "window.h"
 
-// Function declarations for initialization
-void initializeVec2();
-void initializeVec3();
-void initializeVec4();
-void initializeWindow();
-void initializeDraw();
-void initializeTexture();
-void initializeColor();
-void initializeImage();
-void initializeKernel();
-
 #endif // RUBYRAYLIB_H

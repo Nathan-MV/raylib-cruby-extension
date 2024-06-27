@@ -6,5 +6,6 @@
 #include "color.h"
 
 extern VALUE rb_cVec3;
+void initializeVec3();
 
 #endif // VEC3_H
