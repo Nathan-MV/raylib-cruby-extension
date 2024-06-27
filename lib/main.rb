@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 require_relative "rubyraylib/rubyraylib"
 
-MAX_ELEMENTS = RubyVM::YJIT.enabled? ? 110_000 : 75_000
+# MAX_ELEMENTS = RubyVM::YJIT.enabled? ? 110_000 : 75_000
+MAX_ELEMENTS = 75_000
 MOVE_ELEMENTS = false
 MAX_BATCH_ELEMENTS = 8192
 WHITE = Color.new(255, 255, 255)
@@ -47,8 +48,8 @@ class Benchmark
   end
 end
 
-puts 'RUBY: YJIT Disabled' if !RubyVM::YJIT.enabled?
-puts 'RUBY: YJIT Enabled' if RubyVM::YJIT.enabled?
+# puts 'RUBY: YJIT Disabled' if !RubyVM::YJIT.enabled?
+# puts 'RUBY: YJIT Enabled' if RubyVM::YJIT.enabled?
 Window.init(SCREEN_WIDTH, SCREEN_HEIGHT, 'Benchmark')
 bench = Benchmark.new(MAX_ELEMENTS, MOVE_ELEMENTS)
 Window.icon = 'lib/raylib_32x32.png'

@@ -7,6 +7,10 @@ RuboCop::RakeTask.new
 
 require "rake/extensiontask"
 
+task :clean_raylib do
+  sh "make clean -C third_party/raylib/src"
+end
+
 # Task to compile Raylib
 task :compile_raylib do
   sh "make -C third_party/raylib/src"
@@ -18,4 +22,4 @@ Rake::ExtensionTask.new("rubyraylib", GEMSPEC) do |ext|
   ext.lib_dir = "lib/rubyraylib"
 end
 
-task default: %i[clobber compile_raylib compile]
+task default: %i[clobber clean_raylib compile_raylib compile]
