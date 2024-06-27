@@ -2,9 +2,6 @@
 #define RAYLIB_VALUES_H
 
 // Undefine conflicting Windows functions
-#undef Rectangle
-#undef CloseWindow
-#undef ShowCursor
 #undef LoadImage
 #undef DrawText
 #undef DrawTextEx
