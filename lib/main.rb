@@ -2,6 +2,7 @@
 require_relative "rubyraylib/rubyraylib"
 
 MAX_ELEMENTS = RubyVM::YJIT.enabled? ? 110_000 : 75_000
+MOVE_ELEMENTS = false
 MAX_BATCH_ELEMENTS = 8192
 WHITE = Color.new(255, 255, 255)
 BLACK = Color.new(0, 0, 0)
@@ -11,7 +12,7 @@ SCREEN_WIDTH = 320 * 2
 SCREEN_HEIGHT = 180 * 2
 
 class Benchmark
-  def initialize(max, move = true)
+  def initialize(max, move)
     @max = max
     @move = move
     @texture = Texture.new('lib/icon.png')
@@ -49,7 +50,7 @@ end
 puts 'RUBY: YJIT Disabled' if !RubyVM::YJIT.enabled?
 puts 'RUBY: YJIT Enabled' if RubyVM::YJIT.enabled?
 Window.init(SCREEN_WIDTH, SCREEN_HEIGHT, 'Benchmark')
-bench = Benchmark.new(MAX_ELEMENTS, false)
+bench = Benchmark.new(MAX_ELEMENTS, MOVE_ELEMENTS)
 Window.icon = "lib/icon.png"
 
 until Window.should_close?

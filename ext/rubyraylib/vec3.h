@@ -5,6 +5,6 @@
 #include "raylib_values.h"
 #include "color.h"
 
-extern VALUE rb_cVector3;
+extern VALUE rb_cVec3;
 
 #endif // VEC3_H

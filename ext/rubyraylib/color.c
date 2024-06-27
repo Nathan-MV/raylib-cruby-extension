@@ -2,65 +2,88 @@
 
 VALUE rb_cColor;
 
-static void rb_color_free(void *ptr) {
-  free(ptr);
+static void rb_color_free(void *ptr)
+{
+  Color *color = (Color *)ptr;
+
+  if (color != NULL)
+  {
+    free(color);
+  }
 }
 
-static VALUE rb_color_alloc(VALUE klass) {
-  Color *col = ALLOC(Color);
+static VALUE rb_color_alloc(VALUE klass)
+{
+  Color *color = ALLOC(Color);
 
-  return Data_Wrap_Struct(klass, NULL, rb_color_free, col);
+  if (color != NULL)
+  {
+    return Data_Wrap_Struct(klass, NULL, rb_color_free, color);
+  }
+  else
+  {
+    rb_raise(rb_eNoMemError, "Failed to allocate memory for Color.");
+  }
 }
 
-static VALUE rb_color_initialize(int argc, VALUE *argv, VALUE self) {
-    Color *color = (Color *)DATA_PTR(self);
+static VALUE rb_color_initialize(int argc, VALUE *argv, VALUE self)
+{
+  Color *color = (Color *)DATA_PTR(self);
 
-    if (argc == 1) {
-      // Single argument (hex value)
-      unsigned int hex = NUM2UINT(argv[0]);
-      *color = GetColor(hex);
-    } else {
-      // Four arguments (r, g, b, a)
-      VALUE r, g, b, a;
-      rb_scan_args(argc, argv, "31", &r, &g, &b, &a);
+  if (argc == 1)
+  {
+    // Single argument (hex value)
+    unsigned int hex = NUM2UINT(argv[0]);
+    *color = GetColor(hex);
+  }
+  else
+  {
+    // Four arguments (r, g, b, a)
+    VALUE r, g, b, a;
+    rb_scan_args(argc, argv, "31", &r, &g, &b, &a);
 
-      // Set default value of a to 255 if not provided
-      a = NIL_P(a) ? INT2NUM(255) : a;
+    // Set default value of a to 255 if not provided
+    a = NIL_P(a) ? INT2NUM(255) : a;
 
-      color->r = NUM2INT(r);
-      color->g = NUM2INT(g);
-      color->b = NUM2INT(b);
-      color->a = NUM2INT(a);
-    }
+    color->r = NUM2INT(r);
+    color->g = NUM2INT(g);
+    color->b = NUM2INT(b);
+    color->a = NUM2INT(a);
+  }
 
-    return self;
+  return self;
 }
 
-static VALUE rb_color_get_red(VALUE self) {
+static VALUE rb_color_get_red(VALUE self)
+{
   Color *color = (Color *)DATA_PTR(self);
 
   return INT2NUM(color->r);
 }
 
-static VALUE rb_color_get_green(VALUE self) {
+static VALUE rb_color_get_green(VALUE self)
+{
   Color *color = (Color *)DATA_PTR(self);
 
   return INT2NUM(color->g);
 }
 
-static VALUE rb_color_get_blue(VALUE self) {
+static VALUE rb_color_get_blue(VALUE self)
+{
   Color *color = (Color *)DATA_PTR(self);
 
   return INT2NUM(color->b);
 }
 
-static VALUE rb_color_get_alpha(VALUE self) {
+static VALUE rb_color_get_alpha(VALUE self)
+{
   Color *color = (Color *)DATA_PTR(self);
 
   return INT2NUM(color->a);
 }
 
-static VALUE rb_color_set_red(VALUE self, VALUE value) {
+static VALUE rb_color_set_red(VALUE self, VALUE value)
+{
   Color *color = (Color *)DATA_PTR(self);
 
   color->r = NUM2INT(value);
@@ -68,7 +91,8 @@ static VALUE rb_color_set_red(VALUE self, VALUE value) {
   return self;
 }
 
-static VALUE rb_color_set_green(VALUE self, VALUE value) {
+static VALUE rb_color_set_green(VALUE self, VALUE value)
+{
   Color *color = (Color *)DATA_PTR(self);
 
   color->g = NUM2INT(value);
@@ -76,7 +100,8 @@ static VALUE rb_color_set_green(VALUE self, VALUE value) {
   return self;
 }
 
-static VALUE rb_color_set_blue(VALUE self, VALUE value) {
+static VALUE rb_color_set_blue(VALUE self, VALUE value)
+{
   Color *color = (Color *)DATA_PTR(self);
 
   color->b = NUM2INT(value);
@@ -84,7 +109,8 @@ static VALUE rb_color_set_blue(VALUE self, VALUE value) {
   return self;
 }
 
-static VALUE rb_color_set_alpha(VALUE self, VALUE alpha) {
+static VALUE rb_color_set_alpha(VALUE self, VALUE alpha)
+{
   Color *color = (Color *)DATA_PTR(self);
   // int alpha_value = NUM2INT(alpha);
   float alpha_value = NUM2DBL(alpha);
@@ -98,7 +124,8 @@ static VALUE rb_color_set_alpha(VALUE self, VALUE alpha) {
   return self;
 }
 
-static VALUE rb_color_fade(VALUE self, VALUE alpha) {
+static VALUE rb_color_fade(VALUE self, VALUE alpha)
+{
   Color *color = (Color *)DATA_PTR(self);
   float alpha_value = NUM2DBL(alpha);
 
@@ -107,7 +134,8 @@ static VALUE rb_color_fade(VALUE self, VALUE alpha) {
   return self;
 }
 
-static VALUE rb_color_to_int(VALUE self) {
+static VALUE rb_color_to_int(VALUE self)
+{
   Color *color = (Color *)DATA_PTR(self);
 
   int result = ColorToInt(*color);
@@ -115,25 +143,28 @@ static VALUE rb_color_to_int(VALUE self) {
   return INT2NUM(result);
 }
 
-static VALUE rb_color_normalize(VALUE self) {
+static VALUE rb_color_normalize(VALUE self)
+{
   Color *color = (Color *)DATA_PTR(self);
 
   Vector4 result = ColorNormalize(*color);
-  VALUE rb_result = Data_Wrap_Struct(rb_cVector4, NULL, NULL, &result);
+  VALUE rb_result = Data_Wrap_Struct(rb_cVec4, NULL, NULL, &result);
 
   return rb_result;
 }
 
-static VALUE rb_color_to_hsv(VALUE self) {
+static VALUE rb_color_to_hsv(VALUE self)
+{
   Color *color = (Color *)DATA_PTR(self);
 
   Vector3 result = ColorToHSV(*color);
-  VALUE rb_result = Data_Wrap_Struct(rb_cVector3, NULL, NULL, &result);
+  VALUE rb_result = Data_Wrap_Struct(rb_cVec3, NULL, NULL, &result);
 
   return rb_result;
 }
 
-static VALUE rb_color_tint(VALUE self, VALUE tint) {
+static VALUE rb_color_tint(VALUE self, VALUE tint)
+{
   Color *color = (Color *)DATA_PTR(self);
   Color *tint_value = (Color *)DATA_PTR(tint);
 
@@ -142,7 +173,8 @@ static VALUE rb_color_tint(VALUE self, VALUE tint) {
   return self;
 }
 
-static VALUE rb_color_brightness(VALUE self, VALUE factor) {
+static VALUE rb_color_brightness(VALUE self, VALUE factor)
+{
   Color *color = (Color *)DATA_PTR(self);
   float brightness_factor = NUM2DBL(factor);
 
@@ -151,7 +183,8 @@ static VALUE rb_color_brightness(VALUE self, VALUE factor) {
   return self;
 }
 
-static VALUE rb_color_contrast(VALUE self, VALUE contrast) {
+static VALUE rb_color_contrast(VALUE self, VALUE contrast)
+{
   Color *color = (Color *)DATA_PTR(self);
   float contrast_value = NUM2DBL(contrast);
 
@@ -160,7 +193,8 @@ static VALUE rb_color_contrast(VALUE self, VALUE contrast) {
   return self;
 }
 
-static VALUE rb_color_alpha_blend(VALUE self, VALUE src, VALUE tint) {
+static VALUE rb_color_alpha_blend(VALUE self, VALUE src, VALUE tint)
+{
   Color *color = (Color *)DATA_PTR(self);
   Color *src_value = (Color *)DATA_PTR(src);
   Color *tint_value = (Color *)DATA_PTR(tint);
@@ -170,7 +204,8 @@ static VALUE rb_color_alpha_blend(VALUE self, VALUE src, VALUE tint) {
   return self;
 }
 
-void initializeColor() {
+void initializeColor()
+{
   rb_cColor = rb_define_class("Color", rb_cObject);
 
   rb_define_alloc_func(rb_cColor, rb_color_alloc);
