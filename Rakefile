@@ -9,12 +9,8 @@ require "rake/extensiontask"
 
 # Task to compile Raylib
 task :compile_raylib do
-  platform = "PLATFORM_DESKTOP"
-  sh "make PLATFORM=#{platform} -C third_party/raylib/src"
+  sh "make -C third_party/raylib/src"
 end
-
-# Ensure the build task depends on compile_raylib
-task build: :compile_raylib
 
 GEMSPEC = Gem::Specification.load("rubyraylib.gemspec")
 
