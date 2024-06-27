@@ -28,5 +28,5 @@ static VALUE rb_get_random_value(VALUE self, VALUE min, VALUE max)
 void initializeKernel()
 {
   rb_define_module_function(rb_mKernel, "random", rb_get_random_value, 2);
-  rb_define_module_function(rb_mMath, "fib", rb_fibonacci, 1);
+  rb_define_module_function(rb_mKernel, "fib", rb_fibonacci, 1);
 }

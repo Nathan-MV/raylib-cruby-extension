@@ -11,5 +11,6 @@
 #undef PlaySound
 
 #include "raylib.h"
+#include "raymath.h"
 
 #endif // RAYLIB_VALUES_H

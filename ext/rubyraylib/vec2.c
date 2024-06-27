@@ -68,13 +68,32 @@ static VALUE rb_vec2_set_y(VALUE self, VALUE value)
   return self;
 }
 
-static VALUE rb_vec2_add_bang(VALUE self, VALUE other)
+static VALUE rb_vec2_add(VALUE self, VALUE other)
 {
   Vector2 *vec1 = (Vector2 *)DATA_PTR(self);
   Vector2 *vec2 = (Vector2 *)DATA_PTR(other);
 
-  vec1->x += vec2->x;
-  vec1->y += vec2->y;
+  *vec1 = Vector2Add(*vec1, *vec2);
+
+  return self;
+}
+
+static VALUE rb_vec2_add_value(VALUE self, VALUE add)
+{
+  Vector2 *vec2 = (Vector2 *)DATA_PTR(self);
+  float add_value = NUM2DBL(add);
+
+  *vec2 = Vector2AddValue(*vec2, add_value);
+
+  return self;
+}
+
+static VALUE rb_vec2_rotate(VALUE self, VALUE angle)
+{
+  Vector2 *vec2 = (Vector2 *)DATA_PTR(self);
+  float angle_value = NUM2DBL(angle);
+
+  *vec2 = Vector2Rotate(*vec2, angle_value);
 
   return self;
 }
@@ -148,7 +167,9 @@ void initializeVec2()
   rb_define_method(rb_cVec2, "x=", rb_vec2_set_x, 1);
   rb_define_method(rb_cVec2, "y=", rb_vec2_set_y, 1);
 
-  rb_define_method(rb_cVec2, "add!", rb_vec2_add_bang, 1);
+  rb_define_method(rb_cVec2, "add!", rb_vec2_add, 1);
+  rb_define_method(rb_cVec2, "add", rb_vec2_add_value, 1);
+  rb_define_method(rb_cVec2, "rotate!", rb_vec2_rotate, 1);
   rb_define_method(rb_cVec2, "outside_bounds?", rb_vec2_outside_bounds, 1);
   rb_define_method(rb_cVec2, "reverse!", rb_vec2_reverse, 0);
 }
