@@ -3,7 +3,7 @@ require_relative "rubyraylib/rubyraylib"
 
 # MAX_ELEMENTS = RubyVM::YJIT.enabled? ? 110_000 : 75_000
 MAX_ELEMENTS = 75_000
-MOVE_ELEMENTS = true
+MOVE_ELEMENTS = false
 MAX_BATCH_ELEMENTS = 8192
 WHITE = Color.new(255, 255, 255)
 BLACK = Color.new(0, 0, 0)

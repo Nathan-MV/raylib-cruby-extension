@@ -81,11 +81,11 @@ static VALUE rb_vec2_add(VALUE self, VALUE other) {
   return self;
 }
 
-static VALUE rb_vec2_add_value(VALUE self, VALUE add) {
+static VALUE rb_vec2_add_value(VALUE self, VALUE add_val) {
   Vector2 *vec2 = get_vec2(self);
-  float add_value = NUM2DBL(add);
+  float add = NUM2DBL(add_val);
 
-  *vec2 = Vector2SubtractValue(*vec2, add_value);
+  *vec2 = Vector2SubtractValue(*vec2, add);
 
   return self;
 }
@@ -99,11 +99,11 @@ static VALUE rb_vec2_subtract(VALUE self, VALUE other) {
   return self;
 }
 
-static VALUE rb_vec2_subtract_value(VALUE self, VALUE sub) {
+static VALUE rb_vec2_subtract_value(VALUE self, VALUE sub_val) {
   Vector2 *vec2 = get_vec2(self);
-  float sub_value = NUM2DBL(sub);
+  float sub = NUM2DBL(sub_val);
 
-  *vec2 = Vector2SubtractValue(*vec2, sub_value);
+  *vec2 = Vector2SubtractValue(*vec2, sub);
 
   return self;
 }
@@ -162,9 +162,9 @@ static VALUE rb_vec2_angle(VALUE self, VALUE other) {
 
 static VALUE rb_vec2_scale(VALUE self, VALUE scale) {
   Vector2 *vec2 = get_vec2(self);
-  float scale_value = NUM2DBL(scale);
+  float scale_val = NUM2DBL(scale);
 
-  *vec2 = Vector2Scale(*vec2, scale_value);
+  *vec2 = Vector2Scale(*vec2, scale_val);
 
   return self;
 }
@@ -206,9 +206,9 @@ static VALUE rb_vec2_normalize(VALUE self) {
 static VALUE rb_vec2_lerp(VALUE self, VALUE other, VALUE amount) {
   Vector2 *vec2 = get_vec2(self);
   Vector2 *other_vec2 = get_vec2(other);
-  float amount_value = NUM2DBL(amount);
+  float amt = NUM2DBL(amount);
 
-  *vec2 = Vector2Lerp(*vec2, *other_vec2, amount_value);
+  *vec2 = Vector2Lerp(*vec2, *other_vec2, amt);
 
   return self;
 }
@@ -224,9 +224,9 @@ static VALUE rb_vec2_reflect(VALUE self, VALUE normal) {
 
 static VALUE rb_vec2_rotate(VALUE self, VALUE angle) {
   Vector2 *vec2 = get_vec2(self);
-  float angle_value = NUM2DBL(angle);
+  float ang = NUM2DBL(angle);
 
-  *vec2 = Vector2Rotate(*vec2, angle_value);
+  *vec2 = Vector2Rotate(*vec2, ang);
 
   return self;
 }
@@ -234,9 +234,9 @@ static VALUE rb_vec2_rotate(VALUE self, VALUE angle) {
 static VALUE rb_vec2_move_towards(VALUE self, VALUE target, VALUE max_distance) {
   Vector2 *vec2 = get_vec2(self);
   Vector2 *target_vec2 = get_vec2(target);
-  float max_distance_value = NUM2DBL(max_distance);
+  float max = NUM2DBL(max_distance);
 
-  *vec2 = Vector2MoveTowards(*vec2, *target_vec2, max_distance_value);
+  *vec2 = Vector2MoveTowards(*vec2, *target_vec2, max);
 
   return self;
 }
@@ -259,12 +259,12 @@ static VALUE rb_vec2_clamp(VALUE self, VALUE min, VALUE max) {
   return self;
 }
 
-static VALUE rb_vec2_clamp_value(VALUE self, VALUE min, VALUE max) {
+static VALUE rb_vec2_clamp_value(VALUE self, VALUE min_val, VALUE max_val) {
   Vector2 *vec2 = get_vec2(self);
-  float min_value = NUM2DBL(min);
-  float max_value = NUM2DBL(max);
+  float min = NUM2DBL(min_val);
+  float max = NUM2DBL(max_val);
 
-  *vec2 = Vector2ClampValue(*vec2, min_value, max_value);
+  *vec2 = Vector2ClampValue(*vec2, min, max);
 
   return self;
 }
@@ -287,25 +287,25 @@ static VALUE rb_vec2_reverse(VALUE self) {
   return self;
 }
 
-static VALUE rb_vec2_outside_bounds(VALUE self, VALUE size_value) {
+static VALUE rb_vec2_outside_bounds(VALUE self, VALUE size_val) {
   Vector2 *vec2 = get_vec2(self);
 
   double x = vec2->x;
   double y = vec2->y;
   double size;
 
-  if (rb_obj_is_kind_of(size_value, rb_cVec2)) {
-    Vector2 *size_vec2 = (Vector2 *)DATA_PTR(size_value);
+  if (rb_obj_is_kind_of(size_val, rb_cVec2)) {
+    Vector2 *size_vec2 = (Vector2 *)DATA_PTR(size_val);
     size = (size_vec2->x + size_vec2->y) / 2;
   } else {
-    size = NUM2DBL(size_value);
+    size = NUM2DBL(size_val);
   }
 
-  double screen_width = GetScreenWidth();
-  double screen_height = GetScreenHeight();
+  double width = GetScreenWidth();
+  double height = GetScreenHeight();
 
-  if ((x + size) > screen_width || (x + size) < 0 ||
-      (y + size) > screen_height || (y + size) < 0) {
+  if ((x + size) > width || (x + size) < 0 ||
+      (y + size) > height || (y + size) < 0) {
     return Qtrue;
   }
 
@@ -335,9 +335,11 @@ void initializeVec2() {
   rb_define_method(rb_cVec2, "set", rb_vec2_set, 2);
 
   rb_define_method(rb_cVec2, "add", rb_vec2_add, 1);
-  rb_define_method(rb_cVec2, "add_value", rb_vec2_add_value, 1);
+  rb_define_method(rb_cVec2, "add_val", rb_vec2_add_value, 1);
   rb_define_method(rb_cVec2, "sub", rb_vec2_subtract, 1);
-  rb_define_method(rb_cVec2, "sub_value", rb_vec2_subtract_value, 1);
+  rb_define_method(rb_cVec2, "sub_val", rb_vec2_subtract_value, 1);
+  rb_define_method(rb_cVec2, "multiply", rb_vec2_multiply, 1);
+  rb_define_method(rb_cVec2, "divide", rb_vec2_divide, 1);
 
   rb_define_method(rb_cVec2, "length", rb_vec2_length, 0);
   rb_define_method(rb_cVec2, "length_sqr", rb_vec2_length_sqr, 0);
@@ -346,9 +348,7 @@ void initializeVec2() {
   rb_define_method(rb_cVec2, "distance_sqr", rb_vec2_distance_sqr, 1);
   rb_define_method(rb_cVec2, "angle", rb_vec2_angle, 1);
   rb_define_method(rb_cVec2, "scale", rb_vec2_scale, 1);
-  rb_define_method(rb_cVec2, "multiply", rb_vec2_multiply, 1);
   rb_define_method(rb_cVec2, "negate", rb_vec2_negate, 0);
-  rb_define_method(rb_cVec2, "divide", rb_vec2_divide, 1);
   rb_define_method(rb_cVec2, "normalize", rb_vec2_normalize, 0);
   rb_define_method(rb_cVec2, "lerp", rb_vec2_lerp, 2);
   rb_define_method(rb_cVec2, "reflect", rb_vec2_reflect, 1);
@@ -356,7 +356,7 @@ void initializeVec2() {
   rb_define_method(rb_cVec2, "move_towards", rb_vec2_move_towards, 2);
   rb_define_method(rb_cVec2, "invert", rb_vec2_invert, 0);
   rb_define_method(rb_cVec2, "clamp", rb_vec2_clamp, 2);
-  rb_define_method(rb_cVec2, "clamp_value", rb_vec2_clamp_value, 2);
+  rb_define_method(rb_cVec2, "clamp_val", rb_vec2_clamp_value, 2);
   rb_define_method(rb_cVec2, "equals", rb_vec2_equals, 1);
 
   rb_define_method(rb_cVec2, "outside_bounds?", rb_vec2_outside_bounds, 1);

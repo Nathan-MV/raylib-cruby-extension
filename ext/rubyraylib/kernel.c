@@ -14,12 +14,13 @@ static VALUE rb_fibonacci(VALUE self, VALUE num) {
   return INT2NUM(result);
 }
 
-static VALUE rb_get_random_value(VALUE self, VALUE min, VALUE max) {
-  int minValue = NUM2INT(min);
-  int maxValue = NUM2INT(max);
-  int randomValue = GetRandomValue(minValue, maxValue);
+static VALUE rb_get_random_value(VALUE self, VALUE min_val, VALUE max_val) {
+  int min = NUM2INT(min_val);
+  int max = NUM2INT(max_val);
 
-  return INT2NUM(randomValue);
+  int random = GetRandomValue(min, max);
+
+  return INT2NUM(random);
 }
 
 void initializeKernel() {

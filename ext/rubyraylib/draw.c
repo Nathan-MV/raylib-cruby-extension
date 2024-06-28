@@ -43,12 +43,12 @@ static VALUE rb_draw_rectangle(VALUE posX, VALUE posY, VALUE width, VALUE height
 }
 
 // Draw a color-filled rectangle (Vector version)
-static VALUE rb_draw_rectangle_v(VALUE position, VALUE size, VALUE color) {
+static VALUE rb_draw_rectangle_v(VALUE position, VALUE size_val, VALUE color) {
   Vector2 *pos = get_vec2(position);
-  Vector2 *siz = get_vec2(size);
+  Vector2 *size = get_vec2(size_val);
   Color *col = get_color(color);
 
-  DrawRectangleV(*pos, *siz, *col);
+  DrawRectangleV(*pos, *size, *col);
 
   return Qnil;
 }
@@ -61,8 +61,7 @@ static VALUE rb_draw_rect(int argc, VALUE *argv, VALUE self) {
     rb_draw_rectangle_v(argv[0], argv[1], argv[2]);
     break;
   case 5:
-    rb_scan_args(argc, argv, "5", &argv[0], &argv[1], &argv[2], &argv[3],
-                 &argv[4]);
+    rb_scan_args(argc, argv, "5", &argv[0], &argv[1], &argv[2], &argv[3], &argv[4]);
     rb_draw_rectangle(argv[0], argv[1], argv[2], argv[3], argv[4]);
     break;
   default:
@@ -74,8 +73,7 @@ static VALUE rb_draw_rect(int argc, VALUE *argv, VALUE self) {
 }
 
 // Draw text using font and additional parameters
-static VALUE rb_draw_text(VALUE self, VALUE text, VALUE posX, VALUE posY,
-                          VALUE fontSize, VALUE color) {
+static VALUE rb_draw_text(VALUE self, VALUE text, VALUE posX, VALUE posY, VALUE fontSize, VALUE color) {
   const char *txt = StringValueCStr(text);
   int x = NUM2INT(posX);
   int y = NUM2INT(posY);

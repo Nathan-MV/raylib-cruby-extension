@@ -28,9 +28,9 @@ Image* get_image(VALUE obj) {
 
 static VALUE rb_image_initialize(VALUE self, VALUE fileName) {
   Image *img = get_image(self);
-  const char *file_name_str = StringValueCStr(fileName);
+  const char *name = StringValueCStr(fileName);
 
-  *img = LoadImage(file_name_str);
+  *img = LoadImage(name);
 
   return self;
 }
