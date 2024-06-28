@@ -26,8 +26,8 @@ class Benchmark
     return unless @move
 
     @max.times do |i|
-      @positions[i].add!(@speeds[i])
-      @speeds[i].reverse! if @positions[i].outside_bounds?(@size)
+      @positions[i].add(@speeds[i])
+      @speeds[i].reverse if @positions[i].outside_bounds?(@size)
     end
   end
 

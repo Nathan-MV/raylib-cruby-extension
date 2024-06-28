@@ -1,18 +1,35 @@
 # Ruby C Extension for Raylib
 
-## Installation
+You can check our actions and download the artifact or compile it manually, currently Windows is not being supported because Raylib used Rectangle, ShowCursor and CloseWindow which is being included in Windows headers thanks to Ruby on the MSYS2 environment
 
-1. Clone Repository
+## Compilation
+
+- Clone Repository
 ```
 git clone https://github.com/Nathan-MV/raylib-cruby-extension --recursive
 ```
 
-2. Install Dependencies
+- Install Dependencies
 ```
 bundle install
 ```
 
-3. Compile it
+- Raylib Dependencies (Ubuntu)
+```
+sudo apt install libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev libxinerama-dev libwayland-dev libxkbcommon-dev
+```
+
+- Raylib Dependencies (Fedora)
+```
+sudo dnf install alsa-lib-devel mesa-libGL-devel libX11-devel libXrandr-devel libXi-devel libXcursor-devel libXinerama-devel libatomic
+```
+
+- Raylib Dependencies (Arch Linux)
+```
+sudo pacman -S alsa-lib mesa libx11 libxrandr libxi libxcursor libxinerama
+```
+
+- Compile
 ```
 rake
 ```
