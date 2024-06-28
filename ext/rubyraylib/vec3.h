@@ -6,6 +6,7 @@
 #include "color.h"
 
 extern VALUE rb_cVec3;
+Vector3* get_vec3(VALUE obj);
 void initializeVec3();
 
 #endif // VEC3_H

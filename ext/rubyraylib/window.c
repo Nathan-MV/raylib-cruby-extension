@@ -97,11 +97,8 @@ static VALUE rb_restore_window(VALUE self) {
 }
 
 static VALUE rb_set_window_icon(VALUE self, VALUE image) {
-  const char *file_name_str = StringValueCStr(image);
-  Image *img = ALLOC(Image);
-  *img = LoadImage(file_name_str);
+  Image *img = get_image(image);
 
-  Data_Wrap_Struct(rb_cObject, NULL, free, img);
   SetWindowIcon(*img);
 
   return Qnil;

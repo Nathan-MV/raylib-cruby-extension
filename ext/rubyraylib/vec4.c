@@ -3,9 +3,8 @@
 VALUE rb_cVec4;
 
 static void rb_vec4_free(void *ptr) {
-  Vector4 *vec4 = (Vector4 *)ptr;
-
-  if (vec4 != NULL) {
+  if (ptr) {
+    Vector4 *vec4 = (Vector4 *)ptr;
     free(vec4);
   }
 }
@@ -13,19 +12,25 @@ static void rb_vec4_free(void *ptr) {
 static VALUE rb_vec4_alloc(VALUE klass) {
   Vector4 *vec4 = ALLOC(Vector4);
 
-  if (vec4 != NULL) {
-    return Data_Wrap_Struct(klass, NULL, rb_vec4_free, vec4);
-  } else {
+  if (!vec4) {
     rb_raise(rb_eNoMemError, "Failed to allocate memory for Vector4.");
   }
+
+  return Data_Wrap_Struct(klass, NULL, rb_vec4_free, vec4);
+}
+
+Vector4* get_vec4(VALUE obj) {
+  Vector4 *vec4;
+  Data_Get_Struct(obj, Vector4, vec4);
+
+  return vec4;
 }
 
 static VALUE rb_color_from_normalized(VALUE self) {
-  Vector4 *vec4 = (Vector4 *)DATA_PTR(self);
+  Vector4 *vec4 = get_vec4(self);
   Color result = ColorFromNormalized(*vec4);
-  VALUE rb_result = Data_Wrap_Struct(rb_cColor, NULL, NULL, &result);
 
-  return rb_result;
+  return Data_Wrap_Struct(rb_cColor, NULL, NULL, &result);
 }
 
 void initializeVec4() {

@@ -3,6 +3,7 @@
 
 #include "ruby.h"
 #include "raylib_values.h"
+#include "image.h"
 
 void initializeWindow();
 

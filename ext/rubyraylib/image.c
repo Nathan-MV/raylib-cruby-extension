@@ -3,9 +3,8 @@
 VALUE rb_cImage;
 
 static void rb_image_free(void *ptr) {
-  Image *img = (Image *)ptr;
-
-  if (img != NULL) {
+  if (ptr) {
+    Image *img = (Image *)ptr;
     free(img);
   }
 }
@@ -13,33 +12,31 @@ static void rb_image_free(void *ptr) {
 static VALUE rb_image_alloc(VALUE klass) {
   Image *img = ALLOC(Image);
 
-  if (img != NULL) {
-    return Data_Wrap_Struct(klass, NULL, rb_image_free, img);
-  } else {
+  if (!img) {
     rb_raise(rb_eNoMemError, "Failed to allocate memory for Image.");
   }
+
+  return Data_Wrap_Struct(klass, NULL, rb_image_free, img);
+}
+
+Image* get_image(VALUE obj) {
+  Image *img;
+  Data_Get_Struct(obj, Image, img);
+
+  return img;
 }
 
 static VALUE rb_image_initialize(VALUE self, VALUE fileName) {
+  Image *img = get_image(self);
   const char *file_name_str = StringValueCStr(fileName);
 
-  Image *img = ALLOC(Image);
   *img = LoadImage(file_name_str);
 
-  return Data_Wrap_Struct(rb_cImage, NULL, rb_image_free, img);
+  return self;
 }
 
-static VALUE rb_load_image(VALUE self, VALUE fileName) {
-  const char *file_name_str = StringValueCStr(fileName);
-
-  Image *img = ALLOC(Image);
-  *img = LoadImage(file_name_str);
-
-  return Data_Wrap_Struct(rb_cImage, NULL, rb_image_free, img);
-}
-
-static VALUE rb_unload_image(VALUE self, VALUE image) {
-  Image *img = (Image *)DATA_PTR(image);
+static VALUE rb_unload_image(VALUE self) {
+  Image *img = get_image(self);
 
   if (img != NULL) {
     UnloadImage(*img);
@@ -54,6 +51,5 @@ void initializeImage() {
 
   rb_define_alloc_func(rb_cImage, rb_image_alloc);
   rb_define_method(rb_cImage, "initialize", rb_image_initialize, 1);
-  rb_define_singleton_method(rb_cImage, "load", rb_load_image, 1);
-  rb_define_singleton_method(rb_cImage, "unload", rb_unload_image, 1);
+  rb_define_method(rb_cImage, "unload", rb_unload_image, 0);
 }

@@ -11,10 +11,10 @@ static VALUE rb_begin_drawing(VALUE self) {
 }
 
 // Set background color (framebuffer clear color)
-static VALUE rb_clear_background(VALUE self, VALUE color_value) {
-  Color color = *(Color *)DATA_PTR(color_value);
+static VALUE rb_clear_background(VALUE self, VALUE color) {
+  Color *col = get_color(color);
 
-  ClearBackground(color);
+  ClearBackground(*col);
 
   return Qnil;
 }
@@ -30,27 +30,25 @@ static VALUE rb_draw_fps(VALUE self, VALUE posX, VALUE posY) {
 }
 
 // Draw a color-filled rectangle
-static VALUE rb_draw_rectangle(VALUE posX, VALUE posY, VALUE width,
-                               VALUE height, VALUE color_value) {
+static VALUE rb_draw_rectangle(VALUE posX, VALUE posY, VALUE width, VALUE height, VALUE color) {
   int x = NUM2INT(posX);
   int y = NUM2INT(posY);
   int w = NUM2INT(width);
   int h = NUM2INT(height);
-  Color color = *(Color *)DATA_PTR(color_value);
+  Color *col = get_color(color);
 
-  DrawRectangle(x, y, w, h, color);
+  DrawRectangle(x, y, w, h, *col);
 
   return Qnil;
 }
 
 // Draw a color-filled rectangle (Vector version)
-static VALUE rb_draw_rectangle_v(VALUE position_value, VALUE size_value,
-                                 VALUE color_value) {
-  Vector2 *position = (Vector2 *)DATA_PTR(position_value);
-  Vector2 *size = (Vector2 *)DATA_PTR(size_value);
-  Color color = *(Color *)DATA_PTR(color_value);
+static VALUE rb_draw_rectangle_v(VALUE position, VALUE size, VALUE color) {
+  Vector2 *pos = get_vec2(position);
+  Vector2 *siz = get_vec2(size);
+  Color *col = get_color(color);
 
-  DrawRectangleV(*position, *size, color);
+  DrawRectangleV(*pos, *siz, *col);
 
   return Qnil;
 }
@@ -82,9 +80,9 @@ static VALUE rb_draw_text(VALUE self, VALUE text, VALUE posX, VALUE posY,
   int x = NUM2INT(posX);
   int y = NUM2INT(posY);
   int size = NUM2INT(fontSize);
-  Color col = *(Color *)DATA_PTR(color);
+  Color *col = get_color(color);
 
-  DrawText(txt, x, y, size, col);
+  DrawText(txt, x, y, size, *col);
 
   return Qnil;
 }

@@ -7,6 +7,7 @@
 #include "vec4.h"
 
 extern VALUE rb_cColor;
+Color* get_color(VALUE obj);
 void initializeColor();
 
 #endif // COLOR_H

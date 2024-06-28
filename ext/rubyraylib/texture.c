@@ -3,9 +3,8 @@
 VALUE rb_cTexture;
 
 static void rb_texture_free(void *ptr) {
-  Texture *texture = (Texture *)ptr;
-
-  if (texture != NULL) {
+  if (ptr) {
+    Texture *texture = (Texture *)ptr;
     free(texture);
   }
 }
@@ -13,24 +12,31 @@ static void rb_texture_free(void *ptr) {
 static VALUE rb_texture_alloc(VALUE klass) {
   Texture *texture = ALLOC(Texture);
 
-  if (texture != NULL) {
-    return Data_Wrap_Struct(klass, NULL, rb_texture_free, texture);
-  } else {
+  if (!texture) {
     rb_raise(rb_eNoMemError, "Failed to allocate memory for Texture.");
   }
+
+  return Data_Wrap_Struct(klass, NULL, rb_texture_free, texture);
+}
+
+Texture* get_texture(VALUE obj) {
+  Texture *texture;
+  Data_Get_Struct(obj, Texture, texture);
+
+  return texture;
 }
 
 static VALUE rb_texture_initialize(VALUE self, VALUE fileName) {
+  Texture *texture = get_texture(self);
   const char *file_name_str = StringValueCStr(fileName);
 
-  Texture *texture = (Texture *)DATA_PTR(self);
   *texture = LoadTexture(file_name_str);
 
   return self;
 }
 
 static VALUE rb_unload_texture(VALUE self) {
-  Texture *texture = (Texture *)DATA_PTR(self);
+  Texture *texture = get_texture(self);
 
   if (texture != NULL) {
     UnloadTexture(*texture);
@@ -42,11 +48,10 @@ static VALUE rb_unload_texture(VALUE self) {
 
 static VALUE rb_draw_texture(VALUE self, VALUE posX_value, VALUE posY_value,
                              VALUE tint_value) {
-  Texture *texture = (Texture *)DATA_PTR(self);
+  Texture *texture = get_texture(self);
   int posX = NUM2INT(posX_value);
   int posY = NUM2INT(posY_value);
-
-  Color *tint = (Color *)DATA_PTR(tint_value);
+  Color *tint = get_color(tint_value);
 
   DrawTexture(*texture, posX, posY, *tint);
 
@@ -55,9 +60,9 @@ static VALUE rb_draw_texture(VALUE self, VALUE posX_value, VALUE posY_value,
 
 static VALUE rb_draw_texture_v(VALUE self, VALUE position_value,
                                VALUE tint_value) {
-  Texture *texture = (Texture *)DATA_PTR(self);
-  Vector2 *position = (Vector2 *)DATA_PTR(position_value);
-  Color *tint = (Color *)DATA_PTR(tint_value);
+  Texture *texture = get_texture(self);
+  Vector2 *position = get_vec2(position_value);
+  Color *tint = get_color(tint_value);
 
   DrawTextureV(*texture, *position, *tint);
 
@@ -67,11 +72,11 @@ static VALUE rb_draw_texture_v(VALUE self, VALUE position_value,
 static VALUE rb_draw_texture_ex(VALUE self, VALUE position_value,
                                 VALUE rotation_value, VALUE scale_value,
                                 VALUE tint_value) {
-  Texture *texture = (Texture *)DATA_PTR(self);
-  Vector2 *position = (Vector2 *)DATA_PTR(position_value);
+  Texture *texture = get_texture(self);
+  Vector2 *position = get_vec2(position_value);
   float rotation = NUM2DBL(rotation_value);
   float scale = NUM2DBL(scale_value);
-  Color *tint = (Color *)DATA_PTR(tint_value);
+  Color *tint = get_color(tint_value);
 
   DrawTextureEx(*texture, *position, rotation, scale, *tint);
 
