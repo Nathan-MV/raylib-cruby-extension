@@ -16,13 +16,6 @@ static VALUE rb_vec3_alloc(VALUE klass) {
   return Data_Wrap_Struct(klass, NULL, rb_vec3_free, vec3);
 }
 
-Vector3* get_vec3(VALUE obj) {
-  Vector3 *vec3;
-  Data_Get_Struct(obj, Vector3, vec3);
-
-  return vec3;
-}
-
 static VALUE rb_color_from_hsv(VALUE self) {
   Vector3 *vec3 = get_vec3(self);
 

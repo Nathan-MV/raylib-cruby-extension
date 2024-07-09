@@ -26,7 +26,7 @@ RB_TEXTURE_GETTER(rb_texture_mipmaps, mipmaps)
 RB_TEXTURE_GETTER(rb_texture_format, format)
 
 static VALUE rb_texture_initialize(VALUE self, VALUE fileName) {
-  Texture *texture = GET_TEXTURE(self);
+  Texture *texture = get_texture(self);
   const char *name = StringValueCStr(fileName);
 
   *texture = LoadTexture(name);
@@ -35,7 +35,7 @@ static VALUE rb_texture_initialize(VALUE self, VALUE fileName) {
 }
 
 static VALUE rb_unload_texture(VALUE self) {
-  Texture *texture = GET_TEXTURE(self);
+  Texture *texture = get_texture(self);
 
   if (texture != NULL) {
     UnloadTexture(*texture);
@@ -45,11 +45,11 @@ static VALUE rb_unload_texture(VALUE self) {
   return Qnil;
 }
 
-RB_DRAW_TEXTURE(rb_draw_texture, DrawTexture(*texture, NUM2INT(x), NUM2INT(y), *GET_COLOR(col)),
+RB_DRAW_TEXTURE(rb_draw_texture, DrawTexture(*texture, NUM2INT(x), NUM2INT(y), *get_color(col)),
 																 VALUE x, VALUE y, VALUE col)
-RB_DRAW_TEXTURE(rb_draw_texture_v, DrawTextureV(*texture, *GET_VEC2(pos), *GET_COLOR(col)),
+RB_DRAW_TEXTURE(rb_draw_texture_v, DrawTextureV(*texture, *get_vec2(pos), *get_color(col)),
 																 VALUE pos, VALUE col)
-RB_DRAW_TEXTURE(rb_draw_texture_ex, DrawTextureEx(*texture, *GET_VEC2(pos), NUM2DBL(rot), NUM2DBL(scale), *GET_COLOR(col)),
+RB_DRAW_TEXTURE(rb_draw_texture_ex, DrawTextureEx(*texture, *get_vec2(pos), NUM2DBL(rot), NUM2DBL(scale), *get_color(col)),
 																 VALUE pos, VALUE rot, VALUE scale, VALUE col)
 
 static VALUE rb_draw(int argc, VALUE *argv, VALUE self) {

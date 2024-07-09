@@ -13,26 +13,24 @@
 extern VALUE rb_cColor;
 void initializeColor();
 
-// Macro to get Color ptr
-#define GET_COLOR(obj) \
-({ \
-  VALUE _obj = (obj); \
-  Color *color; \
-  Data_Get_Struct(_obj, Color, color); \
-  color; \
-})
+inline Color* get_color(VALUE obj) {
+  Color *color;
+  Data_Get_Struct(obj, Color, color);
+
+  return color;
+}
 
 // Macro to define getter methods
 #define RB_COLOR_GETTER(name, member) \
 static VALUE name(VALUE self) { \
-  Color *col = GET_COLOR(self); \
+  Color *col = get_color(self); \
   return INT2NUM(col->member); \
 }
 
 // Macro to define setter methods
 #define RB_COLOR_SETTER(name, member) \
 static VALUE name(VALUE self, VALUE value) { \
-  Color *col = GET_COLOR(self); \
+  Color *col = get_color(self); \
   col->member = NUM2INT(value); \
   return self; \
 }

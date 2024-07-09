@@ -17,7 +17,7 @@ static VALUE rb_vec2_alloc(VALUE klass) {
 }
 
 static VALUE rb_vec2_initialize(VALUE self, VALUE x, VALUE y) {
-  Vector2 *vec2 = GET_VEC2(self);
+  Vector2 *vec2 = get_vec2(self);
 
   vec2->x = NUM2INT(x);
   vec2->y = NUM2INT(y);
@@ -31,7 +31,7 @@ RB_VEC2_SETTER(rb_vec2_set_x, y)
 RB_VEC2_SETTER(rb_vec2_set_y, y)
 
 static VALUE rb_vec2_set(VALUE self, VALUE x, VALUE y) {
-  Vector2 *vec2 = GET_VEC2(self);
+  Vector2 *vec2 = get_vec2(self);
 
   vec2->x = NUM2INT(x);
   vec2->y = NUM2INT(y);
@@ -56,8 +56,8 @@ RB_VEC2_OTHER(rb_vec2_divide, Vector2Divide)
 RB_VEC2(rb_vec2_normalize, Vector2Normalize)
 
 static VALUE rb_vec2_lerp(VALUE self, VALUE other, VALUE amount) {
-  Vector2 *vec2 = GET_VEC2(self);
-  Vector2 *other_vec2 = GET_VEC2(other);
+  Vector2 *vec2 = get_vec2(self);
+  Vector2 *other_vec2 = get_vec2(other);
   float amt = NUM2DBL(amount);
 
   *vec2 = Vector2Lerp(*vec2, *other_vec2, amt);
@@ -68,7 +68,7 @@ static VALUE rb_vec2_lerp(VALUE self, VALUE other, VALUE amount) {
 RB_VEC2_OTHER(rb_vec2_reflect, Vector2Reflect)
 
 static VALUE rb_vec2_rotate(VALUE self, VALUE angle) {
-  Vector2 *vec2 = GET_VEC2(self);
+  Vector2 *vec2 = get_vec2(self);
   float ang = NUM2DBL(angle);
 
   *vec2 = Vector2Rotate(*vec2, ang);
@@ -77,8 +77,8 @@ static VALUE rb_vec2_rotate(VALUE self, VALUE angle) {
 }
 
 static VALUE rb_vec2_move_towards(VALUE self, VALUE target, VALUE max_distance) {
-  Vector2 *vec2 = GET_VEC2(self);
-  Vector2 *tarGET_VEC2 = GET_VEC2(target);
+  Vector2 *vec2 = get_vec2(self);
+  Vector2 *tarGET_VEC2 = get_vec2(target);
   float max = NUM2DBL(max_distance);
 
   *vec2 = Vector2MoveTowards(*vec2, *tarGET_VEC2, max);
@@ -89,9 +89,9 @@ static VALUE rb_vec2_move_towards(VALUE self, VALUE target, VALUE max_distance) 
 RB_VEC2(rb_vec2_invert, Vector2Invert)
 
 static VALUE rb_vec2_clamp(VALUE self, VALUE min, VALUE max) {
-  Vector2 *vec2 = GET_VEC2(self);
-  Vector2 *min_vec2 = GET_VEC2(min);
-  Vector2 *max_vec2 = GET_VEC2(max);
+  Vector2 *vec2 = get_vec2(self);
+  Vector2 *min_vec2 = get_vec2(min);
+  Vector2 *max_vec2 = get_vec2(max);
 
   *vec2 = Vector2Clamp(*vec2, *min_vec2, *max_vec2);
 
@@ -99,7 +99,7 @@ static VALUE rb_vec2_clamp(VALUE self, VALUE min, VALUE max) {
 }
 
 static VALUE rb_vec2_clamp_value(VALUE self, VALUE min_val, VALUE max_val) {
-  Vector2 *vec2 = GET_VEC2(self);
+  Vector2 *vec2 = get_vec2(self);
   float min = NUM2DBL(min_val);
   float max = NUM2DBL(max_val);
 
@@ -111,7 +111,7 @@ static VALUE rb_vec2_clamp_value(VALUE self, VALUE min_val, VALUE max_val) {
 RB_VEC2_OTHER_INT(rb_vec2_equals, Vector2Equals)
 
 static VALUE rb_vec2_reverse(VALUE self) {
-  Vector2 *vec2 = GET_VEC2(self);
+  Vector2 *vec2 = get_vec2(self);
 
   vec2->x *= -1;
   vec2->y *= -1;
@@ -120,14 +120,14 @@ static VALUE rb_vec2_reverse(VALUE self) {
 }
 
 static VALUE rb_vec2_outside_bounds(VALUE self, VALUE size_val) {
-  Vector2 *vec2 = GET_VEC2(self);
+  Vector2 *vec2 = get_vec2(self);
 
   double x = vec2->x;
   double y = vec2->y;
   double size;
 
   if (rb_obj_is_kind_of(size_val, rb_cVec2)) {
-    Vector2 *size_vec2 = GET_VEC2(size_val);
+    Vector2 *size_vec2 = get_vec2(size_val);
     size = (size_vec2->x + size_vec2->y) / 2;
   } else {
     size = NUM2DBL(size_val);
@@ -145,7 +145,7 @@ static VALUE rb_vec2_outside_bounds(VALUE self, VALUE size_val) {
 }
 
 static VALUE rb_vec2_to_s(VALUE self) {
-    Vector2 *vec2 = GET_VEC2(self);
+    Vector2 *vec2 = get_vec2(self);
     char buffer[50];
 
     snprintf(buffer, sizeof(buffer), "Vec2(x: %.2f, y: %.2f)", vec2->x, vec2->y);

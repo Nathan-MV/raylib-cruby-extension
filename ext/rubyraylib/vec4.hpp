@@ -7,7 +7,13 @@
 #include "color.hpp"
 
 extern VALUE rb_cVec4;
-Vector4* get_vec4(VALUE obj);
 void initializeVec4();
+
+inline Vector4* get_vec4(VALUE obj) {
+  Vector4 *vec4;
+  Data_Get_Struct(obj, Vector4, vec4);
+
+  return vec4;
+}
 
 #endif // VEC4_H

@@ -16,13 +16,6 @@ static VALUE rb_rect_alloc(VALUE klass) {
   return Data_Wrap_Struct(klass, NULL, rb_rect_free, rect);
 }
 
-Rectangle* get_rect(VALUE obj) {
-  Rectangle *rect;
-  Data_Get_Struct(obj, Rectangle, rect);
-
-  return rect;
-}
-
 static VALUE rb_rect_initialize(VALUE self, VALUE x, VALUE y, VALUE width, VALUE height) {
   Rectangle *rect = get_rect(self);
 

@@ -25,9 +25,11 @@ append_cppflags("-flto")
 append_cppflags("-DNDEBUG")
 append_cppflags("-fpic")
 append_cppflags("-ftree-vectorize")
-append_cppflags("-Wall")
-append_cppflags("-Wextra")
-append_cppflags("-pedantic")
+#append_cppflags("-Wall")
+#append_cppflags("-Wextra")
+#append_cppflags("-pedantic")
+
+$CXXFLAGS << " -std=c++20"
 
 # Create the Makefile
 create_makefile("rubyraylib/rubyraylib")
