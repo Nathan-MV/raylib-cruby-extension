@@ -13,7 +13,7 @@
     return self; \
   }
 
-#define RB_METHOD_ARG_STRING(name, func)  \
+#define RB_METHOD_ARG_STR(name, func)  \
 	static VALUE name(VALUE self, VALUE text) { \
 		const char *txt = StringValueCStr(text); \
 		func(txt); \
@@ -32,6 +32,15 @@
 		int val1 = NUM2INT(value1); \
 		int val2 = NUM2INT(value2); \
 		func(val1, val2); \
+		return self; \
+	}
+
+#define RB_METHOD_ARG_INT_FLOAT_2(name, func)  \
+	static VALUE name(VALUE self, VALUE value1, VALUE value2, VALUE value3) { \
+		int val1 = NUM2INT(value1); \
+		float val2 = NUM2DBL(value2); \
+    float val3 = NUM2DBL(value3); \
+		func(val1, val2, val3); \
 		return self; \
 	}
 
@@ -85,6 +94,13 @@
   	return func(val) ? Qtrue : Qfalse; \
   }
 
+#define RB_METHOD_BOOL_ARG_INT_2(name, func) \
+  static VALUE name(VALUE self, VALUE value1, VALUE value2) { \
+	int val1 = NUM2INT(value1); \
+  int val2 = NUM2INT(value2); \
+  	return func(val1, val2) ? Qtrue : Qfalse; \
+  }
+
 #define RB_METHOD_BOOL_ARG_UINT(name, func) \
 	static VALUE name(VALUE self, VALUE value) { \
 	unsigned int val = NUM2UINT(value); \
@@ -111,6 +127,13 @@
 		int val1 = NUM2INT(value1); \
 		int val2 = NUM2INT(value2); \
 		int result = func(val1, val2); \
+		return INT2NUM(result); \
+	}
+
+#define RB_METHOD_INT_ARG_STR(name, func)  \
+	static VALUE name(VALUE self, VALUE text) { \
+		const char *txt = StringValueCStr(text); \
+		int result = func(txt); \
 		return INT2NUM(result); \
 	}
 
@@ -145,6 +168,14 @@
 		return DBL2NUM(result); \
 	}
 
+#define RB_METHOD_FLOAT_ARG_INT_2(name, func) \
+	static VALUE name(VALUE self, VALUE value1, VALUE value2) { \
+		int val1 = NUM2INT(value1); \
+		int val2 = NUM2INT(value2); \
+		float result = func(val1, val2); \
+		return DBL2NUM(result); \
+	}
+
 // String
 
 #define RB_METHOD_STR(name, func)  \
@@ -162,13 +193,13 @@
 
 // Wrappers
 
-#define RB_METHOD_VEC2_WRAPPER(name, func)  \
+#define RB_METHOD_VEC2(name, func)  \
 	static VALUE name(VALUE self) { \
 		Vector2 result = func(); \
 		return Data_Wrap_Struct(rb_cVec2, NULL, NULL, &result); \
 	}
 
-#define RB_METHOD_VEC2_WRAPPER_ARG_INT(name, func)  \
+#define RB_METHOD_VEC2_ARG_INT(name, func)  \
 	static VALUE name(VALUE self, VALUE value) { \
 		int val = NUM2INT(value); \
 		Vector2 result = func(val); \
