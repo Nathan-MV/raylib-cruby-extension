@@ -1,4 +1,4 @@
-#include "draw.h"
+#include "draw.hpp"
 
 // Setup canvas (framebuffer) to start drawing
 static VALUE rb_begin_drawing(VALUE self) {
@@ -12,7 +12,7 @@ static VALUE rb_begin_drawing(VALUE self) {
 
 // Set background color (framebuffer clear color)
 static VALUE rb_clear_background(VALUE self, VALUE color) {
-  Color *col = get_color(color);
+  Color *col = GET_COLOR(color);
 
   ClearBackground(*col);
 
@@ -35,7 +35,7 @@ static VALUE rb_draw_rectangle(VALUE posX, VALUE posY, VALUE width, VALUE height
   int y = NUM2INT(posY);
   int w = NUM2INT(width);
   int h = NUM2INT(height);
-  Color *col = get_color(color);
+  Color *col = GET_COLOR(color);
 
   DrawRectangle(x, y, w, h, *col);
 
@@ -44,9 +44,9 @@ static VALUE rb_draw_rectangle(VALUE posX, VALUE posY, VALUE width, VALUE height
 
 // Draw a color-filled rectangle (Vector version)
 static VALUE rb_draw_rectangle_v(VALUE position, VALUE size_val, VALUE color) {
-  Vector2 *pos = get_vec2(position);
-  Vector2 *size = get_vec2(size_val);
-  Color *col = get_color(color);
+  Vector2 *pos = GET_VEC2(position);
+  Vector2 *size = GET_VEC2(size_val);
+  Color *col = GET_COLOR(color);
 
   DrawRectangleV(*pos, *size, *col);
 
@@ -78,7 +78,7 @@ static VALUE rb_draw_text(VALUE self, VALUE text, VALUE posX, VALUE posY, VALUE 
   int x = NUM2INT(posX);
   int y = NUM2INT(posY);
   int size = NUM2INT(fontSize);
-  Color *col = get_color(color);
+  Color *col = GET_COLOR(color);
 
   DrawText(txt, x, y, size, *col);
 

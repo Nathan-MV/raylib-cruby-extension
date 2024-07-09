@@ -1,9 +1,8 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include "ruby.h"
-#include "raylib_values.h"
-#include "image.h"
+#include "ruby_values.hpp"
+#include "raylib_values.hpp"
 
 void initializeWindow();
 

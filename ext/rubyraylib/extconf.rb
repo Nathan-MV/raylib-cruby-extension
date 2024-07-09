@@ -2,30 +2,32 @@
 
 require "mkmf"
 
-# Define raylib directory
+# Define directories for raylib, raygui, and reasings
 raylib_dir = File.expand_path(File.dirname(__FILE__) + "/../../third_party/raylib/src")
+raygui_dir = File.expand_path(File.dirname(__FILE__) + "/../../third_party/raygui/src")
+reasings_dir = File.expand_path(File.dirname(__FILE__) + "/../../third_party/reasings/src")
 
 # Add include and library directories
-$INCFLAGS << " -I" + raylib_dir
-$LDFLAGS << " -L" + raylib_dir
+$INCFLAGS << " -I#{raylib_dir} -I#{raygui_dir} -I#{reasings_dir}"
+$LDFLAGS << " -L#{raylib_dir} -L#{raygui_dir} -L#{reasings_dir}"
 
-# Append compiler flags
-append_cflags("-fvisibility=hidden")
-append_cflags("-Ofast")
-append_cflags("-flto")
-append_cflags("-DNDEBUG")
-append_cflags("-fpic")
-append_cflags("-ftree-vectorize")
-
-# Link against the static library specifically
-$LDFLAGS << " " + File.join(raylib_dir, "libraylib.a")
+# Link against the static libraries
+$LDFLAGS << " -lraylib -lraygui -lreasings"
 
 # Debugging information
 puts "Include flags: #{$INCFLAGS}"
 puts "Library flags: #{$LDFLAGS}"
 
-# Configure the include and library paths for raylib
-dir_config('raylib', raylib_dir)
+# Append compiler flags
+append_cppflags("-fvisibility=hidden")
+append_cppflags("-Ofast")
+append_cppflags("-flto")
+append_cppflags("-DNDEBUG")
+append_cppflags("-fpic")
+append_cppflags("-ftree-vectorize")
+append_cppflags("-Wall")
+append_cppflags("-Wextra")
+append_cppflags("-pedantic")
 
 # Create the Makefile
 create_makefile("rubyraylib/rubyraylib")

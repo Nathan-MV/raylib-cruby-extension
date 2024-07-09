@@ -2,3 +2,9 @@
 	path = third_party/raylib
 	url = https://github.com/Nathan-MV/raylib
 	branch = rubyraylib
+[submodule "third_party/raygui"]
+	path = third_party/raygui
+	url = https://github.com/raysan5/raygui
+[submodule "third_party/reasings"]
+	path = third_party/reasings
+	url = https://github.com/raylib-extras/reasings

@@ -1,33 +1,23 @@
-#include "color.h"
+#include "color.hpp"
 
 VALUE rb_cColor;
 
 static void rb_color_free(void *ptr) {
-  if (ptr) {
-    Color *color = (Color *)ptr;
-    free(color);
-  }
+  delete static_cast<Color*>(ptr);
 }
 
 static VALUE rb_color_alloc(VALUE klass) {
-  Color *color = ALLOC(Color);
-
+  Color* color = new (std::nothrow) Color();
   if (!color) {
     rb_raise(rb_eNoMemError, "Failed to allocate memory for Color.");
+    return Qnil;
   }
 
   return Data_Wrap_Struct(klass, NULL, rb_color_free, color);
 }
 
-Color* get_color(VALUE obj) {
-  Color *color;
-  Data_Get_Struct(obj, Color, color);
-
-  return color;
-}
-
 static VALUE rb_color_initialize(int argc, VALUE *argv, VALUE self) {
-  Color *color = get_color(self);
+  Color *color = GET_COLOR(self);
 
   if (argc == 1) {
     // Single argument (hex value)
@@ -50,70 +40,35 @@ static VALUE rb_color_initialize(int argc, VALUE *argv, VALUE self) {
   return self;
 }
 
-static VALUE rb_color_get_red(VALUE self) {
-  Color *color = get_color(self);
-
-  return INT2NUM(color->r);
-}
-
-static VALUE rb_color_get_green(VALUE self) {
-  Color *color = get_color(self);
-
-  return INT2NUM(color->g);
-}
-
-static VALUE rb_color_get_blue(VALUE self) {
-  Color *color = get_color(self);
-
-  return INT2NUM(color->b);
-}
-
-static VALUE rb_color_get_alpha(VALUE self) {
-  Color *color = get_color(self);
-
-  return INT2NUM(color->a);
-}
-
-static VALUE rb_color_set_red(VALUE self, VALUE value) {
-  Color *color = get_color(self);
-
-  color->r = NUM2INT(value);
-
-  return self;
-}
-
-static VALUE rb_color_set_green(VALUE self, VALUE value) {
-  Color *color = get_color(self);
-
-  color->g = NUM2INT(value);
-
-  return self;
-}
-
-static VALUE rb_color_set_blue(VALUE self, VALUE value) {
-  Color *color = get_color(self);
-
-  color->b = NUM2INT(value);
-
-  return self;
-}
+RB_COLOR_GETTER(rb_color_get_red, r)
+RB_COLOR_GETTER(rb_color_get_green, g)
+RB_COLOR_GETTER(rb_color_get_blue, b)
+RB_COLOR_GETTER(rb_color_get_alpha, a)
+RB_COLOR_SETTER(rb_color_set_red, r)
+RB_COLOR_SETTER(rb_color_set_green, g)
+RB_COLOR_SETTER(rb_color_set_blue, b)
 
 static VALUE rb_color_set_alpha(VALUE self, VALUE alpha_val) {
-  Color *color = get_color(self);
-  // int alpha = NUM2INT(alpha_val);
-  float alpha = NUM2DBL(alpha_val);
+  Color *color = GET_COLOR(self);
+  float alpha_float = NUM2INT(alpha_val) / 255.0f;
 
-  // Convert alpha from 0-255 to 0.0-1.0
-  // float alpha_float = roundf((float)alpha / 255.0f * 10.0f) / 10.0f;
-  // rb_warn("Setting alpha to %f", alpha_float);
+    alpha_float = std::round(alpha_float * 10.0f) / 10.0f;
 
-  *color = ColorAlpha(*color, alpha);
+    // Convert alpha_float to string with one decimal place
+    std::stringstream ss;
+    ss << std::fixed << std::setprecision(1) << alpha_float;
+    std::string alpha_str = ss.str();
+
+    // Convert alpha_str back to float
+    alpha_float = std::stof(alpha_str);
+
+  *color = ColorAlpha(*color, alpha_float);
 
   return self;
 }
 
 static VALUE rb_color_fade(VALUE self, VALUE alpha_val) {
-  Color *color = get_color(self);
+  Color *color = GET_COLOR(self);
   float alpha = NUM2DBL(alpha_val);
 
   *color = Fade(*color, alpha);
@@ -122,7 +77,7 @@ static VALUE rb_color_fade(VALUE self, VALUE alpha_val) {
 }
 
 static VALUE rb_color_to_int(VALUE self) {
-  Color *color = get_color(self);
+  Color *color = GET_COLOR(self);
 
   int result = ColorToInt(*color);
 
@@ -130,7 +85,7 @@ static VALUE rb_color_to_int(VALUE self) {
 }
 
 static VALUE rb_color_normalize(VALUE self) {
-  Color *color = get_color(self);
+  Color *color = GET_COLOR(self);
 
   Vector4 result = ColorNormalize(*color);
 
@@ -138,7 +93,7 @@ static VALUE rb_color_normalize(VALUE self) {
 }
 
 static VALUE rb_color_to_hsv(VALUE self) {
-  Color *color = get_color(self);
+  Color *color = GET_COLOR(self);
 
   Vector3 result = ColorToHSV(*color);
 
@@ -146,8 +101,8 @@ static VALUE rb_color_to_hsv(VALUE self) {
 }
 
 static VALUE rb_color_tint(VALUE self, VALUE tint_val) {
-  Color *color = get_color(self);
-  Color *tint = get_color(tint_val);
+  Color *color = GET_COLOR(self);
+  Color *tint = GET_COLOR(tint_val);
 
   *color = ColorTint(*color, *tint);
 
@@ -155,7 +110,7 @@ static VALUE rb_color_tint(VALUE self, VALUE tint_val) {
 }
 
 static VALUE rb_color_brightness(VALUE self, VALUE factor_val) {
-  Color *color = get_color(self);
+  Color *color = GET_COLOR(self);
   float factor = NUM2DBL(factor_val);
 
   *color = ColorBrightness(*color, factor);
@@ -164,7 +119,7 @@ static VALUE rb_color_brightness(VALUE self, VALUE factor_val) {
 }
 
 static VALUE rb_color_contrast(VALUE self, VALUE contrast_val) {
-  Color *color = get_color(self);
+  Color *color = GET_COLOR(self);
   float contrast = NUM2DBL(contrast_val);
 
   *color = ColorContrast(*color, contrast);
@@ -173,9 +128,9 @@ static VALUE rb_color_contrast(VALUE self, VALUE contrast_val) {
 }
 
 static VALUE rb_color_alpha_blend(VALUE self, VALUE src_val, VALUE tint_val) {
-  Color *color = get_color(self);
-  Color *src = get_color(src_val);
-  Color *tint = get_color(tint_val);
+  Color *color = GET_COLOR(self);
+  Color *src = GET_COLOR(src_val);
+  Color *tint = GET_COLOR(tint_val);
 
   *color = ColorAlphaBlend(*color, *src, *tint);
 
@@ -194,7 +149,7 @@ void initializeColor() {
   rb_define_method(rb_cColor, "red=", rb_color_set_red, 1);
   rb_define_method(rb_cColor, "green=", rb_color_set_green, 1);
   rb_define_method(rb_cColor, "blue=", rb_color_set_blue, 1);
-  rb_define_method(rb_cColor, "set_alpha", rb_color_set_alpha, 1);
+  rb_define_method(rb_cColor, "alpha=", rb_color_set_alpha, 1);
 
   rb_define_method(rb_cColor, "fade", rb_color_fade, 1);
   rb_define_method(rb_cColor, "to_int", rb_color_to_int, 0);

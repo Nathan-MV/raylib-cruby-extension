@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 require_relative "rubyraylib/rubyraylib"
 
-# MAX_ELEMENTS = RubyVM::YJIT.enabled? ? 110_000 : 75_000
-MAX_ELEMENTS = 75_000
-MOVE_ELEMENTS = false
+MAX_ELEMENTS = RubyVM::YJIT.enabled? ? 110_000 : 75_000
+MOVE_ELEMENTS = true
 MAX_BATCH_ELEMENTS = 8192
 WHITE = Color.new(255, 255, 255)
 BLACK = Color.new(0, 0, 0)
@@ -12,7 +11,7 @@ RED = Color.new(190, 33, 55)
 SCREEN_WIDTH = 320 * 2
 SCREEN_HEIGHT = 180 * 2
 
-class Benchmark
+class Raymark
   def initialize(max, move)
     @max = max
     @move = move
@@ -50,17 +49,17 @@ end
 
 # puts 'RUBY: YJIT Disabled' if !RubyVM::YJIT.enabled?
 # puts 'RUBY: YJIT Enabled' if RubyVM::YJIT.enabled?
-Window.init(SCREEN_WIDTH, SCREEN_HEIGHT, 'Benchmark')
-bench = Benchmark.new(MAX_ELEMENTS, MOVE_ELEMENTS)
+Window.init(SCREEN_WIDTH, SCREEN_HEIGHT, 'Raymark')
+raymark = Raymark.new(MAX_ELEMENTS, MOVE_ELEMENTS)
 Window.icon = Image.new('lib/raylib_32x32.png')
 
 until Window.should_close?
-  bench.update
+  raymark.update
   Draw.begin do
     Draw.clear(WHITE)
-    bench.draw
+    raymark.draw
   end
 end
 
-bench.unload
+raymark.unload
 Window.close

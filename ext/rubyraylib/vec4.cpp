@@ -1,19 +1,16 @@
-#include "vec4.h"
+#include "vec4.hpp"
 
 VALUE rb_cVec4;
 
 static void rb_vec4_free(void *ptr) {
-  if (ptr) {
-    Vector4 *vec4 = (Vector4 *)ptr;
-    free(vec4);
-  }
+  delete static_cast<Vector4*>(ptr);
 }
 
 static VALUE rb_vec4_alloc(VALUE klass) {
-  Vector4 *vec4 = ALLOC(Vector4);
-
+  Vector4* vec4 = new (std::nothrow) Vector4();
   if (!vec4) {
-    rb_raise(rb_eNoMemError, "Failed to allocate memory for Vector4.");
+    rb_raise(rb_eNoMemError, "Failed to allocate memory for Vec4.");
+    return Qnil;
   }
 
   return Data_Wrap_Struct(klass, NULL, rb_vec4_free, vec4);

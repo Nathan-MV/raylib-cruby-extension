@@ -21,7 +21,7 @@ sudo apt install libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-d
 
 - Raylib Dependencies (Fedora)
 ```
-sudo dnf install alsa-lib-devel mesa-libGL-devel libX11-devel libXrandr-devel libXi-devel libXcursor-devel libXinerama-devel libatomic
+sudo dnf install alsa-lib-devel mesa-libGL-devel libX11-devel libXrandr-devel libXi-devel libXcursor-devel libXinerama-devel libatomic wayland-devel libxkbcommon-devel wayland-protocols-devel
 ```
 
 - Raylib Dependencies (Arch Linux)

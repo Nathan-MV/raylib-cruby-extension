@@ -1,19 +1,16 @@
-#include "vec3.h"
+#include "vec3.hpp"
 
 VALUE rb_cVec3;
 
 static void rb_vec3_free(void *ptr) {
-  if (ptr) {
-    Vector3 *vec3 = (Vector3 *)ptr;
-    free(vec3);
-  }
+  delete static_cast<Vector3*>(ptr);
 }
 
 static VALUE rb_vec3_alloc(VALUE klass) {
-  Vector3 *vec3 = ALLOC(Vector3);
-
+  Vector3* vec3 = new (std::nothrow) Vector3();
   if (!vec3) {
-    rb_raise(rb_eNoMemError, "Failed to allocate memory for Vector3.");
+    rb_raise(rb_eNoMemError, "Failed to allocate memory for Vec3.");
+    return Qnil;
   }
 
   return Data_Wrap_Struct(klass, NULL, rb_vec3_free, vec3);
@@ -28,6 +25,7 @@ Vector3* get_vec3(VALUE obj) {
 
 static VALUE rb_color_from_hsv(VALUE self) {
   Vector3 *vec3 = get_vec3(self);
+
   Color result = ColorFromHSV(vec3->x, vec3->y, vec3->z);
 
   return Data_Wrap_Struct(rb_cColor, NULL, NULL, &result);
