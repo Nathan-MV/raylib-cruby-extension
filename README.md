@@ -11,7 +11,7 @@ git clone https://github.com/Nathan-MV/raylib-cruby-extension --recursive
 
 - Install Dependencies
 ```
-bundle install
+bundle install --with compile
 ```
 
 - Raylib Dependencies (Ubuntu)

@@ -16,7 +16,10 @@
 #include "window.hpp"
 #include "gui.hpp"
 #include "ease.hpp"
-#include "input.hpp"
+#include "keyboard.hpp"
+#include "mouse.hpp"
+#include "gamepad.hpp"
+#include "touch.hpp"
 
 extern "C" {
   void Init_rubyraylib(void);

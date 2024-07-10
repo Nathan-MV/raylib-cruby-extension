@@ -84,4 +84,16 @@ inline Vector2* get_vec2(VALUE obj) {
 		return self; \
 	}
 
+#define RB_VEC2_SCALAR(name, func1, func2) \
+  static VALUE name(VALUE self, VALUE value) { \
+    Vector2 *vec2 = get_vec2(self); \
+    if (rb_obj_is_kind_of(value, rb_cVec2)) { \
+      Vector2 *val = get_vec2(value); \
+      *vec2 = func1(*vec2, *val); \
+    } else { \
+      *vec2 = func2(*vec2, NUM2INT(value)); \
+    } \
+    return self; \
+  }
+
 #endif // VEC2_H

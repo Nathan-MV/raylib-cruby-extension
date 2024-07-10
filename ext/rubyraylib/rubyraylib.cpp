@@ -13,5 +13,8 @@ RUBY_FUNC_EXPORTED void Init_rubyraylib(void) {
   initializeKernel();
   initializeGui();
   initializeEase();
-  initializeInput();
+  initializeKeyboard();
+  initializeMouse();
+  initializeGamepad();
+  initializeTouch();
 }

@@ -62,12 +62,23 @@ RB_METHOD_ARG_STR(rb_set_clipboard_text, SetClipboardText)
 RB_METHOD_STR(rb_get_clipboard_text, GetClipboardText)
 RB_METHOD(rb_enable_event_waiting, EnableEventWaiting)
 RB_METHOD(rb_disable_event_waiting, DisableEventWaiting)
+
 RB_METHOD(rb_show_cursor, ShowCursor)
 RB_METHOD(rb_hide_cursor, HideCursor)
 RB_METHOD_BOOL(rb_cursor_hidden, IsCursorHidden)
 RB_METHOD(rb_enable_cursor, EnableCursor)
 RB_METHOD(rb_disable_cursor, DisableCursor)
 RB_METHOD_BOOL(rb_cursor_on_screen, IsCursorOnScreen)
+
+// Timing-related functions
+// RLAPI void SetTargetFPS(int fps);                                 // Set target FPS (maximum)
+RB_METHOD_ARG_INT(rb_set_target_fps, SetTargetFPS)
+// RLAPI float GetFrameTime(void);                                   // Get time in seconds for last frame drawn (delta time)
+RB_METHOD_FLOAT(rb_get_frame_time, GetFrameTime)
+// RLAPI double GetTime(void);                                       // Get elapsed time in seconds since InitWindow()
+RB_METHOD_FLOAT(rb_get_time, GetTime)
+// RLAPI int GetFPS(void);                                           // Get current FPS
+RB_METHOD_INT(rb_get_fps, GetFPS)
 
 void initializeWindow() {
   VALUE rb_mWindow = rb_define_module("Window");
@@ -120,10 +131,16 @@ void initializeWindow() {
 	rb_define_module_function(rb_mWindow, "clipboard_text", rb_get_clipboard_text, 0);
 	rb_define_module_function(rb_mWindow, "enable_event_waiting", rb_enable_event_waiting, 0);
 	rb_define_module_function(rb_mWindow, "disable_event_waiting", rb_disable_event_waiting, 0);
+
 	rb_define_module_function(rb_mWindow, "show_cursor", rb_show_cursor, 0);
 	rb_define_module_function(rb_mWindow, "hide_cursor", rb_hide_cursor, 0);
 	rb_define_module_function(rb_mWindow, "cursor_hidden?", rb_cursor_hidden, 0);
 	rb_define_module_function(rb_mWindow, "enable_cursor", rb_enable_cursor, 0);
 	rb_define_module_function(rb_mWindow, "disable_cursor", rb_disable_cursor, 0);
 	rb_define_module_function(rb_mWindow, "cursor_on_screen?", rb_cursor_on_screen, 0);
+
+  rb_define_module_function(rb_mWindow, "target_fps=", rb_set_target_fps, 1);
+  rb_define_module_function(rb_mWindow, "frame_time", rb_get_frame_time, 0);
+  rb_define_module_function(rb_mWindow, "time", rb_get_time, 0);
+  rb_define_module_function(rb_mWindow, "fps", rb_get_fps, 0);
 }

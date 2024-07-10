@@ -5,8 +5,27 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in rubyraylib.gemspec
 gemspec
 
-gem "rake", "~> 13.0"
+group :compile do
+  gem "bundler"
+  gem "rake"
+  gem "rake-compiler"
+  gem "rubocop"
+end
 
-gem "rake-compiler"
+group :development do
+  gem "rubocop-packaging"
+  gem "rubocop-performance"
+  gem "rubocop-rspec"
+  gem "rubocop-thread_safety"
+  gem "ruby-lsp"
+  gem "sorbet-runtime"
+  gem "yard"
+end
 
-gem "rubocop", "~> 1.21"
+group :test do
+  gem "rspec"
+  gem "rspec-core"
+  gem "rspec-expectations"
+  gem "rspec-mocks"
+  gem "simplecov"
+end
