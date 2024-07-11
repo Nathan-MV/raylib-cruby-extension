@@ -1,10 +1,10 @@
 #ifndef GUI_H
 #define GUI_H
 
-#include <ruby.h>
+#include "ruby_values.hpp"
 #include "raylib_values.hpp"
 #include "rect.hpp"
 
-void initializeGui();
+extern "C" void initializeGui();
 
 #endif // GUI_H

@@ -1,7 +1,7 @@
 #ifndef RUBYRAYLIB_H
 #define RUBYRAYLIB_H 1
 
-#include <ruby.h>
+#include "ruby_values.hpp"
 #include "raylib_values.hpp"
 
 #include "rect.hpp"

@@ -22,7 +22,7 @@ RB_METHOD_INT(rb_get_char_pressed, GetCharPressed)
 // RLAPI void SetExitKey(int key);                               // Set a custom key to exit program (default is ESC)
 RB_METHOD_ARG_INT(rb_set_exit_key, SetExitKey)
 
-void initializeKeyboard() {
+extern "C" void initializeKeyboard() {
   VALUE rb_mKeyboard = rb_define_module("Keyboard");
 
   rb_define_module_function(rb_mKeyboard, "pressed?", rb_key_pressed, 1);

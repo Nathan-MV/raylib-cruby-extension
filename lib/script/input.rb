@@ -64,6 +64,30 @@ module Input
       input
     end
 
+    def debug_mappings
+      puts "start" if pressed?(:start)
+      puts "select" if pressed?(:select)
+      puts "home" if pressed?(:home)
+
+      puts "confirm" if pressed?(:confirm)
+      puts "cancel" if pressed?(:cancel)
+      puts "menu" if pressed?(:menu)
+      puts "special" if pressed?(:special)
+
+      puts "left_trigger" if pressed?(:left_trigger)
+      puts "right_trigger" if pressed?(:right_trigger)
+      puts "left_bumper" if pressed?(:left_bumper)
+      puts "right_bumper" if pressed?(:right_bumper)
+
+      puts "left_stick" if pressed?(:left_stick)
+      puts "right_stick" if pressed?(:right_stick)
+
+      puts "up" if pressed?(:up)
+      puts "down" if pressed?(:down)
+      puts "left" if pressed?(:left)
+      puts "right" if pressed?(:right)
+    end
+
     private
 
     # Checks the status of a key across different input methods (keyboard, mouse, gamepad).

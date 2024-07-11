@@ -12,8 +12,9 @@ task :clean_raylib do
 end
 
 # Task to compile Raylib
+# PLATFORM=PLATFORM_DESKTOP_RGFW
 task :compile_raylib do
-  sh "make -C third_party/raylib/src"
+  sh "make PLATFORM=PLATFORM_DESKTOP -C third_party/raylib/src"
 end
 
 # Compile Raygui task and create static library

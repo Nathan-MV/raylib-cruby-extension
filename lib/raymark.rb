@@ -4,7 +4,7 @@ require_relative "rubyraylib/rubyraylib"
 require_relative "script/input"
 
 MAX_ELEMENTS = RubyVM::YJIT.enabled? ? 110_000 : 75_000
-MOVE_ELEMENTS = true
+MOVE_ELEMENTS = false
 SCREEN_WIDTH = 320 * 2
 SCREEN_HEIGHT = 180 * 2
 WHITE = Color.new(255, 255, 255)
@@ -48,8 +48,8 @@ class Raymark
     return unless @move
 
     @positions = @positions.each_with_index.map do |position, i|
-      @speeds[i].reverse if position.outside_bounds?(@size)
-      position + @speeds[i].scale(delta)
+      # @speeds[i].reverse if position.outside_bounds?(@size)
+      position + @speeds[i]
     end
   end
 

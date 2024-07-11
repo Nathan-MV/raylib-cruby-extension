@@ -1,11 +1,11 @@
 #ifndef DRAW_H
 #define DRAW_H
 
-#include <ruby.h>
+#include "ruby_values.hpp"
 #include "raylib_values.hpp"
 #include "color.hpp"
 #include "vec2.hpp"
 
-void initializeDraw();
+extern "C" void initializeDraw();
 
 #endif // DRAW_H

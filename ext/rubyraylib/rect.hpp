@@ -2,10 +2,10 @@
 #define RECT_H
 
 #include <new>
-#include <ruby.h>
+#include "ruby_values.hpp"
 #include "raylib_values.hpp"
 
-void initializeRect();
+extern "C" void initializeRect();
 
 inline Rectangle* get_rect(VALUE obj) {
   Rectangle *rect;

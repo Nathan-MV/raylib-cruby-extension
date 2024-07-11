@@ -2,13 +2,13 @@
 #define TEXTURE_H
 
 #include <new>
-#include <ruby.h>
+#include "ruby_values.hpp"
 #include "raylib_values.hpp"
 #include "color.hpp"
 #include "vec2.hpp"
 
 // Function declarations
-void initializeTexture();
+extern "C" void initializeTexture();
 
 inline Texture* get_texture(VALUE obj) {
   Texture *texture;
@@ -18,7 +18,7 @@ inline Texture* get_texture(VALUE obj) {
 }
 
 // Macro to define getter methods
-#define RB_TEXTURE_GETTER(name, member) \
+#define RB_TEXTURE_GETTER_INT(name, member) \
 static VALUE name(VALUE self) { \
   Texture *texture = get_texture(self); \
   return INT2NUM(texture->member); \

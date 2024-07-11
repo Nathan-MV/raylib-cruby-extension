@@ -80,7 +80,7 @@ RB_METHOD_FLOAT(rb_get_time, GetTime)
 // RLAPI int GetFPS(void);                                           // Get current FPS
 RB_METHOD_INT(rb_get_fps, GetFPS)
 
-void initializeWindow() {
+extern "C" void initializeWindow() {
   VALUE rb_mWindow = rb_define_module("Window");
 
   rb_define_module_function(rb_mWindow, "init", rb_init_window, 3);

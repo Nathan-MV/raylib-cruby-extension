@@ -5,13 +5,13 @@
 #include <iomanip>
 #include <sstream>
 #include <new>
-#include <ruby.h>
+#include "ruby_values.hpp"
 #include "raylib_values.hpp"
 #include "vec3.hpp"
 #include "vec4.hpp"
 
 extern VALUE rb_cColor;
-void initializeColor();
+extern "C" void initializeColor();
 
 inline Color* get_color(VALUE obj) {
   Color *color;

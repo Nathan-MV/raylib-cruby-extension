@@ -30,7 +30,7 @@ RB_METHOD_VEC2(rb_get_mouse_wheel_move_v, GetMouseWheelMoveV)
 // RLAPI void SetMouseCursor(int cursor);                        // Set mouse cursor
 RB_METHOD_ARG_INT(rb_set_mouse_cursor, SetMouseCursor)
 
-void initializeMouse() {
+extern "C" void initializeMouse() {
   VALUE rb_mMouse = rb_define_module("Mouse");
 
   rb_define_module_function(rb_mMouse, "button_pressed?", rb_mouse_button_pressed, 1);

@@ -12,7 +12,13 @@ $INCFLAGS << " -I#{raylib_dir} -I#{raygui_dir} -I#{reasings_dir}"
 $LDFLAGS << " -L#{raylib_dir} -L#{raygui_dir} -L#{reasings_dir}"
 
 # Link against the static libraries
-$LDFLAGS << " -lraylib -lraygui -lreasings"
+if /linux/i =~ RUBY_PLATFORM
+  $LDFLAGS << " -lraylib -lraygui -lreasings -lGL -lm -lpthread -ldl -lrt -lX11 -lXrandr"
+elsif /darwin/i =~ RUBY_PLATFORM
+  $LDFLAGS << " -lraylib -lraygui -lreasings -framework CoreVideo -framework IOKit -framework Cocoa -framework GLUT -framework OpenGL"
+else
+  $LDFLAGS << " -lraylib -lraygui -lreasings "
+end
 
 # Debugging information
 puts "Include flags: #{$INCFLAGS}"
@@ -25,9 +31,9 @@ append_cppflags("-flto")
 append_cppflags("-DNDEBUG")
 append_cppflags("-fpic")
 append_cppflags("-ftree-vectorize")
-#append_cppflags("-Wall")
-#append_cppflags("-Wextra")
-#append_cppflags("-pedantic")
+# append_cppflags("-Wall")
+# append_cppflags("-Wextra")
+# append_cppflags("-pedantic")
 
 $CXXFLAGS << " -std=c++20"
 

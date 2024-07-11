@@ -2,8 +2,26 @@
 #define RUBY_VALUES_H
 
 #include <ruby.h>
+#include <typeinfo>
+#include <type_traits>
 #include "vec2.hpp"
 #include "image.hpp"
+
+template <typename T>
+void rb_object_free(void *ptr) {
+  delete static_cast<T *>(ptr);
+}
+
+template <typename T>
+VALUE rb_object_alloc(VALUE klass) {
+  try {
+    T *obj = new T();
+    return Data_Wrap_Struct(klass, nullptr, rb_object_free<T>, obj);
+  } catch (const std::bad_alloc& e) {
+    rb_raise(rb_eNoMemError, "Failed to allocate memory for %s.", typeid(T).name());
+    return Qnil;
+  }
+}
 
 // self
 
@@ -13,12 +31,25 @@
     return self; \
   }
 
+template<void (*Func)()>
+static VALUE rb_method(VALUE self) {
+  Func();
+  return Qnil;
+}
+
 #define RB_METHOD_ARG_STR(name, func)  \
 	static VALUE name(VALUE self, VALUE text) { \
 		const char *txt = StringValueCStr(text); \
 		func(txt); \
 		return self; \
 	}
+
+template<void (*Func)(const char*)>
+static VALUE rb_method_arg_string(VALUE self, VALUE value) {
+  const char *val = StringValueCStr(value);
+  Func(val);
+  return Qnil;
+}
 
 #define RB_METHOD_ARG_INT(name, func)  \
 	static VALUE name(VALUE self, VALUE value) { \

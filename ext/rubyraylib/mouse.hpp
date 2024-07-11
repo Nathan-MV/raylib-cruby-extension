@@ -4,6 +4,6 @@
 #include "ruby_values.hpp"
 #include "raylib_values.hpp"
 
-void initializeMouse();
+extern "C" void initializeMouse();
 
 #endif // MOUSE_H

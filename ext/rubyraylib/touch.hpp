@@ -4,6 +4,6 @@
 #include "ruby_values.hpp"
 #include "raylib_values.hpp"
 
-void initializeTouch();
+extern "C" void initializeTouch();
 
 #endif // TOUCH_H

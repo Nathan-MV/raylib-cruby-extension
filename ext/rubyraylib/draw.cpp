@@ -86,7 +86,7 @@ static VALUE rb_draw_text(VALUE self, VALUE text, VALUE posX, VALUE posY, VALUE 
 }
 
 // Initializes the Draw module and defines its functions
-void initializeDraw(void) {
+extern "C" void initializeDraw(void) {
   VALUE rb_cDraw = rb_define_module("Draw");
 
   rb_define_module_function(rb_cDraw, "begin", rb_begin_drawing, 0);

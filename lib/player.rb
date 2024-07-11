@@ -37,27 +37,7 @@ class Player
 
   def update(delta)
     update_position(delta)
-    puts "start" if Input.pressed?(:start)
-    puts "select" if Input.pressed?(:select)
-    puts "home" if Input.pressed?(:home)
-
-    puts "confirm" if Input.pressed?(:confirm)
-    puts "cancel" if Input.pressed?(:cancel)
-    puts "menu" if Input.pressed?(:menu)
-    puts "special" if Input.pressed?(:special)
-
-    puts "left_trigger" if Input.pressed?(:left_trigger)
-    puts "right_trigger" if Input.pressed?(:right_trigger)
-    puts "left_bumper" if Input.pressed?(:left_bumper)
-    puts "right_bumper" if Input.pressed?(:right_bumper)
-
-    puts "left_stick" if Input.pressed?(:left_stick)
-    puts "right_stick" if Input.pressed?(:right_stick)
-
-    puts "up" if Input.pressed?(:up)
-    puts "down" if Input.pressed?(:down)
-    puts "left" if Input.pressed?(:left)
-    puts "right" if Input.pressed?(:right)
+    Input.debug_mappings
   end
 
   def draw
@@ -73,9 +53,7 @@ class Player
 
   def update_position(delta)
     direction = Input.movement(:left, :right, :up, :down)
-    velocity = direction * @speed
-    displacement = velocity.scale(delta)
-    @position += displacement
+    @position += direction * @speed * delta
   end
 end
 

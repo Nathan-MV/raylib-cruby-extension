@@ -4,6 +4,6 @@
 #include "ruby_values.hpp"
 #include "raylib_values.hpp"
 
-void initializeKernel();
+extern "C" void initializeKernel();
 
 #endif // KERNEL_H

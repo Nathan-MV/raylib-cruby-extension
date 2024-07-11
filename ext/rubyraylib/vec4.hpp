@@ -2,12 +2,12 @@
 #define VEC4_H
 
 #include <new>
-#include <ruby.h>
+#include "ruby_values.hpp"
 #include "raylib_values.hpp"
 #include "color.hpp"
 
 extern VALUE rb_cVec4;
-void initializeVec4();
+extern "C" void initializeVec4();
 
 inline Vector4* get_vec4(VALUE obj) {
   Vector4 *vec4;

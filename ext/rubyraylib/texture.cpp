@@ -2,28 +2,10 @@
 
 VALUE rb_cTexture;
 
-static void rb_texture_free(void *ptr) {
-  Texture* texture = static_cast<Texture*>(ptr);
-  //UnloadTexture(*texture);
-  delete texture;
-}
-
-static VALUE rb_texture_alloc(VALUE klass) {
-  Texture* texture = nullptr;
-  try {
-    texture = new Texture();
-  } catch (const std::bad_alloc&) {
-    rb_raise(rb_eNoMemError, "Failed to allocate memory for Texture.");
-    return Qnil;
-  }
-
-  return Data_Wrap_Struct(klass, NULL, rb_texture_free, texture);
-}
-
-RB_TEXTURE_GETTER(rb_texture_width, width)
-RB_TEXTURE_GETTER(rb_texture_height, height)
-RB_TEXTURE_GETTER(rb_texture_mipmaps, mipmaps)
-RB_TEXTURE_GETTER(rb_texture_format, format)
+RB_TEXTURE_GETTER_INT(rb_texture_width, width)
+RB_TEXTURE_GETTER_INT(rb_texture_height, height)
+RB_TEXTURE_GETTER_INT(rb_texture_mipmaps, mipmaps)
+RB_TEXTURE_GETTER_INT(rb_texture_format, format)
 
 static VALUE rb_texture_initialize(VALUE self, VALUE fileName) {
   Texture *texture = get_texture(self);
@@ -37,9 +19,9 @@ static VALUE rb_texture_initialize(VALUE self, VALUE fileName) {
 static VALUE rb_unload_texture(VALUE self) {
   Texture *texture = get_texture(self);
 
-  if (texture != NULL) {
+  if (texture != nullptr) {
     UnloadTexture(*texture);
-    free(texture);
+    delete texture;
   }
 
   return Qnil;
@@ -71,15 +53,27 @@ static VALUE rb_draw(int argc, VALUE *argv, VALUE self) {
   }
 }
 
-void initializeTexture() {
-  rb_cTexture = rb_define_class("Texture", rb_cObject);
+static VALUE rb_set_texture_scale(VALUE self, VALUE value) {
+  Texture *texture = get_texture(self);
+  int val = NUM2INT(value);
 
-  rb_define_alloc_func(rb_cTexture, rb_texture_alloc);
+  texture->width *= val;
+  texture->height *= val;
+
+  return self;
+}
+
+extern "C" void initializeTexture() {
+  rb_cTexture = rb_define_class("Texture", rb_cObject);
+  rb_define_alloc_func(rb_cTexture, rb_object_alloc<Texture>);
+
   rb_define_method(rb_cTexture, "initialize", rb_texture_initialize, 1);
   rb_define_method(rb_cTexture, "width", rb_texture_width, 0);
   rb_define_method(rb_cTexture, "height", rb_texture_height, 0);
   rb_define_method(rb_cTexture, "mipmaps", rb_texture_mipmaps, 0);
   rb_define_method(rb_cTexture, "format", rb_texture_format, 0);
+
+  rb_define_method(rb_cTexture, "scale=", rb_set_texture_scale, 1);
 
   rb_define_method(rb_cTexture, "unload", rb_unload_texture, 0);
   rb_define_method(rb_cTexture, "draw", rb_draw, -1);

@@ -1,10 +1,10 @@
 #ifndef EASE_H
 #define EASE_H
 
-#include <ruby.h>
+#include "ruby_values.hpp"
 #include "raylib_values.hpp"
 
-void initializeEase();
+extern "C" void initializeEase();
 
 // Macro to define easing methods
 #define RB_EASE(name, func) \

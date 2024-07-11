@@ -4,6 +4,6 @@
 #include "ruby_values.hpp"
 #include "raylib_values.hpp"
 
-void initializeWindow();
+extern "C" void initializeWindow();
 
 #endif // WINDOW_H

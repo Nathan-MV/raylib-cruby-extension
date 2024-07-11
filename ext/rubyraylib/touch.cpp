@@ -32,7 +32,7 @@ RB_METHOD_VEC2(rb_get_gesture_pinch_vector, GetGesturePinchVector)
 // RLAPI float GetGesturePinchAngle(void);                 // Get gesture pinch angle
 RB_METHOD_FLOAT(rb_get_gesture_pinch_angle, GetGesturePinchAngle)
 
-void initializeTouch() {
+extern "C" void initializeTouch() {
   VALUE rb_mTouch = rb_define_module("Touch");
 
   rb_define_module_function(rb_mTouch, "x", rb_get_touch_x, 0);

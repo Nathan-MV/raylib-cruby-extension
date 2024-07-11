@@ -2,12 +2,11 @@
 #define VEC2_H
 
 #include <new>
-#include <ruby.h>
+#include "ruby_values.hpp"
 #include "raylib_values.hpp"
 
-// Function declarations
 extern VALUE rb_cVec2;
-void initializeVec2();
+extern "C" void initializeVec2();
 
 inline Vector2* get_vec2(VALUE obj) {
   Vector2 *vec2;
@@ -16,7 +15,6 @@ inline Vector2* get_vec2(VALUE obj) {
   return vec2;
 }
 
-// Macro to define getter methods
 #define RB_VEC2_GETTER(name, member) \
 	static VALUE name(VALUE self) { \
 		Vector2 *vec2 = get_vec2(self); \
@@ -24,7 +22,6 @@ inline Vector2* get_vec2(VALUE obj) {
 		return INT2NUM(vec2->member); \
 	}
 
-// Macro to define setter methods
 #define RB_VEC2_SETTER(name, member) \
 	static VALUE name(VALUE self, VALUE value) { \
 		Vector2 *vec2 = get_vec2(self); \
@@ -32,7 +29,6 @@ inline Vector2* get_vec2(VALUE obj) {
 		return self; \
 	}
 
-// Macro to define methods
 #define RB_VEC2(name, func) \
 	static VALUE name(VALUE self) { \
 		Vector2 *vec2 = get_vec2(self); \
@@ -40,7 +36,6 @@ inline Vector2* get_vec2(VALUE obj) {
 		return self; \
 	}
 
-// Macro to define methods for calculating length of Vec2
 #define RB_VEC2_FLOAT(name, func) \
 	static VALUE name(VALUE self) { \
 		Vector2 *vec2 = get_vec2(self); \
@@ -48,7 +43,6 @@ inline Vector2* get_vec2(VALUE obj) {
 		return DBL2NUM(result); \
 	}
 
-// Macro to define func methods for Vec2
 #define RB_VEC2_OTHER(name, func) \
 	static VALUE name(VALUE self, VALUE other) { \
 		Vector2 *vec2 = get_vec2(self); \
@@ -57,7 +51,6 @@ inline Vector2* get_vec2(VALUE obj) {
 		return self; \
 	}
 
-// Macro to define comparison methods for Vec2
 #define RB_VEC2_OTHER_INT(name, func) \
 	static VALUE name(VALUE self, VALUE other) { \
 		Vector2 *vec2_ptr = get_vec2(self); \
@@ -66,22 +59,12 @@ inline Vector2* get_vec2(VALUE obj) {
 		return INT2NUM(result); \
 	}
 
-// Macro to define methods for calculating distance between two Vec2
 #define RB_VEC2_OTHER_FLOAT(name, func) \
 	static VALUE name(VALUE self, VALUE other) { \
 		Vector2 *vec2_ptr = get_vec2(self); \
 		Vector2 *other_vec2 = get_vec2(other); \
 		float result = func(*vec2_ptr, *other_vec2); \
 		return DBL2NUM(result); \
-	}
-
-// Macro to define value func methods for Vec2
-#define RB_VEC2_VALUE(name, func) \
-	static VALUE name(VALUE self, VALUE value) { \
-		Vector2 *vec2 = get_vec2(self); \
-		float val = NUM2DBL(value); \
-		*vec2 = func(*vec2, val); \
-		return self; \
 	}
 
 #define RB_VEC2_SCALAR(name, func1, func2) \
@@ -91,7 +74,8 @@ inline Vector2* get_vec2(VALUE obj) {
       Vector2 *val = get_vec2(value); \
       *vec2 = func1(*vec2, *val); \
     } else { \
-      *vec2 = func2(*vec2, NUM2INT(value)); \
+      float val = NUM2DBL(value); \
+      *vec2 = func2(*vec2, val); \
     } \
     return self; \
   }

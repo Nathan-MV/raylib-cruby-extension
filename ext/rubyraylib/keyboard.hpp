@@ -4,6 +4,6 @@
 #include "ruby_values.hpp"
 #include "raylib_values.hpp"
 
-void initializeKeyboard();
+extern "C" void initializeKeyboard();
 
 #endif // KEYBOARD_H

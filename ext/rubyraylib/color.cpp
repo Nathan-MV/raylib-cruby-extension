@@ -2,20 +2,6 @@
 
 VALUE rb_cColor;
 
-static void rb_color_free(void *ptr) {
-  delete static_cast<Color*>(ptr);
-}
-
-static VALUE rb_color_alloc(VALUE klass) {
-  Color* color = new (std::nothrow) Color();
-  if (!color) {
-    rb_raise(rb_eNoMemError, "Failed to allocate memory for Color.");
-    return Qnil;
-  }
-
-  return Data_Wrap_Struct(klass, NULL, rb_color_free, color);
-}
-
 static VALUE rb_color_initialize(int argc, VALUE *argv, VALUE self) {
   Color *color = get_color(self);
 
@@ -137,10 +123,10 @@ static VALUE rb_color_alpha_blend(VALUE self, VALUE src_val, VALUE tint_val) {
   return self;
 }
 
-void initializeColor() {
+extern "C" void initializeColor() {
   rb_cColor = rb_define_class("Color", rb_cObject);
+  rb_define_alloc_func(rb_cColor, rb_object_alloc<Color>);
 
-  rb_define_alloc_func(rb_cColor, rb_color_alloc);
   rb_define_method(rb_cColor, "initialize", rb_color_initialize, -1);
   rb_define_method(rb_cColor, "red", rb_color_get_red, 0);
   rb_define_method(rb_cColor, "green", rb_color_get_green, 0);

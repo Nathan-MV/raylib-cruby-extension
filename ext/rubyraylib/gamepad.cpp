@@ -24,7 +24,7 @@ RB_METHOD_INT_ARG_STR(rb_set_gamepad_mappings, SetGamepadMappings)
 // RLAPI void SetGamepadVibration(int gamepad, float leftMotor, float rightMotor);    // Set gamepad vibration for both motors
 RB_METHOD_ARG_INT_FLOAT_2(rb_set_gamepad_vibration, SetGamepadVibration)
 
-void initializeGamepad() {
+extern "C" void initializeGamepad() {
   VALUE rb_mGamepad = rb_define_module("Gamepad");
 
   rb_define_module_function(rb_mGamepad, "available?", rb_gamepad_available, 1);
