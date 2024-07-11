@@ -39,22 +39,25 @@ class Raymark
     @max = max
     @move = move
     @texture = Texture.new("lib/raylib_32x32.png")
-    @size = Vec2.new(32, 32)
-    @positions = Array.new(@max) { Vec2.new(random(0 - @size.x, SCREEN_WIDTH), random(0, SCREEN_HEIGHT)) }
+    @positions = Array.new(@max) { Vec2.new(random(0 - @texture.width, SCREEN_WIDTH), random(0, SCREEN_HEIGHT)) }
+    # @src = Rect.new(0, 0, @texture.width.to_f, @texture.height.to_f)
+    # @dest = Rect.new(0, 0, @texture.width.to_f, @texture.height.to_f)
+    # @origin = Vec2.new(0, 0)
     @speeds = Array.new(@max) { Vec2.new(random(-250, 250) / 60, random(-250, 250) / 60) } if move
   end
 
   def update(delta)
     return unless @move
 
-    @positions = @positions.each_with_index.map do |position, i|
-      # @speeds[i].reverse if position.outside_bounds?(@size)
-      position + @speeds[i]
+    @max.times do |i|
+      @positions[i] + @speeds[i]
     end
   end
 
   def draw
-    @positions.each { |position| @texture.draw(position, WHITE) }
+    @max.times do |i|
+      @texture.draw(@positions[i])
+    end
     Draw.rect(0, 0, SCREEN_WIDTH, 40, BLACK)
     Draw.text(format("rects: %i", @max), 220, 10, 20, GREEN)
     Draw.text(format("batched draw calls: %i", 1 + @max / MAX_BATCH_ELEMENTS), 410, 10, 20, RED)

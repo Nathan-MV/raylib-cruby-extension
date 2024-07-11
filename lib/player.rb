@@ -41,7 +41,7 @@ class Player
   end
 
   def draw
-    @texture.draw(@position, WHITE)
+    @texture.draw(@position)
     Draw.text("position: #{@position}", 220, 10, 20, GREEN)
   end
 
