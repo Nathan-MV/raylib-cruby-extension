@@ -57,22 +57,37 @@ static VALUE rb_vec2_move_towards(VALUE self, VALUE target, VALUE max_distance) 
 
 RB_VEC2(rb_vec2_invert, Vector2Invert)
 
-static VALUE rb_vec2_clamp(VALUE self, VALUE min, VALUE max) {
+static VALUE rb_vec2_clamp(int argc, VALUE *argv, VALUE self) {
   Vector2 *vec2 = get_vec2(self);
-  Vector2 *min_vec2 = get_vec2(min);
-  Vector2 *max_vec2 = get_vec2(max);
 
-  *vec2 = Vector2Clamp(*vec2, *min_vec2, *max_vec2);
+  if (argc == 1) {
+    VALUE arg = argv[0];
 
-  return self;
-}
+    if (rb_obj_is_kind_of(arg, rb_cVec2)) {
+      Vector2 *clamp_vec = get_vec2(arg);
+      vec2->x = fmax(0, fmin(clamp_vec->x, vec2->x));
+      vec2->y = fmax(0, fmin(clamp_vec->y, vec2->y));
+    } else {
+      rb_raise(rb_eArgError, "Invalid argument type");
+    }
+  } else if (argc == 2) {
+    VALUE arg1 = argv[0];
+    VALUE arg2 = argv[1];
 
-static VALUE rb_vec2_clamp_value(VALUE self, VALUE min_val, VALUE max_val) {
-  Vector2 *vec2 = get_vec2(self);
-  float min = NUM2DBL(min_val);
-  float max = NUM2DBL(max_val);
-
-  *vec2 = Vector2ClampValue(*vec2, min, max);
+    if (rb_obj_is_kind_of(arg1, rb_cVec2) && rb_obj_is_kind_of(arg2, rb_cVec2)) {
+      Vector2 *min_vec2 = get_vec2(arg1);
+      Vector2 *max_vec2 = get_vec2(arg2);
+      *vec2 = Vector2Clamp(*vec2, *min_vec2, *max_vec2);
+    } else if (RB_FLOAT_TYPE_P(arg1) && RB_FLOAT_TYPE_P(arg2)) {
+      float min = NUM2DBL(arg1);
+      float max = NUM2DBL(arg2);
+      *vec2 = Vector2ClampValue(*vec2, min, max);
+    } else {
+      rb_raise(rb_eArgError, "Invalid argument types");
+    }
+  } else {
+    rb_raise(rb_eArgError, "Invalid number of arguments");
+  }
 
   return self;
 }
@@ -102,25 +117,18 @@ RB_VEC2_SCALAR(rb_vec2_subtract_scalar, Vector2Subtract, Vector2SubtractValue)
 RB_VEC2_SCALAR(rb_vec2_multiply_scalar, Vector2Multiply, Vector2Scale)
 RB_VEC2_SCALAR(rb_vec2_divide_scalar, Vector2Divide, Vector2DivideValue)
 
-static VALUE rb_vec2_reverse(VALUE self) {
+static VALUE rb_vec2_screen_bounds(VALUE self, VALUE size_val) {
   Vector2 *vec2 = get_vec2(self);
-
-  vec2->x *= -1;
-  vec2->y *= -1;
-
-  return self;
-}
-
-static VALUE rb_vec2_outside_bounds(VALUE self, VALUE size_val) {
-  Vector2 *vec2 = get_vec2(self);
-
   double x = vec2->x;
   double y = vec2->y;
   double size;
 
   if (rb_obj_is_kind_of(size_val, rb_cVec2)) {
     Vector2 *size_vec2 = get_vec2(size_val);
-    size = (size_vec2->x + size_vec2->y) / 2;
+    size = fmax(size_vec2->x, size_vec2->y);
+  } else if (rb_obj_is_kind_of(size_val, rb_cTexture)) {
+    Texture *texture = get_texture(size_val);
+    size = fmax(texture->width, texture->height);
   } else {
     size = NUM2DBL(size_val);
   }
@@ -128,12 +136,7 @@ static VALUE rb_vec2_outside_bounds(VALUE self, VALUE size_val) {
   double width = GetScreenWidth();
   double height = GetScreenHeight();
 
-  if ((x + size) > width || (x + size) < 0 ||
-      (y + size) > height || (y + size) < 0) {
-    return Qtrue;
-  }
-
-  return Qfalse;
+  return (x + size > width || x - size < 0 || y + size > height || y - size < 0)? Qtrue : Qfalse;
 }
 
 static VALUE rb_vec2_to_s(VALUE self) {
@@ -164,7 +167,7 @@ extern "C" void initializeVec2() {
 
   rb_define_method(rb_cVec2, "length", rb_vec2_length, 0);
   rb_define_method(rb_cVec2, "length_sqr", rb_vec2_length_sqr, 0);
-  rb_define_method(rb_cVec2, "dot_product", rb_vec2_dot_product, 1);
+  rb_define_method(rb_cVec2, "dot", rb_vec2_dot_product, 1);
   rb_define_method(rb_cVec2, "distance", rb_vec2_distance, 1);
   rb_define_method(rb_cVec2, "distance_sqr", rb_vec2_distance_sqr, 1);
   rb_define_method(rb_cVec2, "angle", rb_vec2_angle, 1);
@@ -175,11 +178,9 @@ extern "C" void initializeVec2() {
   rb_define_method(rb_cVec2, "rotate", rb_vec2_rotate, 1);
   rb_define_method(rb_cVec2, "move_towards", rb_vec2_move_towards, 2);
   rb_define_method(rb_cVec2, "invert", rb_vec2_invert, 0);
-  rb_define_method(rb_cVec2, "clamp", rb_vec2_clamp, 2);
-  rb_define_method(rb_cVec2, "clamp_val", rb_vec2_clamp_value, 2);
-  rb_define_method(rb_cVec2, "equals", rb_vec2_equals, 1);
+  rb_define_method(rb_cVec2, "eql?", rb_vec2_equals, 1);
 
-  rb_define_method(rb_cVec2, "outside_bounds?", rb_vec2_outside_bounds, 1);
-  rb_define_method(rb_cVec2, "reverse", rb_vec2_reverse, 0);
+  rb_define_method(rb_cVec2, "clamp", rb_vec2_clamp, -1);
+  rb_define_method(rb_cVec2, "screen_bounds?", rb_vec2_screen_bounds, 1);
   rb_define_method(rb_cVec2, "to_s", rb_vec2_to_s, 0);
 }

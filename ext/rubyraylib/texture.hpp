@@ -8,7 +8,7 @@
 #include "vec2.hpp"
 #include "rect.hpp"
 
-// Function declarations
+extern VALUE rb_cTexture;
 extern "C" void initializeTexture();
 
 inline Texture* get_texture(VALUE obj) {

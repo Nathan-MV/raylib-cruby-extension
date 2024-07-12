@@ -31,7 +31,8 @@ end
 class Player
   def initialize
     @texture = Texture.new("lib/raylib_32x32.png")
-    @position = Vec2.new(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    @position = Vec2.new(0, 0)
+    @bounds = Vec2.new(SCREEN_WIDTH - @texture.width, SCREEN_HEIGHT - @texture.height)
     @speed = 400
   end
 
@@ -53,7 +54,10 @@ class Player
 
   def update_position(delta)
     direction = Input.movement(:left, :right, :up, :down)
-    @position += direction * @speed * delta
+    boost = Input.down?(:special) ? 2 : 1
+    velocity = @speed * delta * boost
+    new_pos = @position + direction * velocity
+    @position = new_pos.clamp(@bounds)
   end
 end
 
