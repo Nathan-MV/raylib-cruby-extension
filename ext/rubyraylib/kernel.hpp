@@ -5,5 +5,6 @@
 #include "raylib_values.hpp"
 
 extern "C" void initializeKernel();
+float GetRandomFloat(float min, float max);
 
 #endif // KERNEL_H

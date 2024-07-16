@@ -2,6 +2,7 @@
 
 VALUE rb_cVec3;
 
+// RLAPI Vector3 ColorToHSV(Color color);                                      // Get HSV values for a Color, hue [0..360], saturation/value [0..1]
 static VALUE rb_color_from_hsv(VALUE self) {
   Vector3 *vec3 = get_vec3(self);
 

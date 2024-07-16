@@ -25,7 +25,7 @@ RB_METHOD_INT_ARG_STR(rb_set_gamepad_mappings, SetGamepadMappings)
 RB_METHOD_ARG_INT_FLOAT_2(rb_set_gamepad_vibration, SetGamepadVibration)
 
 extern "C" void initializeGamepad() {
-  VALUE rb_mGamepad = rb_define_module("Gamepad");
+  VALUE rb_mGamepad = rb_define_module_under(rb_mInput, "Gamepad");
 
   rb_define_module_function(rb_mGamepad, "available?", rb_gamepad_available, 1);
   rb_define_module_function(rb_mGamepad, "name", rb_gamepad_name, 1);

@@ -18,7 +18,6 @@ group :development do
   gem "rubocop-rspec"
   gem "rubocop-thread_safety"
   gem "ruby-lsp"
-  gem "sorbet-runtime"
   gem "yard"
 end
 

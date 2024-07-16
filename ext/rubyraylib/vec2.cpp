@@ -65,8 +65,12 @@ static VALUE rb_vec2_clamp(int argc, VALUE *argv, VALUE self) {
 
     if (rb_obj_is_kind_of(arg, rb_cVec2)) {
       Vector2 *clamp_vec = get_vec2(arg);
-      vec2->x = fmax(0, fmin(clamp_vec->x, vec2->x));
-      vec2->y = fmax(0, fmin(clamp_vec->y, vec2->y));
+
+      Vector2 result = {
+          std::clamp(vec2->x, 0.0f, clamp_vec->x),
+          std::clamp(vec2->y, 0.0f, clamp_vec->y)
+      };
+      *vec2 = result;
     } else {
       rb_raise(rb_eArgError, "Invalid argument type");
     }
@@ -111,7 +115,6 @@ static Vector2 Vector2DivideValue(Vector2 v, float div)
     return result;
 }
 
-
 RB_VEC2_SCALAR(rb_vec2_add_scalar, Vector2Add, Vector2AddValue)
 RB_VEC2_SCALAR(rb_vec2_subtract_scalar, Vector2Subtract, Vector2SubtractValue)
 RB_VEC2_SCALAR(rb_vec2_multiply_scalar, Vector2Multiply, Vector2Scale)
@@ -121,22 +124,52 @@ static VALUE rb_vec2_screen_bounds(VALUE self, VALUE size_val) {
   Vector2 *vec2 = get_vec2(self);
   double x = vec2->x;
   double y = vec2->y;
-  double size;
+  double size_x;
+  double size_y;
 
   if (rb_obj_is_kind_of(size_val, rb_cVec2)) {
     Vector2 *size_vec2 = get_vec2(size_val);
-    size = fmax(size_vec2->x, size_vec2->y);
+    size_x = size_vec2->x;
+    size_y = size_vec2->y;
   } else if (rb_obj_is_kind_of(size_val, rb_cTexture)) {
     Texture *texture = get_texture(size_val);
-    size = fmax(texture->width, texture->height);
+    size_x = texture->width;
+    size_y = texture->height;
   } else {
-    size = NUM2DBL(size_val);
+    size_x = NUM2DBL(size_val);
+    size_y = NUM2DBL(size_val);
   }
-
   double width = GetScreenWidth();
   double height = GetScreenHeight();
 
-  return (x + size > width || x - size < 0 || y + size > height || y - size < 0)? Qtrue : Qfalse;
+  if (x == 0 || x == (width - size_x) ||
+      y == 0 || y == (height - size_y)) {
+    return Qtrue;
+  }
+
+  return Qfalse;
+}
+
+static VALUE rb_random_movement(VALUE self, VALUE direction, VALUE speed) {
+    Vector2* position = get_vec2(self);
+    Vector2 direction_range = *get_vec2(direction);
+    float speed_value = NUM2DBL(speed);
+
+    Vector2 random_direction = {GetRandomFloat(direction_range.x, direction_range.y), GetRandomFloat(direction_range.x, direction_range.y)};
+    Vector2 velocity = Vector2Scale(random_direction, speed_value);
+    Vector2 delta_direction = Vector2Scale(velocity, GetFrameTime());
+
+    *position = Vector2Add(*position, delta_direction);
+
+    return self;
+}
+
+static VALUE rb_vec2_zero(VALUE self) {
+  Vector2 *vec2 = get_vec2(self);
+
+  bool result = (vec2->x == 0 && vec2->y == 0);
+
+  return result ? Qtrue : Qfalse;
 }
 
 static VALUE rb_vec2_to_s(VALUE self) {
@@ -182,5 +215,7 @@ extern "C" void initializeVec2() {
 
   rb_define_method(rb_cVec2, "clamp", rb_vec2_clamp, -1);
   rb_define_method(rb_cVec2, "screen_bounds?", rb_vec2_screen_bounds, 1);
+  rb_define_method(rb_cVec2, "random_movement", rb_random_movement, 2);
+  rb_define_method(rb_cVec2, "zero?", rb_vec2_zero, 0);
   rb_define_method(rb_cVec2, "to_s", rb_vec2_to_s, 0);
 }

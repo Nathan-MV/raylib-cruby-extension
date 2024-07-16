@@ -1,6 +1,17 @@
 #include "draw.hpp"
 
-// Setup canvas (framebuffer) to start drawing
+// Drawing-related functions
+
+// RLAPI void ClearBackground(Color color);                          // Set background color (framebuffer clear color)
+static VALUE rb_clear_background(VALUE self, VALUE color) {
+  Color *col = get_color(color);
+
+  ClearBackground(*col);
+
+  return Qnil;
+}
+// RLAPI void BeginDrawing(void);                                    // Setup canvas (framebuffer) to start drawing
+// RLAPI void EndDrawing(void);                                      // End canvas drawing and swap buffers (double buffering)
 static VALUE rb_begin_drawing(VALUE self) {
   rb_need_block();
   BeginDrawing();
@@ -9,68 +20,20 @@ static VALUE rb_begin_drawing(VALUE self) {
 
   return Qnil;
 }
-
-// Set background color (framebuffer clear color)
-static VALUE rb_clear_background(VALUE self, VALUE color) {
-  Color *col = get_color(color);
-
-  ClearBackground(*col);
-
-  return Qnil;
-}
-
-// Draw current FPS
-static VALUE rb_draw_fps(VALUE self, VALUE posX, VALUE posY) {
-  int x = NUM2INT(posX);
-  int y = NUM2INT(posY);
-
-  DrawFPS(x, y);
-
-  return Qnil;
-}
-
-// Draw a color-filled rectangle
-static VALUE rb_draw_rectangle(VALUE posX, VALUE posY, VALUE width, VALUE height, VALUE color) {
-  int x = NUM2INT(posX);
-  int y = NUM2INT(posY);
-  int w = NUM2INT(width);
-  int h = NUM2INT(height);
-  Color *col = get_color(color);
-
-  DrawRectangle(x, y, w, h, *col);
-
-  return Qnil;
-}
-
-// Draw a color-filled rectangle (Vector version)
-static VALUE rb_draw_rectangle_v(VALUE position, VALUE size_val, VALUE color) {
-  Vector2 *pos = get_vec2(position);
-  Vector2 *size = get_vec2(size_val);
-  Color *col = get_color(color);
-
-  DrawRectangleV(*pos, *size, *col);
-
-  return Qnil;
-}
-
-static VALUE rb_draw_rect(int argc, VALUE *argv, VALUE self) {
-  switch (argc) {
-  case 3:
-    // void DrawRectangleV(Vector2 position, Vector2 size, Color color);
-    rb_scan_args(argc, argv, "3", &argv[0], &argv[1], &argv[2]);
-    rb_draw_rectangle_v(argv[0], argv[1], argv[2]);
-    break;
-  case 5:
-    rb_scan_args(argc, argv, "5", &argv[0], &argv[1], &argv[2], &argv[3], &argv[4]);
-    rb_draw_rectangle(argv[0], argv[1], argv[2], argv[3], argv[4]);
-    break;
-  default:
-    rb_raise(rb_eArgError, "Wrong number of arguments. Expected 3 or 5.");
-    break;
-  }
-
-  return Qnil;
-}
+// RLAPI void BeginMode2D(Camera2D camera);                          // Begin 2D mode with custom camera (2D)
+// RLAPI void EndMode2D(void);                                       // Ends 2D mode with custom camera
+// RLAPI void BeginMode3D(Camera3D camera);                          // Begin 3D mode with custom camera (3D)
+// RLAPI void EndMode3D(void);                                       // Ends 3D mode and returns to default 2D orthographic mode
+// RLAPI void BeginTextureMode(RenderTexture2D target);              // Begin drawing to render texture
+// RLAPI void EndTextureMode(void);                                  // Ends drawing to render texture
+// RLAPI void BeginShaderMode(Shader shader);                        // Begin custom shader drawing
+// RLAPI void EndShaderMode(void);                                   // End custom shader drawing (use default shader)
+// RLAPI void BeginBlendMode(int mode);                              // Begin blending mode (alpha, additive, multiplied, subtract, custom)
+// RLAPI void EndBlendMode(void);                                    // End blending mode (reset to default: alpha blending)
+// RLAPI void BeginScissorMode(int x, int y, int width, int height); // Begin scissor mode (define screen area for following drawing)
+// RLAPI void EndScissorMode(void);                                  // End scissor mode
+// RLAPI void BeginVrStereoMode(VrStereoConfig config);              // Begin stereo rendering (requires VR simulator)
+// RLAPI void EndVrStereoMode(void);                                 // End stereo rendering (requires VR simulator)
 
 // Draw text using font and additional parameters
 static VALUE rb_draw_text(VALUE self, VALUE text, VALUE posX, VALUE posY, VALUE fontSize, VALUE color) {
@@ -91,7 +54,5 @@ extern "C" void initializeDraw(void) {
 
   rb_define_module_function(rb_cDraw, "begin", rb_begin_drawing, 0);
   rb_define_module_function(rb_cDraw, "clear", rb_clear_background, 1);
-  rb_define_module_function(rb_cDraw, "fps", rb_draw_fps, 2);
-  rb_define_module_function(rb_cDraw, "rect", rb_draw_rect, -1);
   rb_define_module_function(rb_cDraw, "text", rb_draw_text, 5);
 }

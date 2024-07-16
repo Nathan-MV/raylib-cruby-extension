@@ -2,9 +2,11 @@
 #define VEC2_H
 
 #include <new>
+#include <algorithm>
 #include "ruby_values.hpp"
 #include "raylib_values.hpp"
 #include "texture.hpp"
+#include "kernel.hpp"
 
 extern VALUE rb_cVec2;
 extern "C" void initializeVec2();

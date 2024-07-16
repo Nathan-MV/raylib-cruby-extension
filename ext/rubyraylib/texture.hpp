@@ -18,6 +18,13 @@ inline Texture* get_texture(VALUE obj) {
   return texture;
 }
 
+inline RenderTexture2D* get_render_texture(VALUE obj) {
+  RenderTexture2D *texture;
+  Data_Get_Struct(obj, RenderTexture2D, texture);
+
+  return texture;
+}
+
 template <typename T>
 void rb_texture_free(void *ptr) {
   T *obj = static_cast<T *>(ptr);

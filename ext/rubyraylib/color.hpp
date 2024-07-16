@@ -24,14 +24,14 @@ inline Color* get_color(VALUE obj) {
 #define RB_COLOR_GETTER(name, member) \
 static VALUE name(VALUE self) { \
   Color *col = get_color(self); \
-  return INT2NUM(col->member); \
+  return CHR2FIX(col->member); \
 }
 
 // Macro to define setter methods
 #define RB_COLOR_SETTER(name, member) \
 static VALUE name(VALUE self, VALUE value) { \
   Color *col = get_color(self); \
-  col->member = NUM2INT(value); \
+  col->member = NUM2CHR(value); \
   return self; \
 }
 

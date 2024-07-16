@@ -1,19 +1,16 @@
 # frozen_string_literal: true
 
-require 'benchmark'
 require_relative "rubyraylib/version"
 require_relative "rubyraylib/rubyraylib"
+require_relative "rubyraylib/settings"
 
-WHITE = Color.new(255, 255, 255)
-SCREEN_WIDTH = 320 * 2
-SCREEN_HEIGHT = 180 * 2
+require_relative "rubyraylib/core/spritesheet"
+require_relative "rubyraylib/core/timer"
+require_relative "rubyraylib/core/input"
 
-Window.init(SCREEN_WIDTH, SCREEN_HEIGHT, 'Benchmark')
+require_relative "rubyraylib/player"
+require_relative "rubyraylib/raymark"
 
-until Window.should_close?
-  Draw.begin do
-    Draw.clear(WHITE)
-  end
-end
+require_relative "rubyraylib/main"
 
-Window.close
+Game.new(Player).run

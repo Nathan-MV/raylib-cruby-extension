@@ -2,6 +2,7 @@
 
 VALUE rb_cVec4;
 
+// RLAPI Vector4 ColorNormalize(Color color);                                  // Get Color normalized as float [0..1]
 static VALUE rb_color_from_normalized(VALUE self) {
   Vector4 *vec4 = get_vec4(self);
   Color result = ColorFromNormalized(*vec4);

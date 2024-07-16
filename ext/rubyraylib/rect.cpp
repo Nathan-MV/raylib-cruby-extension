@@ -5,68 +5,31 @@ VALUE rb_cRect;
 static VALUE rb_rect_initialize(VALUE self, VALUE x, VALUE y, VALUE width, VALUE height) {
   Rectangle *rect = get_rect(self);
 
-  rect->x = NUM2INT(x);
-  rect->y = NUM2INT(y);
-  rect->width = NUM2INT(y);
-  rect->height = NUM2INT(y);
+  rect->x = NUM2DBL(x);
+  rect->y = NUM2DBL(y);
+  rect->width = NUM2DBL(width);
+  rect->height = NUM2DBL(height);
 
   return self;
 }
 
-static VALUE rb_rect_get_x(VALUE self) {
-  Rectangle *rect = get_rect(self);
+RB_RECT_GETTER(rb_rect_get_x, x)
+RB_RECT_GETTER(rb_rect_get_y, y)
+RB_RECT_GETTER(rb_rect_get_width, width)
+RB_RECT_GETTER(rb_rect_get_height, height)
+RB_RECT_SETTER(rb_rect_set_x, x)
+RB_RECT_SETTER(rb_rect_set_y, y)
+RB_RECT_SETTER(rb_rect_set_width, width)
+RB_RECT_SETTER(rb_rect_set_height, height)
 
-  return INT2NUM(rect->x);
-}
+// Draw a color-filled rectangle (Rectangle version)
+static VALUE rb_draw_rectangle_rec(VALUE self, VALUE color) {
+  Rectangle *rec = get_rect(self);
+  Color *col = get_color(color);
 
-static VALUE rb_rect_get_y(VALUE self) {
-  Rectangle *rect = get_rect(self);
+  DrawRectangleRec(*rec, *col);
 
-  return INT2NUM(rect->y);
-}
-
-static VALUE rb_rect_get_width(VALUE self) {
-  Rectangle *rect = get_rect(self);
-
-  return INT2NUM(rect->width);
-}
-
-static VALUE rb_rect_get_height(VALUE self) {
-  Rectangle *rect = get_rect(self);
-
-  return INT2NUM(rect->height);
-}
-
-static VALUE rb_rect_set_x(VALUE self, VALUE value) {
-  Rectangle *rect = get_rect(self);
-
-  rect->x = NUM2INT(value);
-
-  return self;
-}
-
-static VALUE rb_rect_set_y(VALUE self, VALUE value) {
-  Rectangle *rect = get_rect(self);
-
-  rect->y = NUM2INT(value);
-
-  return self;
-}
-
-static VALUE rb_rect_set_width(VALUE self, VALUE value) {
-  Rectangle *rect = get_rect(self);
-
-  rect->width = NUM2INT(value);
-
-  return self;
-}
-
-static VALUE rb_rect_set_height(VALUE self, VALUE value) {
-  Rectangle *rect = get_rect(self);
-
-  rect->height = NUM2INT(value);
-
-  return self;
+  return Qnil;
 }
 
 extern "C" void initializeRect() {
@@ -78,8 +41,11 @@ extern "C" void initializeRect() {
   rb_define_method(rb_cRect, "y", rb_rect_get_y, 0);
   rb_define_method(rb_cRect, "width", rb_rect_get_width, 0);
   rb_define_method(rb_cRect, "height", rb_rect_get_height, 0);
+
   rb_define_method(rb_cRect, "x=", rb_rect_set_x, 1);
   rb_define_method(rb_cRect, "y=", rb_rect_set_y, 1);
   rb_define_method(rb_cRect, "width=", rb_rect_set_width, 1);
   rb_define_method(rb_cRect, "height=", rb_rect_set_height, 1);
+
+  rb_define_method(rb_cRect, "draw", rb_draw_rectangle_rec, 1);
 }

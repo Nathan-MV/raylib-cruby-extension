@@ -12,7 +12,9 @@ task :clean_raylib do
 end
 
 # Task to compile Raylib
+# PLATFORM=PLATFORM_DESKTOP_SDL
 # PLATFORM=PLATFORM_DESKTOP_RGFW
+# USE_WAYLAND_DISPLAY=TRUE
 task :compile_raylib do
   sh "make PLATFORM=PLATFORM_DESKTOP -C third_party/raylib/src"
 end

@@ -20,6 +20,9 @@
 #include "mouse.hpp"
 #include "gamepad.hpp"
 #include "touch.hpp"
+#include "gestures.hpp"
+#include "texture_atlas.hpp"
+#include "shapes.hpp"
 
 extern "C" {
   void Init_rubyraylib(void);

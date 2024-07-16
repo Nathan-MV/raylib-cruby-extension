@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rubyraylib (5.1.pre.dev)
+    rubyraylib (5.5.pre.dev)
 
 GEM
   remote: https://rubygems.org/
@@ -99,7 +99,6 @@ DEPENDENCIES
   ruby-lsp
   rubyraylib!
   simplecov
-  sorbet-runtime
   yard
 
 BUNDLED WITH
