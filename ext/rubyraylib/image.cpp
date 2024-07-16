@@ -111,6 +111,55 @@ static VALUE rb_unload_image(VALUE self) {
 // RLAPI void ImageDrawText(Image *dst, const char *text, int posX, int posY, int fontSize, Color color);   // Draw text (using default font) within an image (destination)
 // RLAPI void ImageDrawTextEx(Image *dst, Font font, const char *text, Vector2 position, float fontSize, float spacing, Color tint); // Draw text (custom sprite font) within an image (destination)
 
+// Pixel formats
+// NOTE: Support depends on OpenGL version and platform
+// typedef enum {
+//     PIXELFORMAT_UNCOMPRESSED_GRAYSCALE = 1, // 8 bit per pixel (no alpha)
+//     PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA,    // 8*2 bpp (2 channels)
+//     PIXELFORMAT_UNCOMPRESSED_R5G6B5,        // 16 bpp
+//     PIXELFORMAT_UNCOMPRESSED_R8G8B8,        // 24 bpp
+//     PIXELFORMAT_UNCOMPRESSED_R5G5B5A1,      // 16 bpp (1 bit alpha)
+//     PIXELFORMAT_UNCOMPRESSED_R4G4B4A4,      // 16 bpp (4 bit alpha)
+//     PIXELFORMAT_UNCOMPRESSED_R8G8B8A8,      // 32 bpp
+//     PIXELFORMAT_UNCOMPRESSED_R32,           // 32 bpp (1 channel - float)
+//     PIXELFORMAT_UNCOMPRESSED_R32G32B32,     // 32*3 bpp (3 channels - float)
+//     PIXELFORMAT_UNCOMPRESSED_R32G32B32A32,  // 32*4 bpp (4 channels - float)
+//     PIXELFORMAT_UNCOMPRESSED_R16,           // 16 bpp (1 channel - half float)
+//     PIXELFORMAT_UNCOMPRESSED_R16G16B16,     // 16*3 bpp (3 channels - half float)
+//     PIXELFORMAT_UNCOMPRESSED_R16G16B16A16,  // 16*4 bpp (4 channels - half float)
+//     PIXELFORMAT_COMPRESSED_DXT1_RGB,        // 4 bpp (no alpha)
+//     PIXELFORMAT_COMPRESSED_DXT1_RGBA,       // 4 bpp (1 bit alpha)
+//     PIXELFORMAT_COMPRESSED_DXT3_RGBA,       // 8 bpp
+//     PIXELFORMAT_COMPRESSED_DXT5_RGBA,       // 8 bpp
+//     PIXELFORMAT_COMPRESSED_ETC1_RGB,        // 4 bpp
+//     PIXELFORMAT_COMPRESSED_ETC2_RGB,        // 4 bpp
+//     PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA,   // 8 bpp
+//     PIXELFORMAT_COMPRESSED_PVRT_RGB,        // 4 bpp
+//     PIXELFORMAT_COMPRESSED_PVRT_RGBA,       // 4 bpp
+//     PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA,   // 8 bpp
+//     PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA    // 2 bpp
+// } PixelFormat;
+
+// Texture parameters: filter mode
+// NOTE 1: Filtering considers mipmaps if available in the texture
+// NOTE 2: Filter is accordingly set for minification and magnification
+// typedef enum {
+//     TEXTURE_FILTER_POINT = 0,               // No filter, just pixel approximation
+//     TEXTURE_FILTER_BILINEAR,                // Linear filtering
+//     TEXTURE_FILTER_TRILINEAR,               // Trilinear filtering (linear with mipmaps)
+//     TEXTURE_FILTER_ANISOTROPIC_4X,          // Anisotropic filtering 4x
+//     TEXTURE_FILTER_ANISOTROPIC_8X,          // Anisotropic filtering 8x
+//     TEXTURE_FILTER_ANISOTROPIC_16X,         // Anisotropic filtering 16x
+// } TextureFilter;
+
+// Texture parameters: wrap mode
+// typedef enum {
+//     TEXTURE_WRAP_REPEAT = 0,                // Repeats texture in tiled mode
+//     TEXTURE_WRAP_CLAMP,                     // Clamps texture to edge pixel in tiled mode
+//     TEXTURE_WRAP_MIRROR_REPEAT,             // Mirrors and repeats the texture in tiled mode
+//     TEXTURE_WRAP_MIRROR_CLAMP               // Mirrors and clamps to border the texture in tiled mode
+// } TextureWrap;
+
 extern "C" void initializeImage() {
   rb_cImage = rb_define_class("Image", rb_cObject);
   rb_define_alloc_func(rb_cImage, rb_image_alloc<Image>);

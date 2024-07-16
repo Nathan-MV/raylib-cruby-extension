@@ -132,15 +132,8 @@ RB_METHOD_FLOAT(rb_get_time, GetTime)
 // RLAPI int GetFPS(void);                                           // Get current FPS
 RB_METHOD_INT(rb_get_fps, GetFPS)
 
-// Draw current FPS
-static VALUE rb_draw_fps(VALUE self, VALUE posX, VALUE posY) {
-  int x = NUM2INT(posX);
-  int y = NUM2INT(posY);
-
-  DrawFPS(x, y);
-
-  return Qnil;
-}
+// RLAPI void DrawFPS(int posX, int posY);                                                     // Draw current FPS
+RB_METHOD_ARG_INT_2(rb_draw_fps, DrawFPS)
 
 // Custom frame control functions
 // NOTE: Those functions are intended for advanced users that want full control

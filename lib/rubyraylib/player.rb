@@ -2,20 +2,17 @@
 
 class Player
   def initialize
-    @sprite = SpriteSheet.new("lib/rubyraylib/Actor1.png", :character, Vec2.new(48, 48))
+    @sprite = SpriteSheet.new("lib/rubyraylib/Actor1.png", :character)
     @position = Vec2.new(0, 0)
-    @bounds = Vec2.new(SCREEN_WIDTH - 48, SCREEN_HEIGHT - 48)
+    @bounds = Vec2.new(SCREEN_WIDTH - @sprite.size.x, SCREEN_HEIGHT - @sprite.size.y)
     @speed = 200
-    @last_direction = :down
-    @last_action = :still
-    @timer = Timer.new(0.4)
   end
 
   def update(delta)
     update_position(delta)
-    update_frame(delta)
-    @sprite.direction = @last_direction
-    @sprite.action = @last_action
+    @sprite.update(delta) unless @direction.zero?
+    @sprite.direction = Input.last_direction if Input.last_direction
+    @sprite.action = :still if @direction.zero?
   end
 
   def draw
@@ -31,22 +28,8 @@ class Player
 
   def update_position(delta)
     @direction = Input.movement(:left, :right, :up, :down)
-    @last_direction = Input.last_direction if Input.last_direction
     boost = Input.down?(:special) ? 2 : 1
-    velocity = @direction * @speed * delta * boost
-
-    @position += velocity
+    @position += @direction * @speed * delta * boost
     @position.clamp(@bounds)
-  end
-
-  def update_frame(delta)
-    if @direction.zero?
-      @last_action = :still
-      @timer.reset
-    else
-      @timer.update(delta)
-      @last_action = @timer.elapsed < @timer.interval ? :walking1 : :walking2
-      @timer.reset if @timer.elapsed?(2)
-    end
   end
 end

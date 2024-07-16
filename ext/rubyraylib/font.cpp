@@ -14,3 +14,10 @@
 // RLAPI void UnloadFontData(GlyphInfo *glyphs, int glyphCount);                               // Unload font chars info data (RAM)
 // RLAPI void UnloadFont(Font font);                                                           // Unload font from GPU memory (VRAM)
 // RLAPI bool ExportFontAsCode(Font font, const char *fileName);                               // Export font as code file, returns true on success
+
+// Font type, defines generation method
+// typedef enum {
+//     FONT_DEFAULT = 0,               // Default font generation, anti-aliased
+//     FONT_BITMAP,                    // Bitmap font generation, no anti-aliasing
+//     FONT_SDF                        // SDF font generation, requires external shader
+// } FontType;

@@ -30,11 +30,7 @@ class Timer
     @running = true
   end
 
-  def elapsed?(time = 1)
-    @elapsed >= @interval * time
-  end
-
-  def interval_passed?
+  def ready?
     if @elapsed >= @interval
       reset
       true

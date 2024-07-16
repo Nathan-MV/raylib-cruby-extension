@@ -32,8 +32,18 @@ static VALUE rb_begin_drawing(VALUE self) {
 // RLAPI void EndBlendMode(void);                                    // End blending mode (reset to default: alpha blending)
 // RLAPI void BeginScissorMode(int x, int y, int width, int height); // Begin scissor mode (define screen area for following drawing)
 // RLAPI void EndScissorMode(void);                                  // End scissor mode
-// RLAPI void BeginVrStereoMode(VrStereoConfig config);              // Begin stereo rendering (requires VR simulator)
-// RLAPI void EndVrStereoMode(void);                                 // End stereo rendering (requires VR simulator)
+
+// Color blending modes (pre-defined)
+// typedef enum {
+//     BLEND_ALPHA = 0,                // Blend textures considering alpha (default)
+//     BLEND_ADDITIVE,                 // Blend textures adding colors
+//     BLEND_MULTIPLIED,               // Blend textures multiplying colors
+//     BLEND_ADD_COLORS,               // Blend textures adding colors (alternative)
+//     BLEND_SUBTRACT_COLORS,          // Blend textures subtracting colors (alternative)
+//     BLEND_ALPHA_PREMULTIPLY,        // Blend premultiplied textures considering alpha
+//     BLEND_CUSTOM,                   // Blend textures using custom src/dst factors (use rlSetBlendFactors())
+//     BLEND_CUSTOM_SEPARATE           // Blend textures using custom rgb/alpha separate src/dst factors (use rlSetBlendFactorsSeparate())
+// } BlendMode;
 
 // Draw text using font and additional parameters
 static VALUE rb_draw_text(VALUE self, VALUE text, VALUE posX, VALUE posY, VALUE fontSize, VALUE color) {
