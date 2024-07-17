@@ -1,6 +1,9 @@
 # Ruby C Extension for Raylib
 
-You can check our actions and download the artifact or compile it manually, currently Windows is not being supported because Raylib used Rectangle, ShowCursor and CloseWindow which is being included in Windows headers thanks to Ruby on the MSYS2 environment
+## Instalation
+
+If possible try the artifacts on the CI instead of compiling and give me a heads up if it don't work out of the box
+https://github.com/Nathan-MV/raylib-cruby-extension/actions
 
 ## Compilation
 

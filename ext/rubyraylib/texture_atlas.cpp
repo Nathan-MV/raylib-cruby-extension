@@ -28,9 +28,9 @@ VALUE texture_atlas_initialize(VALUE self, VALUE width, VALUE height) {
 
 VALUE texture_atlas_add_texture(VALUE self, VALUE texture, VALUE rect) {
   auto *atlas = get_texture_atlas(self);
-  Rectangle newRect = *get_rect(rect);
-  Rectangle *newRects = static_cast<Rectangle *>(
-      REALLOC_N(atlas->rects, Rectangle, atlas->count + 1));
+  RayRectangle newRect = *get_rect(rect);
+  RayRectangle *newRects = static_cast<RayRectangle *>(
+      REALLOC_N(atlas->rects, RayRectangle, atlas->count + 1));
 
   if (!newRects)
     rb_raise(rb_eNoMemError, "Failed to allocate memory for texture rects");
@@ -38,7 +38,7 @@ VALUE texture_atlas_add_texture(VALUE self, VALUE texture, VALUE rect) {
   atlas->rects = newRects;
   atlas->rects[atlas->count++] = newRect;
 
-  Rectangle source = {0, 0, newRect.width,
+  RayRectangle source = {0, 0, newRect.width,
                       newRect.height};
   Vector2 origin = {newRect.width / 2.0f,
                     newRect.height / 2.0f};
@@ -67,7 +67,7 @@ VALUE texture_atlas_draw_index(VALUE self, VALUE index, VALUE position) {
   if (idx < 0 || idx >= atlas->count) {
     rb_raise(rb_eArgError, "Index out of bounds");
   }
-  Rectangle rect = atlas->rects[idx];
+  RayRectangle rect = atlas->rects[idx];
   Vector2 pos = *get_vec2(position);
   DrawTextureRec(atlas->texture.texture, rect, pos, WHITE);
   return self;

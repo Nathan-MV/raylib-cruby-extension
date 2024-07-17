@@ -31,7 +31,7 @@ static VALUE rb_unload_texture(VALUE self) {
   return Qnil;
 }
 // RLAPI void UpdateTexture(Texture2D texture, const void *pixels);                                         // Update GPU texture with new data
-// RLAPI void UpdateTextureRec(Texture2D texture, Rectangle rec, const void *pixels);                       // Update GPU texture rectangle with new data
+// RLAPI void UpdateTextureRec(Texture2D texture, RayRectangle rec, const void *pixels);                       // Update GPU texture rectangle with new data
 
 // Texture configuration functions
 // RLAPI void GenTextureMipmaps(Texture2D *texture);                                                        // Generate GPU mipmaps for a texture
@@ -60,7 +60,7 @@ static VALUE rb_draw_texture_ex(int argc, VALUE *argv, VALUE self) {
 // Draw a part of a texture defined by a rectangle
 static VALUE rb_draw_texture_rec(VALUE self, VALUE source, VALUE position, VALUE tint) {
   Texture *tex = get_texture(self);
-  Rectangle *src = get_rect(source);
+  RayRectangle *src = get_rect(source);
   Vector2 *pos = get_vec2(position);
   Color *col = get_color(tint);
 
@@ -75,8 +75,8 @@ static VALUE rb_draw_texture_pro(int argc, VALUE *argv, VALUE self) {
     rb_scan_args(argc, argv, "14", &source, &dest, &origin, &rotation, &tint);
 
     Texture* tex = get_texture(self);
-    Rectangle src = *get_rect(source);
-    Rectangle dst = !NIL_P(dest) ? *get_rect(dest) : (Rectangle){ src.x, src.y, fabsf(src.width), fabsf(src.height) };
+    RayRectangle src = *get_rect(source);
+    RayRectangle dst = !NIL_P(dest) ? *get_rect(dest) : (RayRectangle){ src.x, src.y, fabsf(src.width), fabsf(src.height) };
     Vector2 orig = !NIL_P(origin) ? *get_vec2(origin) : (Vector2){ 0.0f, 0.0f };
     float rot = NIL_P(rotation) ? 0 : NUM2DBL(rotation);
     Color col = !NIL_P(tint) ? *get_color(tint) : (Color){ 255, 255, 255, 255 };
@@ -85,7 +85,7 @@ static VALUE rb_draw_texture_pro(int argc, VALUE *argv, VALUE self) {
 
     return Qnil;
 }
-// RLAPI void DrawTextureNPatch(Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint); // Draws a texture (or part of it) that stretches or shrinks nicely
+// RLAPI void DrawTextureNPatch(Texture2D texture, NPatchInfo nPatchInfo, RayRectangle dest, Vector2 origin, float rotation, Color tint); // Draws a texture (or part of it) that stretches or shrinks nicely
 
 // Pixel formats
 // NOTE: Support depends on OpenGL version and platform

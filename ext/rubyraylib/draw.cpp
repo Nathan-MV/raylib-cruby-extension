@@ -53,7 +53,7 @@ static VALUE rb_draw_text(VALUE self, VALUE text, VALUE posX, VALUE posY, VALUE 
   int size = NUM2INT(fontSize);
   Color *col = get_color(color);
 
-  DrawText(txt, x, y, size, *col);
+  RayDrawText(txt, x, y, size, *col);
 
   return Qnil;
 }

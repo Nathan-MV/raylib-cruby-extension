@@ -17,7 +17,7 @@ if /linux/i =~ RUBY_PLATFORM
 elsif /darwin/i =~ RUBY_PLATFORM
   $LDFLAGS << " -lraylib -lraygui -lreasings -framework CoreVideo -framework IOKit -framework Cocoa -framework GLUT -framework OpenGL"
 else
-  $LDFLAGS << " -lraylib -lraygui -lreasings "
+  $LDFLAGS << " -lraylib -lraygui -lreasings -lgdi32 -lwinmm"
 end
 
 # Debugging information

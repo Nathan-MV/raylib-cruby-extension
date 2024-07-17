@@ -11,7 +11,7 @@
 
 struct TextureAtlas {
   RenderTexture2D texture;
-  Rectangle *rects;
+  RayRectangle *rects;
   int count;
 
   TextureAtlas() : rects(nullptr), count(0) {} // Default values

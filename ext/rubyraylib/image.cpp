@@ -8,12 +8,12 @@ VALUE rb_cImage;
 
 // Image loading functions
 // NOTE: These functions do not require GPU access
-// RLAPI Image LoadImage(const char *fileName);                                                             // Load image from file into CPU memory (RAM)
+// RLAPI Image RayLoadImage(const char *fileName);                                                             // Load image from file into CPU memory (RAM)
 static VALUE rb_image_initialize(VALUE self, VALUE fileName) {
   Image *img = get_image(self);
   const char *name = StringValueCStr(fileName);
 
-  *img = LoadImage(name);
+  *img = RayLoadImage(name);
 
   return self;
 }
@@ -50,13 +50,13 @@ static VALUE rb_unload_image(VALUE self) {
 
 // Image manipulation functions
 // RLAPI Image ImageCopy(Image image);                                                                      // Create an image duplicate (useful for transformations)
-// RLAPI Image ImageFromImage(Image image, Rectangle rec);                                                  // Create an image from another image piece
+// RLAPI Image ImageFromImage(Image image, RayRectangle rec);                                                  // Create an image from another image piece
 // RLAPI Image ImageFromChannel(Image image, int selectedChannel);                                          // Create an image from a selected channel of another image (GRAYSCALE)
 // RLAPI Image ImageText(const char *text, int fontSize, Color color);                                      // Create an image from text (default font)
 // RLAPI Image ImageTextEx(Font font, const char *text, float fontSize, float spacing, Color tint);         // Create an image from text (custom sprite font)
 // RLAPI void ImageFormat(Image *image, int newFormat);                                                     // Convert image data to desired format
 // RLAPI void ImageToPOT(Image *image, Color fill);                                                         // Convert image to POT (power-of-two)
-// RLAPI void ImageCrop(Image *image, Rectangle crop);                                                      // Crop an image to a defined rectangle
+// RLAPI void ImageCrop(Image *image, RayRectangle crop);                                                      // Crop an image to a defined rectangle
 // RLAPI void ImageAlphaCrop(Image *image, float threshold);                                                // Crop image depending on alpha value
 // RLAPI void ImageAlphaClear(Image *image, Color color, float threshold);                                  // Clear alpha channel to desired color
 // RLAPI void ImageAlphaMask(Image *image, Image alphaMask);                                                // Apply alpha mask to image
@@ -83,7 +83,7 @@ static VALUE rb_unload_image(VALUE self) {
 // RLAPI Color *LoadImagePalette(Image image, int maxPaletteSize, int *colorCount);                         // Load colors palette from image as a Color array (RGBA - 32bit)
 // RLAPI void UnloadImageColors(Color *colors);                                                             // Unload color data loaded with LoadImageColors()
 // RLAPI void UnloadImagePalette(Color *colors);                                                            // Unload colors palette loaded with LoadImagePalette()
-// RLAPI Rectangle GetImageAlphaBorder(Image image, float threshold);                                       // Get image alpha border rectangle
+// RLAPI RayRectangle GetImageAlphaBorder(Image image, float threshold);                                       // Get image alpha border rectangle
 // RLAPI Color GetImageColor(Image image, int x, int y);                                                    // Get image pixel color at (x, y) position
 
 // Image drawing functions
@@ -100,14 +100,14 @@ static VALUE rb_unload_image(VALUE self) {
 // RLAPI void ImageDrawCircleLinesV(Image *dst, Vector2 center, int radius, Color color);                   // Draw circle outline within an image (Vector version)
 // RLAPI void ImageDrawRectangle(Image *dst, int posX, int posY, int width, int height, Color color);       // Draw rectangle within an image
 // RLAPI void ImageDrawRectangleV(Image *dst, Vector2 position, Vector2 size, Color color);                 // Draw rectangle within an image (Vector version)
-// RLAPI void ImageDrawRectangleRec(Image *dst, Rectangle rec, Color color);                                // Draw rectangle within an image
-// RLAPI void ImageDrawRectangleLines(Image *dst, Rectangle rec, int thick, Color color);                   // Draw rectangle lines within an image
+// RLAPI void ImageDrawRectangleRec(Image *dst, RayRectangle rec, Color color);                                // Draw rectangle within an image
+// RLAPI void ImageDrawRectangleLines(Image *dst, RayRectangle rec, int thick, Color color);                   // Draw rectangle lines within an image
 // RLAPI void ImageDrawTriangle(Image *dst, Vector2 v1, Vector2 v2, Vector2 v3, Color color);               // Draw triangle within an image
 // RLAPI void ImageDrawTriangleEx(Image *dst, Vector2 v1, Vector2 v2, Vector2 v3, Color c1, Color c2, Color c3); // Draw triangle with interpolated colors within an image
 // RLAPI void ImageDrawTriangleLines(Image *dst, Vector2 v1, Vector2 v2, Vector2 v3, Color color);          // Draw triangle outline within an image
 // RLAPI void ImageDrawTriangleFan(Image *dst, Vector2 *points, int pointCount, Color color);               // Draw a triangle fan defined by points within an image (first vertex is the center)
 // RLAPI void ImageDrawTriangleStrip(Image *dst, Vector2 *points, int pointCount, Color color);             // Draw a triangle strip defined by points within an image
-// RLAPI void ImageDraw(Image *dst, Image src, Rectangle srcRec, Rectangle dstRec, Color tint);             // Draw a source image within a destination image (tint applied to source)
+// RLAPI void ImageDraw(Image *dst, Image src, RayRectangle srcRec, RayRectangle dstRec, Color tint);             // Draw a source image within a destination image (tint applied to source)
 // RLAPI void ImageDrawText(Image *dst, const char *text, int posX, int posY, int fontSize, Color color);   // Draw text (using default font) within an image (destination)
 // RLAPI void ImageDrawTextEx(Image *dst, Font font, const char *text, Vector2 position, float fontSize, float spacing, Color tint); // Draw text (custom sprite font) within an image (destination)
 

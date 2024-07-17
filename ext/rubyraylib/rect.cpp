@@ -3,7 +3,7 @@
 VALUE rb_cRect;
 
 static VALUE rb_rect_initialize(VALUE self, VALUE x, VALUE y, VALUE width, VALUE height) {
-  Rectangle *rect = get_rect(self);
+  RayRectangle *rect = get_rect(self);
 
   rect->x = NUM2DBL(x);
   rect->y = NUM2DBL(y);
@@ -22,9 +22,9 @@ RB_RECT_SETTER(rb_rect_set_y, y)
 RB_RECT_SETTER(rb_rect_set_width, width)
 RB_RECT_SETTER(rb_rect_set_height, height)
 
-// Draw a color-filled rectangle (Rectangle version)
+// Draw a color-filled rectangle (RayRectangle version)
 static VALUE rb_draw_rectangle_rec(VALUE self, VALUE color) {
-  Rectangle *rec = get_rect(self);
+  RayRectangle *rec = get_rect(self);
   Color *col = get_color(color);
 
   DrawRectangleRec(*rec, *col);
@@ -34,7 +34,7 @@ static VALUE rb_draw_rectangle_rec(VALUE self, VALUE color) {
 
 extern "C" void initializeRect() {
   rb_cRect = rb_define_class("Rect", rb_cObject);
-  rb_define_alloc_func(rb_cRect, rb_object_alloc<Rectangle>);
+  rb_define_alloc_func(rb_cRect, rb_object_alloc<RayRectangle>);
 
   rb_define_method(rb_cRect, "initialize", rb_rect_initialize, 4);
   rb_define_method(rb_cRect, "x", rb_rect_get_x, 0);

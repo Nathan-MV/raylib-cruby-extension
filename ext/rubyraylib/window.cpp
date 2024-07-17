@@ -6,8 +6,8 @@ static VALUE rb_init_window(VALUE self, VALUE width, VALUE height, VALUE title) 
 
   return Qnil;
 }
-// RLAPI void CloseWindow(void);                                     // Close window and unload OpenGL context
-RB_METHOD(rb_close_window, CloseWindow)
+// RLAPI void RayCloseWindow(void);                                     // Close window and unload OpenGL context
+RB_METHOD(rb_close_window, RayCloseWindow)
 // RLAPI bool WindowShouldClose(void);                               // Check if application should close (KEY_ESCAPE pressed or windows close icon clicked)
 RB_METHOD_BOOL(rb_window_should_close, WindowShouldClose)
 // RLAPI bool IsWindowReady(void);                                   // Check if window has been initialized successfully
@@ -109,8 +109,8 @@ RB_METHOD(rb_enable_event_waiting, EnableEventWaiting)
 RB_METHOD(rb_disable_event_waiting, DisableEventWaiting)
 
 // Cursor-related functions
-// RLAPI void ShowCursor(void);                                      // Shows cursor
-RB_METHOD(rb_show_cursor, ShowCursor)
+// RLAPI void RayShowCursor(void);                                      // Shows cursor
+RB_METHOD(rb_show_cursor, RayShowCursor)
 // RLAPI void HideCursor(void);                                      // Hides cursor
 RB_METHOD(rb_hide_cursor, HideCursor)
 // RLAPI bool IsCursorHidden(void);                                  // Check if cursor is not visible

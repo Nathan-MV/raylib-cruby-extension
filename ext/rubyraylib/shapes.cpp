@@ -6,9 +6,9 @@
 // Set texture and rectangle to be used on shapes drawing
 // NOTE: It can be useful when using basic shapes and one single font,
 // defining a font char white rectangle would allow drawing everything in a single draw call
-// RLAPI void SetShapesTexture(Texture2D texture, Rectangle source);       // Set texture and rectangle to be used on shapes drawing
+// RLAPI void SetShapesTexture(Texture2D texture, RayRectangle source);       // Set texture and rectangle to be used on shapes drawing
 // RLAPI Texture2D GetShapesTexture(void);                                 // Get texture that is used for shapes drawing
-// RLAPI Rectangle GetShapesTextureRectangle(void);                        // Get texture source rectangle that is used for shapes drawing
+// RLAPI RayRectangle GetShapesTextureRectangle(void);                        // Get texture source rectangle that is used for shapes drawing
 
 // Basic shapes drawing functions
 // RLAPI void DrawPixel(int posX, int posY, Color color);                                                   // Draw a pixel
@@ -52,16 +52,16 @@ static VALUE rb_draw_rectangle_v(VALUE self, VALUE position, VALUE size, VALUE c
 
   return Qnil;
 }
-// RLAPI void DrawRectangleRec(Rectangle rec, Color color);                                                 // Draw a color-filled rectangle
-// RLAPI void DrawRectanglePro(Rectangle rec, Vector2 origin, float rotation, Color color);                 // Draw a color-filled rectangle with pro parameters
+// RLAPI void DrawRectangleRec(RayRectangle rec, Color color);                                                 // Draw a color-filled rectangle
+// RLAPI void DrawRectanglePro(RayRectangle rec, Vector2 origin, float rotation, Color color);                 // Draw a color-filled rectangle with pro parameters
 // RLAPI void DrawRectangleGradientV(int posX, int posY, int width, int height, Color color1, Color color2);// Draw a vertical-gradient-filled rectangle
 // RLAPI void DrawRectangleGradientH(int posX, int posY, int width, int height, Color color1, Color color2);// Draw a horizontal-gradient-filled rectangle
-// RLAPI void DrawRectangleGradientEx(Rectangle rec, Color col1, Color col2, Color col3, Color col4);       // Draw a gradient-filled rectangle with custom vertex colors
+// RLAPI void DrawRectangleGradientEx(RayRectangle rec, Color col1, Color col2, Color col3, Color col4);       // Draw a gradient-filled rectangle with custom vertex colors
 // RLAPI void DrawRectangleLines(int posX, int posY, int width, int height, Color color);                   // Draw rectangle outline
-// RLAPI void DrawRectangleLinesEx(Rectangle rec, float lineThick, Color color);                            // Draw rectangle outline with extended parameters
-// RLAPI void DrawRectangleRounded(Rectangle rec, float roundness, int segments, Color color);              // Draw rectangle with rounded edges
-// RLAPI void DrawRectangleRoundedLines(Rectangle rec, float roundness, int segments, Color color);         // Draw rectangle lines with rounded edges
-// RLAPI void DrawRectangleRoundedLinesEx(Rectangle rec, float roundness, int segments, float lineThick, Color color); // Draw rectangle with rounded edges outline
+// RLAPI void DrawRectangleLinesEx(RayRectangle rec, float lineThick, Color color);                            // Draw rectangle outline with extended parameters
+// RLAPI void DrawRectangleRounded(RayRectangle rec, float roundness, int segments, Color color);              // Draw rectangle with rounded edges
+// RLAPI void DrawRectangleRoundedLines(RayRectangle rec, float roundness, int segments, Color color);         // Draw rectangle lines with rounded edges
+// RLAPI void DrawRectangleRoundedLinesEx(RayRectangle rec, float roundness, int segments, float lineThick, Color color); // Draw rectangle with rounded edges outline
 // RLAPI void DrawTriangle(Vector2 v1, Vector2 v2, Vector2 v3, Color color);                                // Draw a color-filled triangle (vertex in counter-clockwise order!)
 // RLAPI void DrawTriangleLines(Vector2 v1, Vector2 v2, Vector2 v3, Color color);                           // Draw triangle outline (vertex in counter-clockwise order!)
 // RLAPI void DrawTriangleFan(const Vector2 *points, int pointCount, Color color);                          // Draw a triangle fan defined by points (first vertex is the center)
@@ -90,17 +90,17 @@ static VALUE rb_draw_rectangle_v(VALUE self, VALUE position, VALUE size, VALUE c
 // RLAPI Vector2 GetSplinePointBezierCubic(Vector2 p1, Vector2 c2, Vector2 c3, Vector2 p4, float t);        // Get (evaluate) spline point: Cubic Bezier
 
 // Basic shapes collision detection functions
-// RLAPI bool CheckCollisionRecs(Rectangle rec1, Rectangle rec2);                                           // Check collision between two rectangles
+// RLAPI bool CheckCollisionRecs(RayRectangle rec1, RayRectangle rec2);                                           // Check collision between two rectangles
 // RLAPI bool CheckCollisionCircles(Vector2 center1, float radius1, Vector2 center2, float radius2);        // Check collision between two circles
-// RLAPI bool CheckCollisionCircleRec(Vector2 center, float radius, Rectangle rec);                         // Check collision between circle and rectangle
-// RLAPI bool CheckCollisionPointRec(Vector2 point, Rectangle rec);                                         // Check if point is inside rectangle
+// RLAPI bool CheckCollisionCircleRec(Vector2 center, float radius, RayRectangle rec);                         // Check collision between circle and rectangle
+// RLAPI bool CheckCollisionPointRec(Vector2 point, RayRectangle rec);                                         // Check if point is inside rectangle
 // RLAPI bool CheckCollisionPointCircle(Vector2 point, Vector2 center, float radius);                       // Check if point is inside circle
 // RLAPI bool CheckCollisionPointTriangle(Vector2 point, Vector2 p1, Vector2 p2, Vector2 p3);               // Check if point is inside a triangle
 // RLAPI bool CheckCollisionPointPoly(Vector2 point, const Vector2 *points, int pointCount);                // Check if point is within a polygon described by array of vertices
 // RLAPI bool CheckCollisionLines(Vector2 startPos1, Vector2 endPos1, Vector2 startPos2, Vector2 endPos2, Vector2 *collisionPoint); // Check the collision between two lines defined by two points each, returns collision point by reference
 // RLAPI bool CheckCollisionPointLine(Vector2 point, Vector2 p1, Vector2 p2, int threshold);                // Check if point belongs to line created between two points [p1] and [p2] with defined margin in pixels [threshold]
 // RLAPI bool CheckCollisionCircleLine(Vector2 center, float radius, Vector2 p1, Vector2 p2);               // Check if circle collides with a line created betweeen two points [p1] and [p2]
-// RLAPI Rectangle GetCollisionRec(Rectangle rec1, Rectangle rec2);                                         // Get collision rectangle for two rectangles collision
+// RLAPI RayRectangle GetCollisionRec(RayRectangle rec1, RayRectangle rec2);                                         // Get collision rectangle for two rectangles collision
 
 extern "C" void initializeShapes(void) {
   VALUE rb_mShapes = rb_define_module("Shapes");

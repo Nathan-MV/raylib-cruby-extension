@@ -1,7 +1,7 @@
 #include "gui.hpp"
 
 static VALUE rb_gui_label(VALUE self, VALUE bounds, VALUE text) {
-  Rectangle *rect = get_rect(bounds);
+  RayRectangle *rect = get_rect(bounds);
   const char *text_val = StringValueCStr(text);
 
   int result = GuiLabel(*rect, text_val);
@@ -10,7 +10,7 @@ static VALUE rb_gui_label(VALUE self, VALUE bounds, VALUE text) {
 }
 
 static VALUE rb_gui_label_button(VALUE self, VALUE bounds, VALUE text) {
-  Rectangle *rect = get_rect(bounds);
+  RayRectangle *rect = get_rect(bounds);
   const char *text_val = StringValueCStr(text);
 
   int result = GuiLabelButton(*rect, text_val);

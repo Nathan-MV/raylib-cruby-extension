@@ -14,7 +14,7 @@
 // RLAPI bool ExportWaveAsCode(Wave wave, const char *fileName);         // Export wave sample data to code (.h), returns true on success
 
 // Wave/Sound management functions
-// RLAPI void PlaySound(Sound sound);                                    // Play a sound
+// RLAPI void RayPlaySound(Sound sound);                                    // Play a sound
 // RLAPI void StopSound(Sound sound);                                    // Stop playing a sound
 // RLAPI void PauseSound(Sound sound);                                   // Pause a sound
 // RLAPI void ResumeSound(Sound sound);                                  // Resume a paused sound
