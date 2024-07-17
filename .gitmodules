@@ -1,6 +1,6 @@
 [submodule "third_party/raylib"]
 	path = third_party/raylib
-	url = https://github.com/Nathan-MV/raylib
+	url = https://github.com/Nathan-MV/raylib.git
 	branch = rubyraylib
 [submodule "third_party/raygui"]
 	path = third_party/raygui

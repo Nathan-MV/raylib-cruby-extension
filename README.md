@@ -2,15 +2,21 @@
 
 ## Instalation
 
-If possible try the artifacts on the CI instead of compiling and give me a heads up if it don't work out of the box
-https://github.com/Nathan-MV/raylib-cruby-extension/actions
+If possible, try the artifacts from the CI instead of compiling. Please give me a heads up if they don't work out of the box: [CI Artifacts](https://github.com/Nathan-MV/raylib-cruby-extension/actions)
 
 ## Compilation
 
 - Clone Repository
 ```
-git clone https://github.com/Nathan-MV/raylib-cruby-extension --recursive
+git clone https://github.com/Nathan-MV/raylib-cruby-extension
 ```
+
+- Init Submodules
+```
+cd raylib-cruby-extension
+git submodule update --init --recursive
+```
+Note: If you encounter an "undefined symbol: RayLoadImage" error after compiling, it means Raylib was not checked out to the origin/rubyraylib branch correctly (Still wondering how to fix it).
 
 - Install Dependencies
 ```
