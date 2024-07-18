@@ -43,50 +43,95 @@ static void initializeRubyInterpreter() {
 }
 
 static void initializeRubyArguments() {
-  std::vector<const char *> args{"RUBY", "-e ", "--yjit", "--parser=prism"};
-  void *rubyNode = ruby_options(args.size(), const_cast<char **>(args.data()));
-  int executionState = 0;
-  bool success = ruby_executable_node(rubyNode, &executionState);
-  if (success) {
-    ruby_exec_node(rubyNode);
-  } else {
-    std::cerr << "RUBY: Failed to execute ruby arguments" << std::endl;
-    ruby_cleanup(executionState);
-  }
+  const char *args[] = {"ruby", "-e", "--yjit", "--parser=prism"};
+  int argc = sizeof(args) / sizeof(args[0]);
+  ruby_options(argc, const_cast<char **>(args));
 }
 
-static VALUE script_run(VALUE) {
-  rb_ary_push(rb_gv_get("$LOAD_PATH"), rb_str_new_literal("./script"));
-  rb_load(rb_str_new_literal("./main.rb"), 0);
+static std::string determineScriptPath(int argc, char **argv) {
+  std::string scriptPath;
+
+  if (argc > 1) {
+    scriptPath = argv[1];
+    if (scriptPath.back() != '/')
+      scriptPath += '/';
+    scriptPath += "main.rb";
+    if (!FileExists(scriptPath.c_str()))
+      scriptPath.clear();
+  }
+
+  if (scriptPath.empty() && FileExists("./main.rb"))
+    scriptPath = "./main.rb";
+
+  return scriptPath;
+}
+
+static VALUE rubyScriptLoad(VALUE scriptPath) {
+  rb_load(scriptPath, 0);
   return Qnil;
 }
 
-static VALUE script_rescue(VALUE, VALUE exc) {
-  VALUE backtrace = rb_ary_to_ary(rb_funcall(exc, rb_intern("backtrace"), 0));
-  VALUE message = rb_str_to_str(rb_funcall(exc, rb_intern("message"), 0));
-  std::cerr << StringValueCStr(message) << std::endl;
-  for (long i = 0; i < RARRAY_LEN(backtrace); ++i) {
-    VALUE lp = rb_str_to_str(rb_ary_entry(backtrace, i));
-    std::cerr << StringValueCStr(lp) << std::endl;
+// Function to handle Ruby exceptions
+static VALUE handleRubyException(VALUE, VALUE exc) {
+  // Initialize a string stream to build the error message
+  std::ostringstream result;
+  const std::string separator(100, '-');
+
+  // Retrieve the Ruby exception details
+  VALUE message = rb_funcall(exc, rb_intern("message"), 0);
+  VALUE exception_name = rb_class_path(rb_obj_class(exc));
+  VALUE backtrace = rb_funcall(exc, rb_intern("backtrace"), 0);
+
+  // Extract file path and line number from the first backtrace entry
+  VALUE first_line = rb_ary_entry(backtrace, 0);
+  VALUE parts = rb_str_split(first_line, ":");
+  VALUE file_path = rb_ary_entry(parts, 0);
+  VALUE line = rb_ary_entry(parts, 1);
+  const char *file_path_str = StringValueCStr(file_path);
+  int line_number = atoi(StringValueCStr(line));
+
+  // Build the error message
+  result << separator << "\n"
+         << "File: " << file_path_str << " in line " << line_number + 1 << "\n"
+         << "Class: " << RSTRING_PTR(exception_name) << "\n"
+         << "Message: " << RSTRING_PTR(message) << "\n"
+         << separator << "\n"
+         << "Backtrace:\n";
+
+  // Append the backtrace
+  long backtrace_length = RARRAY_LEN(backtrace);
+  for (long i = 1; i < backtrace_length; ++i) {
+    result << "\tfrom " << RSTRING_PTR(rb_ary_entry(backtrace, i)) << "\n";
   }
+
+  result << separator;
+
+  // Output the error message to standard error
+  std::cerr << result.str() << std::endl;
+
+  // Clear the Ruby error information
+  std::ostringstream().swap(result);
+  rb_set_errinfo(Qnil);
+
   return Qnil;
 }
 
-int main() {
-  // Initialize components
+int main(int argc, char **argv) {
   initializeRubyInterpreter();
   initializeRubyArguments();
   Init_rubyraylib();
 
-  try {
-    rb_rescue2(script_run, Qnil, script_rescue, Qnil, rb_eException,
-               static_cast<VALUE>(0));
-  } catch (std::exception &e) {
-    std::string msg = "Error:\n";
-    std::cerr << msg + e.what() << std::endl;
+  std::string scriptPath = determineScriptPath(argc, argv);
+  if (scriptPath.empty()) {
+    std::cerr << "Error: No valid script found." << std::endl;
+    ruby_cleanup(0);
+    return 1;
   }
-  ruby_finalize();
 
-  // Return success or failure based on script evaluation
-  return Qnil;
+  VALUE scriptPathValue = rb_str_new_cstr(scriptPath.c_str());
+  VALUE result =
+      rb_rescue(rubyScriptLoad, scriptPathValue, handleRubyException, Qnil);
+
+  ruby_cleanup(0);
+  return 0;
 }
