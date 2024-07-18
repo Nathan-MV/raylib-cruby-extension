@@ -8,16 +8,12 @@ on:
       - 'CMakeLists.txt'
       - 'third_party/**'
       - '.github/workflows/linux.yml'
-      - '!ext/rubyraylib/rubyraylib.cpp'
-      - '!ext/rubyraylib/rubyraylib.hpp'
   pull_request:
     paths:
       - 'ext/rubyraylib/**'
       - 'CMakeLists.txt'
       - 'third_party/**'
       - '.github/workflows/linux.yml'
-      - '!ext/rubyraylib/rubyraylib.cpp'
-      - '!ext/rubyraylib/rubyraylib.hpp'
 
 jobs:
   build-linux:

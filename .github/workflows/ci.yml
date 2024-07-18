@@ -7,15 +7,11 @@ on:
       - 'ext/rubyraylib/**'
       - 'third_party/**'
       - '.github/workflows/ci.yml'
-      - '!ext/rubyraylib/main.cpp'
-      - '!src/main.hpp'
   pull_request:
     paths:
       - 'ext/rubyraylib/**'
       - 'third_party/**'
       - '.github/workflows/ci.yml'
-      - '!ext/rubyraylib/main.cpp'
-      - '!ext/rubyraylib/main.hpp'
 
 jobs:
   build:
