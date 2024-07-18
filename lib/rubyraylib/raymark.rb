@@ -2,7 +2,7 @@
 
 class Raymark
   # The upper limit decreased after i updated Raylib from 5.0 to 5.5...
-  MAX_ELEMENTS = 30_000 # RubyVM::YJIT.enabled? ? 90_000 : 50_000
+  MAX_ELEMENTS = 80_000 # RubyVM::YJIT.enabled? ? 110_000 : 80_000
   MAX_BATCH_ELEMENTS = 8192
   MOVE_ELEMENTS = false
 

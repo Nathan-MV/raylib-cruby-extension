@@ -1,0 +1,64 @@
+name: Linux Binary
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'ext/rubyraylib/**'
+      - 'CMakeLists.txt'
+      - 'third_party/**'
+      - '.github/workflows/linux.yml'
+      - '!ext/rubyraylib/rubyraylib.cpp'
+      - '!ext/rubyraylib/rubyraylib.hpp'
+  pull_request:
+    paths:
+      - 'ext/rubyraylib/**'
+      - 'CMakeLists.txt'
+      - 'third_party/**'
+      - '.github/workflows/linux.yml'
+      - '!ext/rubyraylib/rubyraylib.cpp'
+      - '!ext/rubyraylib/rubyraylib.hpp'
+
+jobs:
+  build-linux:
+    name: linux-x86_64
+    runs-on: ubuntu-latest
+    env:
+      OS: linux
+      ARCH: x86_64
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3
+
+      - name: Update package database
+        run: sudo apt update -qq
+
+      - name: Install required packages
+        run: |
+          sudo apt-get install gcc-multilib cmake ninja-build
+          sudo apt-get install -y --no-install-recommends libglfw3 libglfw3-dev libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev libxext-dev libxfixes-dev libwayland-dev libxkbcommon-dev
+
+      - name: Configure CMake
+        run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE:STRING=Release
+
+      - name: Build
+        run: cmake --build build --config Release --target all
+
+      - name: Strip Shared Libraries
+        run: strip --strip-unneeded ${{ github.workspace }}/build/libruby.so
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: raylib-cruby-${{ env.ARCH }}
+          path: |
+            ${{ github.workspace }}/build/raylib-cruby-${{ env.ARCH }}
+            ${{ github.workspace }}/build/*.so
+          retention-days: 90

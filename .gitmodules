@@ -5,7 +5,8 @@
 [submodule "third_party/raygui"]
 	path = third_party/raygui
 	url = https://github.com/Nathan-MV/raygui.git
-    branch = raylibruby
+	branch = raylibruby
 [submodule "third_party/reasings"]
 	path = third_party/reasings
-	url = https://github.com/raylib-extras/reasings
+	url = https://github.com/Nathan-MV/reasings.git
+	branch = raylibruby

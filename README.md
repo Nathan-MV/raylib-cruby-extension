@@ -16,7 +16,6 @@ git clone https://github.com/Nathan-MV/raylib-cruby-extension
 cd raylib-cruby-extension
 git submodule update --init --recursive
 ```
-Note: If you encounter an "undefined symbol: RayLoadImage" error after compiling, it means Raylib was not checked out to the origin/rubyraylib branch correctly (Still wondering how to fix it).
 
 - Install Dependencies
 ```
@@ -25,22 +24,29 @@ bundle install --with compile
 
 - Raylib Dependencies (Ubuntu)
 ```
-sudo apt install libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev libxinerama-dev libwayland-dev libxkbcommon-dev
+sudo apt install cmake ninja-build ruby-devel libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev libxinerama-dev libwayland-dev libxkbcommon-dev
 ```
 
 - Raylib Dependencies (Fedora)
 ```
-sudo dnf install alsa-lib-devel mesa-libGL-devel libX11-devel libXrandr-devel libXi-devel libXcursor-devel libXinerama-devel libatomic wayland-devel libxkbcommon-devel wayland-protocols-devel
+sudo dnf install cmake ninja-build ruby-devel alsa-lib-devel mesa-libGL-devel libX11-devel libXrandr-devel libXi-devel libXcursor-devel libXinerama-devel libatomic wayland-devel libxkbcommon-devel wayland-protocols-devel
 ```
 
 - Raylib Dependencies (Arch Linux)
 ```
-sudo pacman -S alsa-lib mesa libx11 libxrandr libxi libxcursor libxinerama
+sudo pacman -S cmake ninja ruby alsa-lib mesa libx11 libxrandr libxi libxcursor libxinerama
 ```
 
-- Compile
+- Compile (Ruby Extension)
 ```
 rake
+```
+
+- Compile (Binary)
+Note: Require CMake, Ninja and Ruby 3.3 (Currently the Windows binary does not work, help is appreciated)
+```
+cmake -B build -G Ninja -DCMAKE_BUILD_TYPE:STRING=Release
+cmake --build build --config Release --target all
 ```
 
 ## Contributing

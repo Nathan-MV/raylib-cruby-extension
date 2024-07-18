@@ -1,0 +1,54 @@
+name: Windows Binary
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'ext/rubyraylib/**'
+      - 'CMakeLists.txt'
+      - 'third_party/**'
+      - '.github/workflows/windows.yml'
+      - '!ext/rubyraylib/rubyraylib.cpp'
+      - '!ext/rubyraylib/rubyraylib.hpp'
+  pull_request:
+    paths:
+      - 'ext/rubyraylib/**'
+      - 'CMakeLists.txt'
+      - 'third_party/**'
+      - '.github/workflows/windows.yml'
+      - '!ext/rubyraylib/rubyraylib.cpp'
+      - '!ext/rubyraylib/rubyraylib.hpp'
+
+jobs:
+  build-windows:
+    name: windows-x86_64
+    runs-on: windows-latest
+    env:
+      OS: windows
+      ARCH: x86_64
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3
+
+      - name: Configure CMake
+        run: cmake -B build -DCMAKE_BUILD_TYPE:STRING=Release
+
+      - name: Build CMake
+        run: cmake --build build --config Release --target all
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: raylib-cruby-${{ env.ARCH }}
+          path: |
+            ${{ github.workspace }}/build/raylib-cruby-${{ env.ARCH }}
+            ${{ github.workspace }}/build/*.dll
+          retention-days: 90
+

@@ -1,6 +1,12 @@
 #ifndef RUBYRAYLIB_H
 #define RUBYRAYLIB_H 1
 
+#include <fstream>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
 #include "ruby_values.hpp"
 #include "raylib_values.hpp"
 

@@ -1,8 +1,21 @@
-name: CI
+name: CI Extension
 
 on:
+  workflow_dispatch:
   push:
+    paths:
+      - 'ext/rubyraylib/**'
+      - 'third_party/**'
+      - '.github/workflows/ci.yml'
+      - '!ext/rubyraylib/main.cpp'
+      - '!src/main.hpp'
   pull_request:
+    paths:
+      - 'ext/rubyraylib/**'
+      - 'third_party/**'
+      - '.github/workflows/ci.yml'
+      - '!ext/rubyraylib/main.cpp'
+      - '!ext/rubyraylib/main.hpp'
 
 jobs:
   build:
@@ -27,8 +40,7 @@ jobs:
       with:
         submodules: 'recursive'
 
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
+    - uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true

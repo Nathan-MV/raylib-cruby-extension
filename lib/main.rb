@@ -1,4 +1,11 @@
+# For the binary
+
 # frozen_string_literal: true
+
+require_relative "rubyraylib/version"
+require_relative "rubyraylib/settings"
+
+require_relative "rubyraylib/raymark"
 
 class Game
   def initialize(klass)
@@ -20,3 +27,5 @@ class Game
     Window.close
   end
 end
+
+Game.new(Raymark).run

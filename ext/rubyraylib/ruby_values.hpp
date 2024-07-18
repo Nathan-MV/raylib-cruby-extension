@@ -2,6 +2,8 @@
 #define RUBY_VALUES_H
 
 #include <ruby.h>
+#include <ruby/encoding.h>
+#include <ruby/version.h>
 #include <typeinfo>
 #include <type_traits>
 #include "vec2.hpp"

@@ -11,13 +11,19 @@ reasings_dir = File.expand_path(File.dirname(__FILE__) + "/../../third_party/rea
 $INCFLAGS << " -I#{raylib_dir} -I#{raygui_dir} -I#{reasings_dir}"
 $LDFLAGS << " -L#{raylib_dir} -L#{raygui_dir} -L#{reasings_dir}"
 
-# Link against the static libraries
+# Specify the static libraries to link against
+raylib_lib = File.expand_path("#{raylib_dir}/libraylib.a")
+raygui_lib = File.expand_path("#{raygui_dir}/libraygui.a")
+reasings_lib = File.expand_path("#{reasings_dir}/libreasings.a")
+
+$LDFLAGS << " #{raylib_lib} #{raygui_lib} #{reasings_lib}"
+
 if /linux/i =~ RUBY_PLATFORM
-  $LDFLAGS << " -lraylib -lraygui -lreasings -lGL -lm -lpthread -ldl -lrt -lX11 -lXrandr"
+  $LDFLAGS << " -lGL -lm -lpthread -ldl -lrt -lX11 -lXrandr"
 elsif /darwin/i =~ RUBY_PLATFORM
-  $LDFLAGS << " -lraylib -lraygui -lreasings -framework CoreVideo -framework IOKit -framework Cocoa -framework GLUT -framework OpenGL"
+  $LDFLAGS << " -framework CoreVideo -framework IOKit -framework Cocoa -framework GLUT -framework OpenGL"
 else
-  $LDFLAGS << " -lraylib -lraygui -lreasings -lgdi32 -lwinmm"
+  $LDFLAGS << " -lgdi32 -lwinmm"
 end
 
 # Debugging information
