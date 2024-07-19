@@ -1,4 +1,4 @@
-name: CI Extension
+name: Ruby Extension
 
 on:
   workflow_dispatch:

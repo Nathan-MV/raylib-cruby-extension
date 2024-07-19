@@ -152,7 +152,7 @@ RB_METHOD_ARG_INT_2(rb_draw_fps, DrawFPS)
 // RLAPI void OpenURL(const char *url); // Open URL with default system browser (if available)
 
 extern "C" void initializeWindow() {
-  VALUE rb_mWindow = rb_define_module("Window");
+  VALUE rb_mWindow = rb_define_module_under(rb_mRl, "Window");
 
   rb_define_module_function(rb_mWindow, "init", rb_init_window, 3);
   rb_define_module_function(rb_mWindow, "close", rb_close_window, 0);

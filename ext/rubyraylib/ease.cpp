@@ -12,7 +12,7 @@ RB_EASE(rb_ease_elastic, EaseElastic)
 
 // Initializes the Ease module and defines its functions
 extern "C" void initializeEase() {
-  VALUE rb_cEase = rb_define_module("Ease");
+  VALUE rb_cEase = rb_define_module_under(rb_mRl, "Ease");
 
   rb_define_module_function(rb_cEase, "linear", rb_ease_linear, 5);
   rb_define_module_function(rb_cEase, "sine", rb_ease_sine, 5);

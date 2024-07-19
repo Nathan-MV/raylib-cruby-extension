@@ -23,7 +23,7 @@ RB_METHOD_INT(rb_get_char_pressed, GetCharPressed)
 RB_METHOD_ARG_INT(rb_set_exit_key, SetExitKey)
 
 extern "C" void initializeKeyboard() {
-  VALUE rb_mKeyboard = rb_define_module_under(rb_mInput, "Keyboard");
+  VALUE rb_mKeyboard = rb_define_module_under(rb_mRl, "Keyboard");
 
   rb_define_module_function(rb_mKeyboard, "pressed?", rb_key_pressed, 1);
 	rb_define_module_function(rb_mKeyboard, "repeat?", rb_key_pressed_repeat, 1);

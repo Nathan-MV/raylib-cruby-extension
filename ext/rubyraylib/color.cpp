@@ -130,7 +130,7 @@ static VALUE rb_color_initialize(int argc, VALUE *argv, VALUE self) {
 // RLAPI int GetPixelDataSize(int width, int height, int format);              // Get pixel data size in bytes for certain format
 
 extern "C" void initializeColor() {
-  rb_cColor = rb_define_class("Color", rb_cObject);
+  rb_cColor = rb_define_class_under(rb_mRl, "Color", rb_cObject);
   rb_define_alloc_func(rb_cColor, rb_object_alloc<Color>);
 
   rb_define_method(rb_cColor, "initialize", rb_color_initialize, -1);

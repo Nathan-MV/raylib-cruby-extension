@@ -1,6 +1,36 @@
+#include "text.hpp"
+
+//------------------------------------------------------------------------------------
+// Font Loading and Text Drawing Functions (Module: text)
+//------------------------------------------------------------------------------------
+
+// Font loading/unloading functions
+// RLAPI Font GetFontDefault(void);                                                            // Get the default Font
+// RLAPI Font LoadFont(const char *fileName);                                                  // Load font from file into GPU memory (VRAM)
+// RLAPI Font LoadFontEx(const char *fileName, int fontSize, int *codepoints, int codepointCount); // Load font from file with extended parameters, use NULL for codepoints and 0 for codepointCount to load the default character set
+// RLAPI Font LoadFontFromImage(Image image, Color key, int firstChar);                        // Load font from Image (XNA style)
+// RLAPI Font LoadFontFromMemory(const char *fileType, const unsigned char *fileData, int dataSize, int fontSize, int *codepoints, int codepointCount); // Load font from memory buffer, fileType refers to extension: i.e. '.ttf'
+// RLAPI bool IsFontReady(Font font);                                                          // Check if a font is ready
+// RLAPI GlyphInfo *LoadFontData(const unsigned char *fileData, int dataSize, int fontSize, int *codepoints, int codepointCount, int type); // Load font data for further use
+// RLAPI Image GenImageFontAtlas(const GlyphInfo *glyphs, RayRectangle **glyphRecs, int glyphCount, int fontSize, int padding, int packMethod); // Generate image font atlas using chars info
+// RLAPI void UnloadFontData(GlyphInfo *glyphs, int glyphCount);                               // Unload font chars info data (RAM)
+// RLAPI void UnloadFont(Font font);                                                           // Unload font from GPU memory (VRAM)
+// RLAPI bool ExportFontAsCode(Font font, const char *fileName);                               // Export font as code file, returns true on success
+
 // Text drawing functions
-// RLAPI void DrawFPS(int posX, int posY);                                                     // Draw current FPS
 // RLAPI void RayDrawText(const char *text, int posX, int posY, int fontSize, Color color);       // Draw text (using default font)
+static VALUE rb_draw_text(VALUE self, VALUE text, VALUE posX, VALUE posY,
+                          VALUE fontSize, VALUE color) {
+  const char *txt = StringValueCStr(text);
+  int x = NUM2INT(posX);
+  int y = NUM2INT(posY);
+  int size = NUM2INT(fontSize);
+  Color *col = get_color(color);
+
+  RayDrawText(txt, x, y, size, *col);
+
+  return self;
+}
 // RLAPI void RayDrawTextEx(Font font, const char *text, Vector2 position, float fontSize, float spacing, Color tint); // Draw text using font and additional parameters
 // RLAPI void DrawTextPro(Font font, const char *text, Vector2 position, Vector2 origin, float rotation, float fontSize, float spacing, Color tint); // Draw text using Font and pro parameters (rotation)
 // RLAPI void DrawTextCodepoint(Font font, int codepoint, Vector2 position, float fontSize, Color tint); // Draw one character (codepoint)
@@ -46,3 +76,16 @@
 
 // RLAPI int TextToInteger(const char *text);                            // Get integer value from text (negative values not supported)
 // RLAPI float TextToFloat(const char *text);                            // Get float value from text (negative values not supported)
+
+// Font type, defines generation method
+// typedef enum {
+//     FONT_DEFAULT = 0,               // Default font generation, anti-aliased
+//     FONT_BITMAP,                    // Bitmap font generation, no anti-aliasing
+//     FONT_SDF                        // SDF font generation, requires external shader
+// } FontType;
+
+extern "C" void initializeText(void) {
+  VALUE rb_mText = rb_define_module_under(rb_mRl, "Text");
+
+  rb_define_module_function(rb_mText, "draw", rb_draw_text, 5);
+}

@@ -29,6 +29,7 @@
 #include "gestures.hpp"
 #include "texture_atlas.hpp"
 #include "shapes.hpp"
+#include "text.hpp"
 
 extern "C" {
   void Init_rubyraylib(void);

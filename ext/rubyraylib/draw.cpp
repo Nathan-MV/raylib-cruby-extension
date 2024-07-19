@@ -45,24 +45,10 @@ static VALUE rb_begin_drawing(VALUE self) {
 //     BLEND_CUSTOM_SEPARATE           // Blend textures using custom rgb/alpha separate src/dst factors (use rlSetBlendFactorsSeparate())
 // } BlendMode;
 
-// Draw text using font and additional parameters
-static VALUE rb_draw_text(VALUE self, VALUE text, VALUE posX, VALUE posY, VALUE fontSize, VALUE color) {
-  const char *txt = StringValueCStr(text);
-  int x = NUM2INT(posX);
-  int y = NUM2INT(posY);
-  int size = NUM2INT(fontSize);
-  Color *col = get_color(color);
-
-  RayDrawText(txt, x, y, size, *col);
-
-  return Qnil;
-}
-
 // Initializes the Draw module and defines its functions
 extern "C" void initializeDraw(void) {
-  VALUE rb_cDraw = rb_define_module("Draw");
+  VALUE rb_cDraw = rb_define_module_under(rb_mRl, "Draw");
 
   rb_define_module_function(rb_cDraw, "begin", rb_begin_drawing, 0);
   rb_define_module_function(rb_cDraw, "clear", rb_clear_background, 1);
-  rb_define_module_function(rb_cDraw, "text", rb_draw_text, 5);
 }

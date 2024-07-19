@@ -20,7 +20,7 @@ static VALUE rb_gui_label_button(VALUE self, VALUE bounds, VALUE text) {
 
 // Initializes the GUI module and defines its functions
 extern "C" void initializeGui() {
-  VALUE rb_cGui = rb_define_module("GUI");
+  VALUE rb_cGui = rb_define_module_under(rb_mRl, "GUI");
 
   rb_define_module_function(rb_cGui, "label", rb_gui_label, 2);
   rb_define_module_function(rb_cGui, "label_button", rb_gui_label_button, 2);

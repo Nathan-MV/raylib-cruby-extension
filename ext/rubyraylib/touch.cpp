@@ -13,7 +13,7 @@ RB_METHOD_INT_ARG(rb_get_touch_point_id, GetTouchPointId)
 RB_METHOD_INT(rb_get_touch_point_count, GetTouchPointCount)
 
 extern "C" void initializeTouch() {
-  VALUE rb_mTouch = rb_define_module_under(rb_mInput, "Touch");
+  VALUE rb_mTouch = rb_define_module_under(rb_mRl, "Touch");
 
   rb_define_module_function(rb_mTouch, "x", rb_get_touch_x, 0);
   rb_define_module_function(rb_mTouch, "y", rb_get_touch_y, 0);

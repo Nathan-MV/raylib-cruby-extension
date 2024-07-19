@@ -2,13 +2,13 @@
 
 require "bundler/gem_tasks"
 require "rubocop/rake_task"
+require "rake/extensiontask"
+require "fileutils"
 
 RuboCop::RakeTask.new
 
-require "rake/extensiontask"
-
 task :clean_raylib do
-  sh "make clean -C third_party/raylib/src"
+  FileUtils.rm_rf Dir.glob('third_party/raylib/src/*.o')
 end
 
 # Task to compile Raylib
@@ -16,7 +16,11 @@ end
 # PLATFORM=PLATFORM_DESKTOP_RGFW
 # USE_WAYLAND_DISPLAY=TRUE
 task :compile_raylib do
-  sh "make PLATFORM=PLATFORM_DESKTOP -C third_party/raylib/src"
+  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+    sh "mingw32-make PLATFORM=PLATFORM_DESKTOP -C third_party/raylib/src"
+  else
+    sh "make PLATFORM=PLATFORM_DESKTOP -C third_party/raylib/src"
+  end
 end
 
 # Compile Raygui task and create static library

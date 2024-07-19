@@ -127,7 +127,7 @@ static VALUE rb_set_texture_scale(VALUE self, VALUE value) {
 }
 
 extern "C" void initializeTexture() {
-  rb_cTexture = rb_define_class("Texture", rb_cObject);
+  rb_cTexture = rb_define_class_under(rb_mRl, "Texture", rb_cObject);
   rb_define_alloc_func(rb_cTexture, rb_texture_alloc<Texture>);
 
   rb_define_method(rb_cTexture, "initialize", rb_texture_initialize, 1);

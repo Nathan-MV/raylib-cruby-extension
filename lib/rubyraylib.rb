@@ -3,7 +3,7 @@
 require_relative "rubyraylib/version"
 require_relative "rubyraylib/rubyraylib"
 require_relative "rubyraylib/settings"
-
+include Rl
 require_relative "rubyraylib/raymark"
 
 class Game

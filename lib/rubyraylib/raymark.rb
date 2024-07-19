@@ -2,7 +2,7 @@
 
 class Raymark
   # The upper limit decreased after i updated Raylib from 5.0 to 5.5...
-  MAX_ELEMENTS = 80_000 # RubyVM::YJIT.enabled? ? 110_000 : 80_000
+  MAX_ELEMENTS = 90_000
   MAX_BATCH_ELEMENTS = 8192
   MOVE_ELEMENTS = false
 
@@ -29,8 +29,8 @@ class Raymark
   def draw
     MAX_ELEMENTS.times { |i| @texture.draw(@positions[i]) }
     @rect.draw(Color::BLACK)
-    Draw.text(format("Textures: %i", MAX_ELEMENTS), 220, 0, 20, Color::GREEN)
-    Draw.text(format("Batched Draw Calls: %i", 1 + MAX_ELEMENTS / MAX_BATCH_ELEMENTS), 410, 0, 20, Color::RED)
+    Text.draw(format("Textures: %i", MAX_ELEMENTS), 220, 0, 20, Color::GREEN)
+    Text.draw(format("Batched Draw Calls: %i", 1 + MAX_ELEMENTS / MAX_BATCH_ELEMENTS), 410, 0, 20, Color::RED)
   end
 
   def unload

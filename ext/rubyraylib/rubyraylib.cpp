@@ -1,11 +1,11 @@
 #include "rubyraylib.hpp"
 
 RUBY_FUNC_EXPORTED void Init_rubyraylib(void) {
+  initializeRaylib();
   initializeKernel();
 
   // Modules
   initializeWindow();
-  initializeInput();
   initializeKeyboard();
   initializeMouse();
   initializeGamepad();
@@ -13,6 +13,7 @@ RUBY_FUNC_EXPORTED void Init_rubyraylib(void) {
   initializeGestures();
   initializeDraw();
   initializeShapes();
+  initializeText();
 
   // Classes
   initializeColor();

@@ -4,6 +4,6 @@
 #include "raylib_values.hpp"
 #include "ruby_values.hpp"
 
-// extern "C" void initializeText();
+extern "C" void initializeText();
 
 #endif // TEXT_H

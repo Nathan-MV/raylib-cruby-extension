@@ -11,7 +11,7 @@ static VALUE rb_color_from_normalized(VALUE self) {
 }
 
 extern "C" void initializeVec4() {
-  rb_cVec4 = rb_define_class("Vec4", rb_cObject);
+  rb_cVec4 = rb_define_class_under(rb_mRl, "Vec4", rb_cObject);
   rb_define_alloc_func(rb_cVec4, rb_object_alloc<Vector4>);
 
   rb_define_method(rb_cVec4, "from_normalize", rb_color_from_normalized, 0);

@@ -6,5 +6,9 @@
 #include <rlgl.h>
 #include "raygui.h"
 #include "reasings.h"
+#include "ruby_values.hpp"
+
+extern "C" void initializeRaylib();
+extern VALUE rb_mRl;
 
 #endif // RAYLIB_VALUES_H
