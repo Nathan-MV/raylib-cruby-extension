@@ -54,11 +54,18 @@ rake
 ```
 
 - Binary
-  - On Windows it require CMake, Ninja, Ruby 3.3 with Devkit, Visual Studio Build Tools with Desktop Development for C++ (I only reached that part, help is appreciated)
+  - On Windows it require CMake, Ninja, Ruby 3.3 with Devkit, Visual Studio Build Tools with Desktop Development for C++ (And it segfault right after you launch xD)
 ```
 cmake -B build -G Ninja -DCMAKE_BUILD_TYPE:STRING=Release
 cmake --build build --config Release --target all
 ```
+
+## TODO
+- Complete the API
+- Investigate Windows Binary Segfault after launch
+- Investigate Linux Binary Segfault after closing the window
+- Make Windows Binary workflow use MSYS2 env from setup-ruby instead of using setup-msys2
+- Ensure CMake Moves Linked Libraries to Build Folder
 
 ## Contributing
 

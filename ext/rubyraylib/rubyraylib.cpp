@@ -72,7 +72,6 @@ static VALUE rubyScriptLoad(VALUE scriptPath) {
   return Qnil;
 }
 
-// Function to handle Ruby exceptions
 static VALUE handleRubyException(VALUE, VALUE exc) {
   // Initialize a string stream to build the error message
   std::ostringstream result;
@@ -83,7 +82,7 @@ static VALUE handleRubyException(VALUE, VALUE exc) {
   VALUE exception_name = rb_class_path(rb_obj_class(exc));
   VALUE backtrace = rb_funcall(exc, rb_intern("backtrace"), 0);
 
-  // Extract file path and line number from the first backtrace entry
+  // Extract file path and line number from the backtrace entry
   VALUE first_line = rb_ary_entry(backtrace, 0);
   VALUE parts = rb_str_split(first_line, ":");
   VALUE file_path = rb_ary_entry(parts, 0);
@@ -107,10 +106,9 @@ static VALUE handleRubyException(VALUE, VALUE exc) {
 
   result << separator;
 
-  // Output the error message to standard error
+  // Output the error message
   std::cerr << result.str() << std::endl;
 
-  // Clear the Ruby error information
   std::ostringstream().swap(result);
   rb_set_errinfo(Qnil);
 

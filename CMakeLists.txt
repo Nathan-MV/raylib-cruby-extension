@@ -35,7 +35,7 @@ foreach(LIB ${LIBRARIES})
 
   if(${LIB} STREQUAL "raylib")
     include_directories(${LIB_BUILD_DIR}/raylib/include)
-    target_compile_definitions(${LIB} PRIVATE PLATFORM_DESKTOP_RGFW)
+    #target_compile_definitions(${LIB} PRIVATE PLATFORM_DESKTOP_RGFW)
   else()
     include_directories(${LIB_BUILD_DIR}/include)
   endif()

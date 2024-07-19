@@ -33,10 +33,21 @@ jobs:
         with:
           ruby-version: 3.3
 
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          install: >-
+            base-devel
+            mingw-w64-ucrt-x86_64-cmake
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-ninja
+
       - name: Configure CMake
+        shell: msys2 {0}
         run: cmake -B build -DCMAKE_BUILD_TYPE:STRING=Release
 
       - name: Build CMake
+        shell: msys2 {0}
         run: cmake --build build --config Release --target all
 
       - name: Upload artifacts
@@ -44,7 +55,7 @@ jobs:
         with:
           name: raylib-cruby-${{ env.ARCH }}
           path: |
-            ${{ github.workspace }}/build/raylib-cruby-${{ env.ARCH }}
+            ${{ github.workspace }}/build/*.exe
             ${{ github.workspace }}/build/*.dll
           retention-days: 90
 
