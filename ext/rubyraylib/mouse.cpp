@@ -31,7 +31,7 @@ RB_METHOD_VEC2(rb_get_mouse_wheel_move_v, GetMouseWheelMoveV)
 RB_METHOD_ARG_INT(rb_set_mouse_cursor, SetMouseCursor)
 
 extern "C" void initializeMouse() {
-  VALUE rb_mMouse = rb_define_module_under(rb_mRl, "Mouse");
+  VALUE rb_mMouse = rb_define_module_under(rb_mRL, "Mouse");
 
   rb_define_module_function(rb_mMouse, "button_pressed?", rb_mouse_button_pressed, 1);
   rb_define_module_function(rb_mMouse, "button_down?", rb_mouse_button_down, 1);

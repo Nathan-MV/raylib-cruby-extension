@@ -9,6 +9,6 @@
 #include "ruby_values.hpp"
 
 extern "C" void initializeRaylib();
-extern VALUE rb_mRl;
+extern VALUE rb_mRL;
 
 #endif // RAYLIB_VALUES_H

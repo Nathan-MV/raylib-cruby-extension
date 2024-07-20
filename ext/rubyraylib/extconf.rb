@@ -3,9 +3,9 @@
 require "mkmf"
 
 # Define directories for raylib, raygui, and reasings
-raylib_dir = File.expand_path(File.dirname(__FILE__) + "/../../third_party/raylib/src")
-raygui_dir = File.expand_path(File.dirname(__FILE__) + "/../../third_party/raygui/src")
-reasings_dir = File.expand_path(File.dirname(__FILE__) + "/../../third_party/reasings/src")
+raylib_dir = File.expand_path("#{File.dirname(__FILE__)}/../../third_party/raylib/src")
+raygui_dir = File.expand_path("#{File.dirname(__FILE__)}/../../third_party/raygui/src")
+reasings_dir = File.expand_path("#{File.dirname(__FILE__)}/../../third_party/reasings/src")
 
 # Add include and library directories
 $INCFLAGS << " -I#{raylib_dir} -I#{raygui_dir} -I#{reasings_dir}"
@@ -18,13 +18,13 @@ reasings_lib = File.expand_path("#{reasings_dir}/libreasings.a")
 
 $LDFLAGS << " #{raylib_lib} #{raygui_lib} #{reasings_lib}"
 
-if /linux/i =~ RUBY_PLATFORM
-  $LDFLAGS << " -lGL -lm -lpthread -ldl -lrt -lX11 -lXrandr"
-elsif /darwin/i =~ RUBY_PLATFORM
-  $LDFLAGS << " -framework CoreVideo -framework IOKit -framework Cocoa -framework GLUT -framework OpenGL"
-else
-  $LDFLAGS << " -lgdi32 -lwinmm"
-end
+$LDFLAGS << if /linux/i =~ RUBY_PLATFORM
+              " -lGL -lm -lpthread -ldl -lrt -lX11 -lXrandr"
+            elsif /darwin/i =~ RUBY_PLATFORM
+              " -framework CoreVideo -framework IOKit -framework Cocoa -framework GLUT -framework OpenGL"
+            else
+              " -lgdi32 -lwinmm"
+            end
 
 # Debugging information
 puts "Include flags: #{$INCFLAGS}"

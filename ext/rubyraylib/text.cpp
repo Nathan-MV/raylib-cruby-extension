@@ -85,7 +85,7 @@ static VALUE rb_draw_text(VALUE self, VALUE text, VALUE posX, VALUE posY,
 // } FontType;
 
 extern "C" void initializeText(void) {
-  VALUE rb_mText = rb_define_module_under(rb_mRl, "Text");
+  VALUE rb_mText = rb_define_module_under(rb_mRL, "Text");
 
   rb_define_module_function(rb_mText, "draw", rb_draw_text, 5);
 }

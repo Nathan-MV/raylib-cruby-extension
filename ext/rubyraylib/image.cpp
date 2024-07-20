@@ -161,7 +161,7 @@ static VALUE rb_unload_image(VALUE self) {
 // } TextureWrap;
 
 extern "C" void initializeImage() {
-  rb_cImage = rb_define_class_under(rb_mRl, "Image", rb_cObject);
+  rb_cImage = rb_define_class_under(rb_mRL, "Image", rb_cObject);
   rb_define_alloc_func(rb_cImage, rb_image_alloc<Image>);
 
   rb_define_method(rb_cImage, "initialize", rb_image_initialize, 1);

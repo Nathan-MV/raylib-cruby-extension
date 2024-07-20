@@ -21,7 +21,7 @@ RB_METHOD_VEC2(rb_get_gesture_pinch_vector, GetGesturePinchVector)
 RB_METHOD_FLOAT(rb_get_gesture_pinch_angle, GetGesturePinchAngle)
 
 extern "C" void initializeGestures() {
-  VALUE rb_mGestures = rb_define_module_under(rb_mRl, "Gestures");
+  VALUE rb_mGestures = rb_define_module_under(rb_mRL, "Gestures");
 
   rb_define_module_function(rb_mGestures, "enabled=", rb_set_gestures_enabled, 1);
   rb_define_module_function(rb_mGestures, "detected?", rb_gesture_detected, 1);

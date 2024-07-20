@@ -8,7 +8,7 @@ require "fileutils"
 RuboCop::RakeTask.new
 
 task :clean_raylib do
-  FileUtils.rm_rf Dir.glob('third_party/raylib/src/*.o')
+  FileUtils.rm_rf Dir.glob("third_party/raylib/src/*.o")
 end
 
 # Task to compile Raylib
@@ -16,7 +16,7 @@ end
 # PLATFORM=PLATFORM_DESKTOP_RGFW
 # USE_WAYLAND_DISPLAY=TRUE
 task :compile_raylib do
-  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+  if RbConfig::CONFIG["host_os"] =~ /mswin|mingw|cygwin/
     sh "mingw32-make PLATFORM=PLATFORM_DESKTOP -C third_party/raylib/src"
   else
     sh "make PLATFORM=PLATFORM_DESKTOP -C third_party/raylib/src"

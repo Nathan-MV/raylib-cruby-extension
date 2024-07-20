@@ -12,7 +12,7 @@ static VALUE rb_color_from_hsv(VALUE self) {
 }
 
 extern "C" void initializeVec3() {
-  rb_cVec3 = rb_define_class_under(rb_mRl, "Vec3", rb_cObject);
+  rb_cVec3 = rb_define_class_under(rb_mRL, "Vec3", rb_cObject);
   rb_define_alloc_func(rb_cVec3, rb_object_alloc<Vector3>);
 
   rb_define_method(rb_cVec3, "from_hsv", rb_color_from_hsv, 0);

@@ -33,7 +33,7 @@ static VALUE rb_draw_rectangle_rec(VALUE self, VALUE color) {
 }
 
 extern "C" void initializeRect() {
-  rb_cRect = rb_define_class_under(rb_mRl, "Rect", rb_cObject);
+  rb_cRect = rb_define_class_under(rb_mRL, "Rect", rb_cObject);
   rb_define_alloc_func(rb_cRect, rb_object_alloc<RayRectangle>);
 
   rb_define_method(rb_cRect, "initialize", rb_rect_initialize, 4);

@@ -1,0 +1,8 @@
+--title "raylib-cruby"
+--readme README.md
+--exclude ext
+--exclude lib/rubyraylib.rb
+--exclude lib/main.rb
+--exclude lib/rubyraylib/raymark.rb
+--exclude lib/rubyraylib/settings.rb
+--exclude lib/rubyraylib/version.rb

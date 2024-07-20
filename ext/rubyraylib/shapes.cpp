@@ -103,7 +103,7 @@ static VALUE rb_draw_rectangle_v(VALUE self, VALUE position, VALUE size, VALUE c
 // RLAPI RayRectangle GetCollisionRec(RayRectangle rec1, RayRectangle rec2);                                         // Get collision rectangle for two rectangles collision
 
 extern "C" void initializeShapes(void) {
-  VALUE rb_mShapes = rb_define_module_under(rb_mRl, "Shapes");
+  VALUE rb_mShapes = rb_define_module_under(rb_mRL, "Shapes");
 
   rb_define_module_function(rb_mShapes, "rect", rb_draw_rectangle, 5);
   rb_define_module_function(rb_mShapes, "rect_v", rb_draw_rectangle_v, 3);

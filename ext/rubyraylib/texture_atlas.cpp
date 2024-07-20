@@ -84,7 +84,7 @@ VALUE rb_texture_atlas_draw_batch(VALUE self, VALUE positions) {
 }
 
 extern "C" void initializeTextureAtlas() {
-  rb_cTextureAtlas = rb_define_class_under(rb_mRl, "TextureAtlas", rb_cObject);
+  rb_cTextureAtlas = rb_define_class_under(rb_mRL, "TextureAtlas", rb_cObject);
   rb_define_alloc_func(rb_cTextureAtlas, texture_atlas_alloc);
   rb_define_method(rb_cTextureAtlas, "initialize", texture_atlas_initialize, 2);
   rb_define_method(rb_cTextureAtlas, "add", texture_atlas_add_texture, 2);

@@ -19,11 +19,9 @@ RB_METHOD_BOOL_ARG_INT(rb_key_up, IsKeyUp)
 RB_METHOD_INT(rb_get_key_pressed, GetKeyPressed)
 // RLAPI int GetCharPressed(void);                               // Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty
 RB_METHOD_INT(rb_get_char_pressed, GetCharPressed)
-// RLAPI void SetExitKey(int key);                               // Set a custom key to exit program (default is ESC)
-RB_METHOD_ARG_INT(rb_set_exit_key, SetExitKey)
 
 extern "C" void initializeKeyboard() {
-  VALUE rb_mKeyboard = rb_define_module_under(rb_mRl, "Keyboard");
+  VALUE rb_mKeyboard = rb_define_module_under(rb_mRL, "Keyboard");
 
   rb_define_module_function(rb_mKeyboard, "pressed?", rb_key_pressed, 1);
 	rb_define_module_function(rb_mKeyboard, "repeat?", rb_key_pressed_repeat, 1);
@@ -32,7 +30,6 @@ extern "C" void initializeKeyboard() {
 	rb_define_module_function(rb_mKeyboard, "up?", rb_key_up, 1);
 	rb_define_module_function(rb_mKeyboard, "pressed", rb_get_key_pressed, 0);
 	rb_define_module_function(rb_mKeyboard, "char_pressed", rb_get_char_pressed, 0);
-	rb_define_module_function(rb_mKeyboard, "exit_key=", rb_set_exit_key, 1);
 
   // Alphanumeric keys
   rb_define_const(rb_mKeyboard, "NULL", INT2NUM(0));

@@ -19,6 +19,9 @@ group :development do
   gem "rubocop-thread_safety"
   gem "ruby-lsp"
   gem "yard"
+  gem "webrick"
+  gem "rack"
+  gem "rackup"
 end
 
 group :test do

@@ -13,11 +13,11 @@ RB_COLOR_SETTER(rb_color_set_blue, b)
 // Color/pixel related functions
 // RLAPI bool ColorIsEqual(Color col1, Color col2);                            // Check if two colors are equal
 // RLAPI Color Fade(Color color, float alpha);                                 // Get color with alpha applied, alpha goes from 0.0f to 1.0f
-static VALUE rb_color_fade(VALUE self, VALUE alpha_val) {
+static VALUE rb_color_fade(VALUE self, VALUE alpha) {
   Color *color = get_color(self);
-  float alpha = NUM2DBL(alpha_val);
+  float alpha_val = NUM2DBL(alpha);
 
-  *color = Fade(*color, alpha);
+  *color = Fade(*color, alpha_val);
 
   return self;
 }
@@ -37,7 +37,7 @@ static VALUE rb_color_normalize(VALUE self) {
 
   return Data_Wrap_Struct(rb_cVec4, NULL, NULL, &result);
 }
-// RLAPI Color ColorFromHSV(float hue, float saturation, float value);         // Get a Color from HSV values, hue [0..360], saturation/value [0..1]
+// RLAPI Vector3 ColorToHSV(Color color);                                      // Get HSV values for a Color, hue [0..360], saturation/value [0..1]
 static VALUE rb_color_to_hsv(VALUE self) {
   Color *color = get_color(self);
 
@@ -130,7 +130,7 @@ static VALUE rb_color_initialize(int argc, VALUE *argv, VALUE self) {
 // RLAPI int GetPixelDataSize(int width, int height, int format);              // Get pixel data size in bytes for certain format
 
 extern "C" void initializeColor() {
-  rb_cColor = rb_define_class_under(rb_mRl, "Color", rb_cObject);
+  rb_cColor = rb_define_class_under(rb_mRL, "Color", rb_cObject);
   rb_define_alloc_func(rb_cColor, rb_object_alloc<Color>);
 
   rb_define_method(rb_cColor, "initialize", rb_color_initialize, -1);

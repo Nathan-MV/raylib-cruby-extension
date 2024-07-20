@@ -20,7 +20,7 @@ class Raymark
     end
   end
 
-  def update(delta)
+  def update(_delta)
     return unless MOVE_ELEMENTS
 
     MAX_ELEMENTS.times { |i| @positions[i].random_movement(@direction, @speed) }

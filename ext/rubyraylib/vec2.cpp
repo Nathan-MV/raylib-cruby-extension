@@ -182,7 +182,7 @@ static VALUE rb_vec2_to_s(VALUE self) {
 }
 
 extern "C" void initializeVec2() {
-  rb_cVec2 = rb_define_class_under(rb_mRl, "Vec2", rb_cObject);
+  rb_cVec2 = rb_define_class_under(rb_mRL, "Vec2", rb_cObject);
   rb_define_alloc_func(rb_cVec2, rb_object_alloc<Vector2>);
 
   rb_define_method(rb_cVec2, "initialize", rb_vec2_initialize, 2);

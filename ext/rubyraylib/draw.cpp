@@ -47,7 +47,7 @@ static VALUE rb_begin_drawing(VALUE self) {
 
 // Initializes the Draw module and defines its functions
 extern "C" void initializeDraw(void) {
-  VALUE rb_cDraw = rb_define_module_under(rb_mRl, "Draw");
+  VALUE rb_cDraw = rb_define_module_under(rb_mRL, "Draw");
 
   rb_define_module_function(rb_cDraw, "begin", rb_begin_drawing, 0);
   rb_define_module_function(rb_cDraw, "clear", rb_clear_background, 1);

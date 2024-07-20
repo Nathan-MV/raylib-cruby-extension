@@ -21,19 +21,17 @@ float GetRandomFloat(float min, float max)
 
   return value;
 }
-RB_METHOD_ARG_FLOAT_2(rb_get_random_float, GetRandomFloat)
 
-static int fibonacci(int n) {
-  if (n <= 1)
-    return n;
+static int fibonacci(int number) {
+  if (number <= 1)
+    return number;
 
-  return fibonacci(n - 1) + fibonacci(n - 2);
+  return fibonacci(number - 1) + fibonacci(number - 2);
 }
 RB_METHOD_INT_ARG(rb_fibonacci, fibonacci)
 
 extern "C" void initializeKernel() {
   rb_define_module_function(rb_mKernel, "random", rb_get_random_value, 2);
 
-  rb_define_module_function(rb_mKernel, "random_f", rb_get_random_float, 2);
   rb_define_module_function(rb_mKernel, "fib", rb_fibonacci, 1);
 }

@@ -108,6 +108,9 @@ RB_METHOD(rb_enable_event_waiting, EnableEventWaiting)
 // RLAPI void DisableEventWaiting(void);                             // Disable waiting for events on EndDrawing(), automatic events polling
 RB_METHOD(rb_disable_event_waiting, DisableEventWaiting)
 
+// RLAPI void SetExitKey(int key);                               // Set a custom key to exit program (default is ESC)
+RB_METHOD_ARG_INT(rb_set_exit_key, SetExitKey)
+
 // Cursor-related functions
 // RLAPI void RayShowCursor(void);                                      // Shows cursor
 RB_METHOD(rb_show_cursor, RayShowCursor)
@@ -152,7 +155,7 @@ RB_METHOD_ARG_INT_2(rb_draw_fps, DrawFPS)
 // RLAPI void OpenURL(const char *url); // Open URL with default system browser (if available)
 
 extern "C" void initializeWindow() {
-  VALUE rb_mWindow = rb_define_module_under(rb_mRl, "Window");
+  VALUE rb_mWindow = rb_define_module_under(rb_mRL, "Window");
 
   rb_define_module_function(rb_mWindow, "init", rb_init_window, 3);
   rb_define_module_function(rb_mWindow, "close", rb_close_window, 0);
@@ -183,7 +186,7 @@ extern "C" void initializeWindow() {
   rb_define_module_function(rb_mWindow, "min_size", rb_set_window_min_size, 2);
   rb_define_module_function(rb_mWindow, "max_size", rb_set_window_max_size, 2);
   rb_define_module_function(rb_mWindow, "size", rb_set_window_size, 2);
-  rb_define_module_function(rb_mWindow, "opacity", rb_set_window_opacity, 1);
+  rb_define_module_function(rb_mWindow, "opacity=", rb_set_window_opacity, 1);
   rb_define_module_function(rb_mWindow, "focused", rb_set_window_focused, 0);
   rb_define_module_function(rb_mWindow, "handle", rb_get_window_handle, 0);
   rb_define_module_function(rb_mWindow, "screen_width", rb_get_screen_width, 0);
@@ -220,6 +223,7 @@ extern "C" void initializeWindow() {
                             rb_enable_event_waiting, 0);
   rb_define_module_function(rb_mWindow, "disable_event_waiting",
                             rb_disable_event_waiting, 0);
+  rb_define_module_function(rb_mWindow, "exit_key=", rb_set_exit_key, 1);
 
   rb_define_module_function(rb_mWindow, "show_cursor", rb_show_cursor, 0);
   rb_define_module_function(rb_mWindow, "hide_cursor", rb_hide_cursor, 0);
