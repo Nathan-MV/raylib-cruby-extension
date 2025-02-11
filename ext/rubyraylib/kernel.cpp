@@ -1,37 +1,39 @@
-#include "kernel.hpp"
-#include "ruby_values.hpp"
-
-// Random values generation functions
-// RLAPI void SetRandomSeed(unsigned int seed);                      // Set the seed for the random number generator
-// RLAPI int GetRandomValue(int min, int max);                       // Get a random value between min and max (both included)
-RB_METHOD_INT_ARG_2(rb_get_random_value, GetRandomValue)
-// RLAPI int *LoadRandomSequence(unsigned int count, int min, int max); // Load random values sequence, no values repeated
-// RLAPI void UnloadRandomSequence(int *sequence);                   // Unload random values sequence
-
-// Compression/Encoding functionality
-// RLAPI unsigned char *CompressData(const unsigned char *data, int dataSize, int *compDataSize);        // Compress data (DEFLATE algorithm), memory must be MemFree()
-// RLAPI unsigned char *DecompressData(const unsigned char *compData, int compDataSize, int *dataSize);  // Decompress data (DEFLATE algorithm), memory must be MemFree()
-// RLAPI char *EncodeDataBase64(const unsigned char *data, int dataSize, int *outputSize);               // Encode data to Base64 string, memory must be MemFree()
-// RLAPI unsigned char *DecodeDataBase64(const unsigned char *data, int *outputSize);                    // Decode Base64 string data, memory must be MemFree()
+#include "kernel.h"
 
 // Get a random float between min and max included
-float GetRandomFloat(float min, float max)
-{
-  float value = min + ((float)GetRandomValue(0, RAND_MAX) / (float)RAND_MAX) * (max - min);
+float GetRandomFloat(float min, float max) {
+  auto value = min + ((float)GetRandomValue(0, RAND_MAX) / (float)RAND_MAX) * (max - min);
 
   return value;
 }
 
-static int fibonacci(int number) {
-  if (number <= 1)
-    return number;
+int fibonacci(int number) {
+  if (number <= 1) return number;
 
   return fibonacci(number - 1) + fibonacci(number - 2);
 }
-RB_METHOD_INT_ARG(rb_fibonacci, fibonacci)
 
-extern "C" void initializeKernel() {
-  rb_define_module_function(rb_mKernel, "random", rb_get_random_value, 2);
+// Levenshtein distance function
+// int levenshtein_distance(const std::string& str1, const std::string& str2) {
+//   uint16_t n = str1.length();
+//   uint16_t m = str2.length();
+//   if (n == 0) return m;
+//   if (m == 0) return n;
 
-  rb_define_module_function(rb_mKernel, "fib", rb_fibonacci, 1);
-}
+//   std::vector<uint16_t> prev(m + 1);
+//   std::vector<uint16_t> curr(m + 1);
+
+//   for (uint16_t j = 0; j <= m; j++) prev[j] = j;
+
+//   for (uint16_t i = 1; i <= n; i++) {
+//     curr[0] = i;
+//     for (uint16_t j = 1; j <= m; j++) {
+//       uint16_t cost = (str1[i - 1] == str2[j - 1]) ? 0 : 1;
+//       curr[j] = std::min({curr[j - 1] + 1, prev[j] + 1, prev[j - 1] + cost});
+//     }
+//     std::swap(prev, curr);
+//   }
+
+//   return prev[m];
+// }
+

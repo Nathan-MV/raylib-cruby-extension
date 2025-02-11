@@ -1,39 +1,49 @@
 # frozen_string_literal: true
 
 class Raymark
-  # The upper limit decreased after i updated Raylib from 5.0 to 5.5...
   MAX_ELEMENTS = 90_000
   MAX_BATCH_ELEMENTS = 8192
   MOVE_ELEMENTS = false
 
   def initialize
-    @texture = Texture.new("lib/rubyraylib/raylib_32x32.png")
-    @positions = generate_random_positions
-    @direction = Vec2.new(-2, 2)
+    @sprite = Sprite.new('assets/raylib_32x32.png')
+    @grid = create_texture_grid
+    @total_grid_elements = @grid.size
     @speed = 400
-    @rect = Rect.new(0, 0, SCREEN_WIDTH, 20)
+    @rect = Rect.new(0, 0, Graphics.screen_width, 20)
+    @font = Font.new('assets/KAISG.ttf')
+    @black = Color.new(0, 0, 0)
+    @white = Color.new(255, 255, 255)
   end
 
-  def generate_random_positions
-    Array.new(MAX_ELEMENTS) do
-      Vec2.new(random(0, SCREEN_WIDTH), random(0, SCREEN_HEIGHT))
-    end
-  end
-
-  def update(_delta)
+  def update(delta)
+    unload if Input.released?(:up)
     return unless MOVE_ELEMENTS
 
-    MAX_ELEMENTS.times { |i| @positions[i].random_movement(@direction, @speed) }
+    MAX_ELEMENTS.times { |i| @grid[i % @total_grid_elements].rand_move(@speed) }
   end
 
   def draw
-    MAX_ELEMENTS.times { |i| @texture.draw(@positions[i]) }
-    @rect.draw(Color::BLACK)
-    Text.draw(format("Textures: %i", MAX_ELEMENTS), 220, 0, 20, Color::GREEN)
-    Text.draw(format("Batched Draw Calls: %i", 1 + MAX_ELEMENTS / MAX_BATCH_ELEMENTS), 410, 0, 20, Color::RED)
+    # draw functions already apply batching if it's drawing the same texture
+    MAX_ELEMENTS.times { |i| @sprite.draw(@grid[i % @total_grid_elements]) }
+    @rect.draw(@black)
+    @font.draw("Textures: #{MAX_ELEMENTS}", 220, 0, 20, @white)
+    @font.draw("Batched Draw Calls: #{1 + (MAX_ELEMENTS / MAX_BATCH_ELEMENTS)}", 410, 0, 20, @white)
   end
 
   def unload
-    @texture.unload
+    @sprite.unload
+  end
+
+  private
+
+  def create_texture_grid
+    cols = Graphics.screen_width / 32
+    rows = Graphics.screen_height / 32
+    Array.new(rows * cols) do |i|
+      x = (i % cols) * 32
+      y = (i / cols) * 32
+      Vec2.new(x, y)
+    end
   end
 end

@@ -1,12 +1,12 @@
 [submodule "third_party/raylib"]
 	path = third_party/raylib
 	url = https://github.com/Nathan-MV/raylib.git
-	branch = rubyraylib
 [submodule "third_party/raygui"]
 	path = third_party/raygui
 	url = https://github.com/Nathan-MV/raygui.git
-	branch = raylibruby
 [submodule "third_party/reasings"]
 	path = third_party/reasings
 	url = https://github.com/Nathan-MV/reasings.git
-	branch = raylibruby
+[submodule "third_party/rapidcsv"]
+	path = third_party/rapidcsv
+	url = https://github.com/d99kris/rapidcsv.git
